@@ -9,7 +9,7 @@ import scripts.ScriptMaker.api.types.main.Action;
 public class TurnToObjectAction extends Action
 {
 
-	private static final long serialVersionUID = 9193997494153329320L;
+	private static final long serialVersionUID = 919392342153329320L;
 	
 	private String name;
 

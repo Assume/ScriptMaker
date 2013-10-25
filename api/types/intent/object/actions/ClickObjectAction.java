@@ -9,7 +9,7 @@ import scripts.ScriptMaker.api.types.main.Action;
 public class ClickObjectAction extends Action
 {
 
-	private static final long serialVersionUID = 9193997494153329320L;
+	private static final long serialVersionUID = 9193512364153329320L;
 	private String name;
 	private String action;
 

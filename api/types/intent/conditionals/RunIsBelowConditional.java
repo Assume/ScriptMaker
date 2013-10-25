@@ -7,7 +7,7 @@ import scripts.ScriptMaker.api.types.main.Conditional;
 public class RunIsBelowConditional extends Conditional
 {
 
-	private static final long serialVersionUID = 6549656485344855655L;
+	private static final long serialVersionUID = 6549656491283855655L;
 
 	private int percent;
 

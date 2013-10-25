@@ -24,7 +24,6 @@ public class BlockHandler
     public static String[] getAllBlockNames()
     {
 	Set<String> d = map.keySet();
-	d.remove("main");
 	return d.toArray(new String[d.size()]);
     }
 

@@ -234,8 +234,16 @@ public class MainGUI extends JFrame
 			    "You have not made any blocks.");
 		    return;
 		}
+		if (blocks.length == 1 && BlockHandler.isMainAdded())
+		{
+		    JOptionPane.showMessageDialog(null,
+			    "You have not made any blocks.");
+		    return;
+		}
 		JComboBox<String> box = new JComboBox<String>(
 			new DefaultComboBoxModel<String>(blocks));
+		if (BlockHandler.isMainAdded())
+		    box.removeItem("main");
 		JOptionPane.showMessageDialog(null, box,
 			"Choose a Block to edit", JOptionPane.QUESTION_MESSAGE);
 		String name = (String) box.getSelectedItem();
@@ -271,7 +279,12 @@ public class MainGUI extends JFrame
 				    + BlockHandler.getCurrentBlockName());
 		    return;
 		}
-		if (BlockHandler.isMainAdded())
+		if (!BlockHandler.isMainAdded())
+		{
+		    JOptionPane.showMessageDialog(null,
+			    "Please click setup main block first!");
+		    return;
+		}
 		{
 		    for (Intent t : BlockHandler.getBlock("main").getIntets())
 		    {

@@ -9,7 +9,7 @@ import scripts.ScriptMaker.api.types.main.Action;
 public class WalkToObjectAction extends Action
 {
 
-	private static final long serialVersionUID = 9193997494153329320L;
+	private static final long serialVersionUID = 91931234253329320L;
 	
 	private String name;
 

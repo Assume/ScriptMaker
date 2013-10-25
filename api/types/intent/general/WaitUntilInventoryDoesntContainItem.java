@@ -9,7 +9,7 @@ import scripts.ScriptMaker.api.types.main.Action;
 public class WaitUntilInventoryDoesntContainItem extends Action
 {
 
-	private static final long serialVersionUID = 3799150617563480912L;
+	private static final long serialVersionUID = 3799150687233480912L;
 	private int itemID;
 	private long timeOut;
 

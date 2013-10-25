@@ -8,7 +8,7 @@ import scripts.ScriptMaker.api.types.main.Conditional;
 public class ObjectIsOnScreenConditional extends Conditional
 {
 
-	private static final long serialVersionUID = 9193997494153329320L;
+	private static final long serialVersionUID = 919399723413329320L;
 	
 	private String name;
 	

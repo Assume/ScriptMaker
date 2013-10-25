@@ -77,6 +77,7 @@ public class FileIO
     {
 	try
 	{
+	    results.clear();
 	    File[] files = new File(Util.getAppDataDirectory(),
 		    "Logic Script Maker").listFiles();
 	    for (File file : files)

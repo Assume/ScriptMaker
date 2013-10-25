@@ -8,26 +8,26 @@ import scripts.ScriptMaker.api.types.main.Conditional;
 public class LocationConditional extends Conditional
 {
 
-	private RSTile tile;
-	private int distance;
-	
-	public LocationConditional(RSTile tile, final int distance)
-	{
-		this.tile = tile;
-	}
-	
-	private static final long serialVersionUID = -6902617622802866256L;
+    private static final long serialVersionUID = -6902617622802866256L;
 
-	@Override
-	public boolean run()
-	{
-		return Player.getPosition().distanceTo(tile) < distance;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return "If distance to " + tile + " < " + "distance";
-	}
+    private RSTile tile;
+    private int distance;
+
+    public LocationConditional(RSTile tile, final int distance)
+    {
+	this.tile = tile;
+    }
+
+    @Override
+    public boolean run()
+    {
+	return Player.getPosition().distanceTo(tile) < distance;
+    }
+
+    @Override
+    public String toString()
+    {
+	return "If distance to " + tile + " < " + "distance";
+    }
 
 }
