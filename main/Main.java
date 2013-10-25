@@ -1,5 +1,8 @@
 package scripts.ScriptMaker.main;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.lang.reflect.InvocationTargetException;
 
@@ -15,6 +18,7 @@ import org.tribot.script.interfaces.Pausing;
 import org.tribot.script.interfaces.RandomEvents;
 
 import scripts.ScriptMaker.GUI.MainGUI;
+import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
 import scripts.ScriptMaker.api.types.main.Intent;
@@ -61,9 +65,20 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	PaintHandler.paintAllItems(arg0);
 	PaintHandler.drawTimeRan(arg0, vars.runtime);
 	PaintItem p = PaintHandler.getItem("CREATOR");
-	if(p != null)
+	Color text = new Color(178, 163, 132);
+	arg0.setColor(text);
+	arg0.fillRect(12, 460, 50, 14);
+	arg0.setColor(Color.BLACK);
+	arg0.drawString("Assume", 12, 470);
+	if (p != null)
 	{
-	    
+	    final Color color2 = new Color(0, 0, 0);
+	    arg0.setColor(new Color(255, 255, 255, 150));
+	    int length = DefaultMethods.stringLength(p.getDisplayText(), arg0);
+	    arg0.fillRect(7, 306 + 17 * 0, length + 7, 14);
+	    arg0.setColor(color2);
+	    arg0.drawRect(7, 306 + 17 * 0, length + 7, 14);
+	    arg0.drawString(p.getDisplayText(), 8, 317 + 17 * 0);
 	}
     }
 

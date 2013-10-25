@@ -1,5 +1,6 @@
 package scripts.ScriptMaker.api.methods;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,9 +12,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.tribot.api.General;
 import org.tribot.util.Util;
 
 import scripts.ScriptMaker.GUI.handler.GUIHandler;
+import scripts.ScriptMaker.api.methods.paint.GenericPaintItem;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
 import scripts.ScriptMaker.api.types.main.ScriptSaveFile;
@@ -30,19 +33,26 @@ public class FileIO
 
     public static void save()
     {
+	if (!PaintHandler.isCreatorAdded())
+	{
+	    PaintHandler.addItem(
+		    "CREATOR",
+		    new GenericPaintItem(Color.BLACK, Color.WHITE, "CREATOR",
+			    "Logic Script Creator: "
+				    + General.getTRiBotUsername()));
+	}
 	String name = JOptionPane.showInputDialog("Enter name for the script");
 	try
 	{
 	    boolean exist = (new File(Util.getAppDataDirectory(),
-		    "Logic Script Maker" ).exists());
+		    "Logic Script Maker").exists());
 	    if (!exist)
 	    {
-		new File(Util.getAppDataDirectory(),
-			  "Logic Script Maker").mkdirs();
+		new File(Util.getAppDataDirectory(), "Logic Script Maker")
+			.mkdirs();
 	    }
 	    fOut = new FileOutputStream(new File(Util.getAppDataDirectory(),
-		    "Logic Script Maker" + File.separator + name
-		    + ".script"));
+		    "Logic Script Maker" + File.separator + name + ".script"));
 	    oos = new ObjectOutputStream(fOut);
 	    oos.writeObject(new ScriptSaveFile(BlockHandler.getMap(),
 		    PaintHandler.getMap(), name));
@@ -96,8 +106,8 @@ public class FileIO
 			"File Selection", JOptionPane.QUESTION_MESSAGE, null,
 			fileNames, fileNames[0]);
 		fis = new FileInputStream(new File(Util.getAppDataDirectory(),
-			  "Logic Script Maker" + File.separator + name
-			   + ".script"));
+			"Logic Script Maker" + File.separator + name
+				+ ".script"));
 		ois = new ObjectInputStream(fis);
 		ScriptSaveFile file = (ScriptSaveFile) ois.readObject();
 		PaintHandler.setMap(PaintHandler.resetAllPaintItems(file

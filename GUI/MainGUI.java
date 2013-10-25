@@ -1,7 +1,12 @@
 package scripts.ScriptMaker.GUI;
 
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -14,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import org.tribot.api.General;
 
 import scripts.ScriptMaker.api.methods.FileIO;
+import scripts.ScriptMaker.api.methods.paint.GenericPaintItem;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.BlockExecutor;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
@@ -28,8 +34,8 @@ public class MainGUI extends JFrame
 
     public MainGUI()
     {
-	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	setBounds(100, 100, 164, 387);
+	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	setBounds(100, 100, 164, 426);
 	contentPane = new JPanel();
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
@@ -65,6 +71,14 @@ public class MainGUI extends JFrame
 	{
 	    public void actionPerformed(ActionEvent e)
 	    {
+		if (!PaintHandler.isCreatorAdded())
+		{
+		    PaintHandler.addItem(
+			    "CREATOR",
+			    new GenericPaintItem(Color.BLACK, Color.WHITE, "CREATOR",
+				    "Logic Script Creator: "
+					    + General.getTRiBotUsername()));
+		}
 		PaintHandler.initAll();
 		if (BlockHandler.isMainAdded())
 		{
@@ -300,5 +314,30 @@ public class MainGUI extends JFrame
 	});
 	btnEditMain.setBounds(11, 210, 131, 23);
 	contentPane.add(btnEditMain);
+
+	JButton btnNewButton = new JButton("Get Scripts!");
+	btnNewButton.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent arg0)
+	    {
+		if (Desktop.isDesktopSupported())
+		{
+		    try
+		    {
+			Desktop.getDesktop().browse(
+				new URI("http://tribot.org"));
+		    } catch (IOException | URISyntaxException e)
+		    {
+			e.printStackTrace();
+		    }
+		} else
+		{
+		    JOptionPane.showMessageDialog(null,
+			    "Visit Assume's thread to get premade scripts!");
+		}
+	    }
+	});
+	btnNewButton.setBounds(11, 346, 133, 23);
+	contentPane.add(btnNewButton);
     }
 }

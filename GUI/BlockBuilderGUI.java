@@ -164,7 +164,13 @@ public class BlockBuilderGUI extends JFrame
 	{
 	    public void actionPerformed(ActionEvent e)
 	    {
+		vars.currentIntentList.clear();
+		GUIHandler.resetAll();
 		BlockHandler.resetAll();
+		vars.builderIsOpen = false;
+		GUIHandler.isCreating = false;
+		BlockBuilderGUI.this.setVisible(false);
+		BlockBuilderGUI.this.dispose();
 	    }
 	});
 	JButton btnDone = new JButton("Done");
@@ -236,7 +242,7 @@ public class BlockBuilderGUI extends JFrame
 		{
 		    JOptionPane
 			    .showMessageDialog(list,
-				    "Please finish your current action/conditional before removing/insert");
+				    "Please finish your current action/conditional before removing");
 		    return;
 		}
 		int index = list.getSelectedIndex();
@@ -1321,6 +1327,7 @@ public class BlockBuilderGUI extends JFrame
 	});
 	JMenuItem removeRight = new JMenuItem("Remove");
 	menu.add(removeRight);
+	menu.add(insert);
 	removeRight.addActionListener(new ActionListener()
 	{
 
@@ -1360,7 +1367,7 @@ public class BlockBuilderGUI extends JFrame
 	    }
 	});
 	scrollPane.setViewportView(list);
-
 	fillList();
+	GUIHandler.setIndex(listModel.size());
     }
 }

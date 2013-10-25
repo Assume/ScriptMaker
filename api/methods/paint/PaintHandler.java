@@ -113,11 +113,11 @@ public class PaintHandler
 	{
 	    gd.setColor(new Color(255, 255, 255, 150));
 	    int length = DefaultMethods.stringLength(s, g);
-	    gd.fillRect(389, 440 + 17 * c, length + 16, 12);
+	    gd.fillRect(7, 282 + 17 * c, length + 7, 14);
 	    gd.setColor(color2);
 	    gd.setStroke(stroke1);
-	    gd.drawRect(389, 440 + 17 * c, length + 16, 12);
-	    gd.drawString(s, 399, 450 + 17 * c);
+	    gd.drawRect(7, 282 + 17 * c, length + 7, 14);
+	    gd.drawString(s, 8, 293 + 17 * c);
 	    c++;
 	}
     }
@@ -129,7 +129,7 @@ public class PaintHandler
 	for (int i = 0; i < items.length; i++)
 	{
 	    PaintItem t = map.get(items[i]);
-	    if (!(t instanceof ExperienceGainedPaintItem))
+	    if (!(t instanceof ExperienceGainedPaintItem) && !(t.getName().equals("CREATOR")))
 	    {
 		list.add(items[i]);
 	    }
@@ -144,7 +144,7 @@ public class PaintHandler
 	for (int i = 0; i < items.length; i++)
 	{
 	    PaintItem t = map.get(items[i]);
-	    if (t instanceof ExperienceGainedPaintItem)
+	    if (t instanceof ExperienceGainedPaintItem && !(t.getName().equals("CREATOR")))
 	    {
 		list.add(items[i]);
 	    }
@@ -171,6 +171,11 @@ public class PaintHandler
     public static PaintItem getItem(String string)
     {
 	return map.get(string);
+    }
+
+    public static boolean isCreatorAdded()
+    {
+	return map.containsKey("CREATOR");
     }
 
 }
