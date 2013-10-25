@@ -31,7 +31,7 @@ public class TurnToObjectAction extends Action
 	@Override
 	public String toString()
 	{
-		return "If " + name + " is on screen";
+		return "Turn camera to object "+name;
 	}
 
 }

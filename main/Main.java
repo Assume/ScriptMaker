@@ -18,6 +18,7 @@ import scripts.ScriptMaker.GUI.MainGUI;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
 import scripts.ScriptMaker.api.types.main.Intent;
+import scripts.ScriptMaker.api.types.main.PaintItem;
 
 @ScriptManifest(authors = { "Assume" }, category = "Custom", name = "Script Maker")
 public class Main extends Script implements Painting, Pausing, Ending,
@@ -59,6 +60,11 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	vars.runtime = super.getRunningTime();
 	PaintHandler.paintAllItems(arg0);
 	PaintHandler.drawTimeRan(arg0, vars.runtime);
+	PaintItem p = PaintHandler.getItem("CREATOR");
+	if(p != null)
+	{
+	    
+	}
     }
 
     @Override
@@ -144,7 +150,8 @@ public class Main extends Script implements Painting, Pausing, Ending,
 		    System.out.println("In thread");
 		    System.out.println(vars.lastBlock.getName());
 		    System.out.println(vars.lastIndex);
-		    Intent.executeAllIntents(BlockHandler.getMain(), vars.lastIndex);
+		    Intent.executeAllIntents(BlockHandler.getMain(),
+			    vars.lastIndex);
 		}
 	    });
 	    System.out.println("made thread");

@@ -54,6 +54,7 @@ public class GUIHandler
 		BlockBuilderGUI.listModel.addElement(new ConditionalIntent(
 						new NilAction(), con
 										.toArray(new Conditional[con.size()])));
+		BlockBuilderGUI.resetIndexes();
 	}
 
 	public static void fillJListWithIntents()
@@ -62,6 +63,7 @@ public class GUIHandler
 		{
 			addItemToJList(t);
 		}
+		BlockBuilderGUI.resetIndexes();
 	}
 
 	private static void addItemToJList(Intent t)
@@ -81,6 +83,7 @@ public class GUIHandler
 			index = BlockBuilderGUI.listModel.size() - 1;
 		}
 		BlockBuilderGUI.listModel.addElement(lastIntent);
+		BlockBuilderGUI.resetIndexes();
 
 	}
 
@@ -123,6 +126,7 @@ public class GUIHandler
 			vars.currentIntentList.add(t);
 			lastIntent = t;
 		}
+		BlockBuilderGUI.resetIndexes();
 	}
 
 }
