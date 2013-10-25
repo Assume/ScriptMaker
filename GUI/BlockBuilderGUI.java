@@ -109,10 +109,11 @@ public class BlockBuilderGUI extends JFrame
 
     private static final long serialVersionUID = 3221438968254241735L;
     public static final DefaultListModel<Intent> listModel = new DefaultListModel<Intent>();
+    private static DefaultListModel<Integer> indexModel = new DefaultListModel<Integer>();
     public static final JList<Intent> list = new JList<Intent>(listModel);
+    public static final JList<Integer> list_1 = new JList<Integer>(indexModel);
     private static JLabel lblCurrentBlockLabel;
     private static int indexTemp;
-    private static DefaultListModel<Integer> indexModel = new DefaultListModel<Integer>();
 
     private void fillList()
     {
@@ -137,7 +138,14 @@ public class BlockBuilderGUI extends JFrame
 
     public BlockBuilderGUI()
     {
+	listModel.clear();
+	indexModel.clear();
 	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	JScrollPane scrollPane_1 = new JScrollPane();
+	scrollPane_1.setBounds(0, 0, 38, 682);
+	getContentPane().add(scrollPane_1);
+
+	scrollPane_1.setViewportView(list_1);
 	setBounds(100, 100, 661, 746);
 	JMenuBar menuBar = new JMenuBar();
 	setJMenuBar(menuBar);
@@ -177,7 +185,8 @@ public class BlockBuilderGUI extends JFrame
 		    vars.builderIsOpen = false;
 		    setVisible(false);
 		    dispose();
-		    BlockHandler.setCurrentBlockName("main");
+		    GUIHandler.isCreating = false;
+		    GUIHandler.resetAll();
 		} else
 		{
 		    BlockHandler.addBlock(
@@ -190,6 +199,8 @@ public class BlockBuilderGUI extends JFrame
 		    vars.builderIsOpen = false;
 		    setVisible(false);
 		    dispose();
+		    GUIHandler.isCreating = false;
+		    GUIHandler.resetAll();
 		}
 	    }
 	});
@@ -209,6 +220,7 @@ public class BlockBuilderGUI extends JFrame
 		GUIHandler.resetAll();
 		BlockHandler.resetAll();
 		vars.builderIsOpen = false;
+		GUIHandler.isCreating = false;
 	    }
 	});
 
@@ -220,6 +232,13 @@ public class BlockBuilderGUI extends JFrame
 	    @Override
 	    public void actionPerformed(ActionEvent arg0)
 	    {
+		if (GUIHandler.isCreating)
+		{
+		    JOptionPane
+			    .showMessageDialog(list,
+				    "Please finish your current action/conditional before removing/insert");
+		    return;
+		}
 		int index = list.getSelectedIndex();
 		if (index != -1)
 		{
@@ -1291,6 +1310,15 @@ public class BlockBuilderGUI extends JFrame
 	scrollPane.setBounds(37, 0, 608, 682);
 	getContentPane().add(scrollPane);
 	final JPopupMenu menu = new JPopupMenu();
+	JMenuItem insert = new JMenuItem("Insert");
+	insert.addActionListener(new ActionListener()
+	{
+	    @Override
+	    public void actionPerformed(ActionEvent arg0)
+	    {
+		GUIHandler.setIndex(indexTemp);
+	    }
+	});
 	JMenuItem removeRight = new JMenuItem("Remove");
 	menu.add(removeRight);
 	removeRight.addActionListener(new ActionListener()
@@ -1299,6 +1327,8 @@ public class BlockBuilderGUI extends JFrame
 	    @Override
 	    public void actionPerformed(ActionEvent e)
 	    {
+		if (GUIHandler.isCreating)
+		    return;
 		if (indexTemp != -1)
 		{
 		    listModel.remove(indexTemp);
@@ -1317,6 +1347,13 @@ public class BlockBuilderGUI extends JFrame
 	    {
 		if (SwingUtilities.isRightMouseButton(arg0))
 		{
+		    if (GUIHandler.isCreating)
+		    {
+			JOptionPane
+				.showMessageDialog(list,
+					"Please finish your current action/conditional before removing/insert");
+			return;
+		    }
 		    indexTemp = list.locationToIndex(arg0.getPoint());
 		    menu.show(list, arg0.getX(), arg0.getY());
 		}
@@ -1324,14 +1361,6 @@ public class BlockBuilderGUI extends JFrame
 	});
 	scrollPane.setViewportView(list);
 
-	JScrollPane scrollPane_1 = new JScrollPane();
-	scrollPane_1.setBounds(0, 0, 38, 682);
-	getContentPane().add(scrollPane_1);
-
-	JList<Integer> list_1 = new JList<Integer>(indexModel);
-	scrollPane_1.setViewportView(list_1);
-	listModel.clear();
-	indexModel.clear();
 	fillList();
     }
 }

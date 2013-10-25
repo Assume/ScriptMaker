@@ -15,118 +15,119 @@ import scripts.ScriptMaker.main.vars;
 public class GUIHandler
 {
 
-	private static List<Conditional> con = new ArrayList<Conditional>();
-	private static Action action;
-	private static int index;
-	private static Intent lastIntent;
+    private static List<Conditional> con = new ArrayList<Conditional>();
+    private static Action action;
+    private static Intent lastIntent;
+    public static boolean isCreating = false;
+    private static int indexTemp = BlockBuilderGUI.listModel.size();
 
-	public static void addCondition(Conditional t)
-	{
-		con.add(t);
-		handleJListConditional();
-	}
-	
-	public static void addLabel(String name)
-	{
-		if (con.size() != 0)
-		{
-			BlockBuilderGUI.listModel
-							.remove(BlockBuilderGUI.listModel.size() - 1);
-			con.clear();
-		}
-		setAction(new Label(name));
-	}
+    public static void addCondition(Conditional t)
+    {
+	isCreating = true;
+	con.add(t);
+	handleJListConditional();
+    }
 
-	private static void handleJListConditional()
+    public static void addLabel(String name)
+    {
+	if (con.size() != 0)
 	{
-		Conditional[] c = con.toArray(new Conditional[con.size()]);
-		StringBuilder b = new StringBuilder();
-		for (int i = 0; i < c.length; i++)
-		{
-			if (i < c.length - 1)
-				b.append(c[i] + " and ");
-			else
-				b.append(c[i] + " ");
-		}
-		if (BlockBuilderGUI.listModel.size() > 0 && con.size() >= 2)
-			BlockBuilderGUI.listModel
-							.remove(BlockBuilderGUI.listModel.size() - 1);
-		BlockBuilderGUI.listModel.addElement(new ConditionalIntent(
-						new NilAction(), con
-										.toArray(new Conditional[con.size()])));
-		BlockBuilderGUI.resetIndexes();
+	    BlockBuilderGUI.listModel
+		    .remove(indexTemp);
+	    con.clear();
 	}
+	setAction(new Label(name));
+    }
 
-	public static void fillJListWithIntents()
+    private static void handleJListConditional()
+    {
+	Conditional[] c = con.toArray(new Conditional[con.size()]);
+	StringBuilder b = new StringBuilder();
+	for (int i = 0; i < c.length; i++)
 	{
-		for (Intent t : Intent.getList())
-		{
-			addItemToJList(t);
-		}
-		BlockBuilderGUI.resetIndexes();
+	    if (i < c.length - 1)
+		b.append(c[i] + " and ");
+	    else
+		b.append(c[i] + " ");
 	}
+	if (BlockBuilderGUI.listModel.size() > 0 && con.size() >= 2)
+	    BlockBuilderGUI.listModel
+		    .remove(indexTemp);
+	BlockBuilderGUI.listModel.add(indexTemp, new ConditionalIntent(
+		new NilAction(), con.toArray(new Conditional[con.size()])));
+	BlockBuilderGUI.resetIndexes();
+    }
 
-	private static void addItemToJList(Intent t)
+    public static void fillJListWithIntents()
+    {
+	for (Intent t : Intent.getList())
 	{
-		BlockBuilderGUI.listModel.addElement(t);
+	    addItemToJList(t);
 	}
+	BlockBuilderGUI.resetIndexes();
+    }
 
-	private static void handleJListAction()
-	{
-		if (con.size() > 0)
-		{
-			BlockBuilderGUI.listModel
-							.remove(BlockBuilderGUI.listModel.size() - 1);
-		}
-		if (index == -1)
-		{
-			index = BlockBuilderGUI.listModel.size() - 1;
-		}
-		BlockBuilderGUI.listModel.addElement(lastIntent);
-		BlockBuilderGUI.resetIndexes();
+    private static void addItemToJList(Intent t)
+    {
+	BlockBuilderGUI.listModel.addElement(t);
+    }
 
-	}
+    private static void handleJListAction()
+    {
+	if (con.size() > 0)
+	{
 
-	public static void clearJList()
-	{
-		BlockBuilderGUI.listModel.clear();
+	    BlockBuilderGUI.listModel.remove(indexTemp);
 	}
+	BlockBuilderGUI.listModel.add(indexTemp, lastIntent);
+	BlockBuilderGUI.resetIndexes();
 
-	public static void setAction(Action a)
-	{
-		action = a;
-		handle();
-		handleJListAction();
-		resetAll();
-	}
+    }
 
-	public static void resetAll()
+    public static void clearJList()
+    {
+	BlockBuilderGUI.listModel.clear();
+    }
+
+    public static void setAction(Action a)
+    {
+	action = a;
+	handle();
+	handleJListAction();
+	resetAll();
+    }
+
+    public static void resetAll()
+    {
+	con.clear();
+	action = null;
+	lastIntent = null;
+	isCreating = false;
+	indexTemp = BlockBuilderGUI.listModel.size();
+    }
+
+    private static void handle()
+    {
+	if (con.size() == 0)
 	{
-		con.clear();
-		index = -1;
-		action = null;
-		lastIntent = null;
-	}
-	
-	
-	
-	private static void handle()
+	    Intent t = new Intent(action);
+	    vars.currentIntentList.add(indexTemp, new Intent(action));
+	    lastIntent = t;
+	    return;
+	} else
 	{
-		if (con.size() == 0)
-		{
-			Intent t = new Intent(action);
-			vars.currentIntentList.add(new Intent(action));
-			lastIntent = t;
-			return;
-		}
-		else
-		{
-			ConditionalIntent t = new ConditionalIntent(action, con
-							.toArray(new Conditional[con.size()]));
-			vars.currentIntentList.add(t);
-			lastIntent = t;
-		}
-		BlockBuilderGUI.resetIndexes();
+	    ConditionalIntent t = new ConditionalIntent(action,
+		    con.toArray(new Conditional[con.size()]));
+	    vars.currentIntentList.add(indexTemp, t);
+	    lastIntent = t;
 	}
+	BlockBuilderGUI.resetIndexes();
+    }
+
+    public static void setIndex(int indexTempp)
+    {
+	indexTemp = indexTempp;
+
+    }
 
 }
