@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -75,6 +77,12 @@ import scripts.ScriptMaker.api.types.intent.general.WaitUntilInventoryDoesntCont
 import scripts.ScriptMaker.api.types.intent.general.WaitUntilStoppedAction;
 import scripts.ScriptMaker.api.types.intent.general.emotes.EmoteAction;
 import scripts.ScriptMaker.api.types.intent.gotos.GOTOAction;
+import scripts.ScriptMaker.api.types.intent.grounditems.ItemIsNotOnGroundConditional;
+import scripts.ScriptMaker.api.types.intent.grounditems.ItemIsNotOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.grounditems.ItemIsOnGroundConditional;
+import scripts.ScriptMaker.api.types.intent.grounditems.ItemIsOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.grounditems.actions.ClickGroundItemAction;
+import scripts.ScriptMaker.api.types.intent.grounditems.actions.LootAllItemsAction;
 import scripts.ScriptMaker.api.types.intent.inventory.InventoryContainsConditional;
 import scripts.ScriptMaker.api.types.intent.inventory.InventoryDoesNotContainConditional;
 import scripts.ScriptMaker.api.types.intent.inventory.InventoryIsEmptyConditional;
@@ -689,6 +697,57 @@ public class BlockBuilderGUI extends JFrame
 	});
 	mnInventory.add(mntmInventoryIsNot);
 
+	JMenu mnGroundItems = new JMenu("Ground Items");
+	mnNewMenu.add(mnGroundItems);
+
+	JMenuItem mntmItemxIs = new JMenuItem("Item [x] is not on the ground");
+	mntmItemxIs.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent arg0)
+	    {
+		int id = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter id of the item").replaceAll("[^0-9]", ""));
+		GUIHandler.addCondition(new ItemIsNotOnGroundConditional(id));
+	    }
+	});
+	mnGroundItems.add(mntmItemxIs);
+
+	JMenuItem mntmItemxIs_1 = new JMenuItem("Item [x] is on the ground");
+	mntmItemxIs_1.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int id = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter id of the item").replaceAll("[^0-9]", ""));
+		GUIHandler.addCondition(new ItemIsOnGroundConditional(id));
+	    }
+	});
+	mnGroundItems.add(mntmItemxIs_1);
+
+	JMenuItem mntmItemxIsOn = new JMenuItem("Item [x] is on screen");
+	mntmItemxIsOn.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int id = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter id of the item").replaceAll("[^0-9]", ""));
+		GUIHandler.addCondition(new ItemIsOnScreenConditional(id));
+	    }
+	});
+	mnGroundItems.add(mntmItemxIsOn);
+
+	JMenuItem mntmItemxIs_2 = new JMenuItem("Item [x] is not on screen");
+	mntmItemxIs_2.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int id = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter id of the item").replaceAll("[^0-9]", ""));
+		GUIHandler.addCondition(new ItemIsNotOnScreenConditional(id));
+	    }
+	});
+	mnGroundItems.add(mntmItemxIs_2);
+
 	JMenuItem mntmExecuteBlock = new JMenuItem("Execute Block...");
 	mntmExecuteBlock.addActionListener(new ActionListener()
 	{
@@ -828,6 +887,46 @@ public class BlockBuilderGUI extends JFrame
 	    }
 	});
 	mntmObjects_1.add(mntmWalkToNearest);
+
+	JMenu mnGroundItems_1 = new JMenu("Ground Items");
+	mnAddAction.add(mnGroundItems_1);
+
+	JMenuItem mntmClickItemx_1 = new JMenuItem(
+		"Click item [x] with the action [y]");
+	mntmClickItemx_1.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int x = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter id of the item to click").replaceAll("[^0-9]",
+			""));
+		String y = JOptionPane
+			.showInputDialog("Enter the action to click the item with");
+		GUIHandler.setAction(new ClickGroundItemAction(x, y));
+	    }
+	});
+	mnGroundItems_1.add(mntmClickItemx_1);
+
+	JMenuItem mntmLootAllItems = new JMenuItem(
+		"Loot all items with the ids [x...]");
+	mntmLootAllItems.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent arg0)
+	    {
+		List<Integer> list = new ArrayList<Integer>();
+		int x;
+		while ((x = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter id to loot. Enter -1 to stop adding ids")
+			.replaceAll("[^0-9]", ""))) != -1)
+		{
+		    list.add(x);
+		}
+		GUIHandler.setAction(new LootAllItemsAction(list
+			.toArray(new Integer[list.size()])));
+
+	    }
+	});
+	mnGroundItems_1.add(mntmLootAllItems);
 
 	JMenu mntmItems = new JMenu("Items");
 	mnAddAction.add(mntmItems);

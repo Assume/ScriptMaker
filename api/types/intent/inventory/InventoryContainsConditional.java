@@ -37,7 +37,7 @@ public class InventoryContainsConditional extends Conditional
 	@Override
 	public String toString()
 	{
-		return "If inventory contains at least" + amount +" of " +itemID + " ";
+		return "If inventory contains at least " + amount +" of " +itemID + " ";
 	}
 
 }

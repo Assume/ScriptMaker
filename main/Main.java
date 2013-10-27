@@ -1,8 +1,6 @@
 package scripts.ScriptMaker.main;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.lang.reflect.InvocationTargetException;
 
@@ -16,6 +14,8 @@ import org.tribot.script.interfaces.Ending;
 import org.tribot.script.interfaces.Painting;
 import org.tribot.script.interfaces.Pausing;
 import org.tribot.script.interfaces.RandomEvents;
+
+import scripts.ScriptMaker.api.types.enums.SkillData;
 
 import scripts.ScriptMaker.GUI.MainGUI;
 import scripts.ScriptMaker.api.methods.DefaultMethods;
@@ -32,7 +32,6 @@ public class Main extends Script implements Painting, Pausing, Ending,
     @Override
     public void run()
     {
-
 	try
 	{
 	    SwingUtilities.invokeAndWait(new Runnable()
@@ -51,9 +50,23 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	    e.printStackTrace();
 	}
 	Mouse.setSpeed(250);
+	vars.isLiteMode = false;
 	while (vars.gui.isVisible())
 	{
 	    General.sleep(3);
+
+	    if (vars.hasHitStart && vars.isLiteMode
+		    && System.currentTimeMillis() - vars.startTime > 1200000
+		    && !General.getTRiBotUsername().equals("Crimson")
+		    && !General.getTRiBotUsername().equals("YoHoJo"))
+	    {
+		vars.thread.interrupt();
+		vars.gui.removeAll();
+		vars.gui.setVisible(false);
+		vars.gui.dispose();
+		throw new RuntimeException(
+			"Free version time limit has expired. Please buy premium to remove this restriction");
+	    }
 	}
 
     }
@@ -80,6 +93,16 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	    arg0.drawRect(7, 306 + 17 * 0, length + 7, 14);
 	    arg0.drawString(p.getDisplayText(), 8, 317 + 17 * 0);
 	}
+	if (vars.hasHitStart && vars.isLiteMode)
+	{
+	    arg0.drawString(
+		    "Time left in lite mode: "
+			    + SkillData
+				    .formatTime(Math.abs((System
+					    .currentTimeMillis() - (vars.startTime + 1200000)))),
+		    285, 355);
+	}
+
     }
 
     @Override

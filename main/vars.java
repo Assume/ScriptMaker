@@ -43,4 +43,7 @@ public class vars
 	public static boolean isMain;
 	public static String editName;
 	public static boolean isEdit;
+	
+	public static boolean hasHitStart = false;
+	public static boolean isLiteMode = false;
 }

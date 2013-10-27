@@ -71,12 +71,16 @@ public class MainGUI extends JFrame
 	{
 	    public void actionPerformed(ActionEvent e)
 	    {
+		if (!vars.hasHitStart)
+		{
+		    vars.startTime = System.currentTimeMillis();
+		}
+		vars.hasHitStart = true;
 		if (!PaintHandler.isCreatorAdded())
 		{
-		    PaintHandler.addItem(
-			    "CREATOR",
-			    new GenericPaintItem(Color.BLACK, Color.WHITE, "CREATOR",
-				    "Logic Script Creator: "
+		    PaintHandler.addItem("CREATOR",
+			    new GenericPaintItem(Color.BLACK, Color.WHITE,
+				    "CREATOR", "Logic Script Creator: "
 					    + General.getTRiBotUsername()));
 		}
 		PaintHandler.initAll();
@@ -324,8 +328,9 @@ public class MainGUI extends JFrame
 		{
 		    try
 		    {
-			Desktop.getDesktop().browse(
-				new URI("http://tribot.org"));
+			Desktop.getDesktop()
+				.browse(new URI(
+					"https://tribot.org/forums/index.php?/topic/22111-logic-pro-premade-scripts/"));
 		    } catch (IOException | URISyntaxException e)
 		    {
 			e.printStackTrace();
