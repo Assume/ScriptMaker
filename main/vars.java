@@ -46,4 +46,5 @@ public class vars
 	
 	public static boolean hasHitStart = false;
 	public static boolean isLiteMode = false;
+	public static String version = "1.2.0";
 }

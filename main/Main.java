@@ -8,10 +8,6 @@ import javax.swing.SwingUtilities;
 
 import org.tribot.api.General;
 import org.tribot.api.input.Mouse;
-import org.tribot.api.types.generic.Filter;
-import org.tribot.api2007.Player;
-import org.tribot.api2007.Players;
-import org.tribot.api2007.types.RSPlayer;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.Ending;
@@ -19,12 +15,11 @@ import org.tribot.script.interfaces.Painting;
 import org.tribot.script.interfaces.Pausing;
 import org.tribot.script.interfaces.RandomEvents;
 
-import scripts.ScriptMaker.api.types.enums.SkillData;
-
 import scripts.ScriptMaker.GUI.MainGUI;
 import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
+import scripts.ScriptMaker.api.types.enums.SkillData;
 import scripts.ScriptMaker.api.types.main.Intent;
 import scripts.ScriptMaker.api.types.main.PaintItem;
 
@@ -97,6 +92,10 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	    arg0.drawRect(7, 306 + 17 * 0, length + 7, 14);
 	    arg0.drawString(p.getDisplayText(), 8, 317 + 17 * 0);
 	}
+	String xS = vars.isLiteMode ? "Logic Pro (Lite Edition)"
+		: "Logic Pro (Premium)";
+	int x = vars.isLiteMode ? 340 : 350;
+	arg0.drawString(xS + " " + vars.version, x, 470);
 	if (vars.hasHitStart && vars.isLiteMode)
 	{
 	    arg0.drawString(
