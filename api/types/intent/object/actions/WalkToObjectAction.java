@@ -1,8 +1,8 @@
 package scripts.ScriptMaker.api.types.intent.object.actions;
 
 import org.tribot.api2007.Objects;
-import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSObject;
+import org.tribot.api2007.util.PathNavigator;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
@@ -24,7 +24,7 @@ public class WalkToObjectAction extends Action
 		RSObject[] ob = Objects.findNearest(50, name);
 		if (ob.length == 0)
 			return false;
-		Walking.blindWalkTo(ob[0]);
+		new PathNavigator().traverse(ob[0].getPosition());
 		return true;
 	}
 
