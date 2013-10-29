@@ -23,4 +23,9 @@ public class CameraRotationAction extends Action
 	return true;
     }
 
+    @Override
+    public String toString()
+    {
+	return "Set camera rotation to " + rotation;
+    }
 }

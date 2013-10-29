@@ -24,5 +24,11 @@ public class CameraAngleAction extends Action
 	Camera.setCameraAngle(angle);
 	return true;
     }
+    
+    @Override
+    public String toString()
+    {
+	return "Set camera angle to "+angle;
+    }
 
 }

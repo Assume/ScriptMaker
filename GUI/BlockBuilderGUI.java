@@ -85,6 +85,11 @@ import scripts.ScriptMaker.api.types.intent.grounditems.ItemIsOnGroundConditiona
 import scripts.ScriptMaker.api.types.intent.grounditems.ItemIsOnScreenConditional;
 import scripts.ScriptMaker.api.types.intent.grounditems.actions.ClickGroundItemAction;
 import scripts.ScriptMaker.api.types.intent.grounditems.actions.LootAllItemsAction;
+import scripts.ScriptMaker.api.types.intent.interfaces.actions.ClickInterfaceAction;
+import scripts.ScriptMaker.api.types.intent.interfaces.actions.WaitUntilInterfaceIsClosedAction;
+import scripts.ScriptMaker.api.types.intent.interfaces.actions.WaitUntilInterfaceIsOpenAction;
+import scripts.ScriptMaker.api.types.intent.interfaces.conditionals.InterfaceIsClosedConditional;
+import scripts.ScriptMaker.api.types.intent.interfaces.conditionals.InterfaceIsOpenConditional;
 import scripts.ScriptMaker.api.types.intent.inventory.InventoryContainsConditional;
 import scripts.ScriptMaker.api.types.intent.inventory.InventoryDoesNotContainConditional;
 import scripts.ScriptMaker.api.types.intent.inventory.InventoryIsEmptyConditional;
@@ -769,6 +774,34 @@ public class BlockBuilderGUI extends JFrame
 	});
 	mnGroundItems.add(mntmItemxIs_2);
 
+	JMenu mnInterfaces = new JMenu("Interfaces");
+	mnNewMenu.add(mnInterfaces);
+
+	JMenuItem mntmInterfaceIsOpen = new JMenuItem("Interface is open");
+	mntmInterfaceIsOpen.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int parent = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter parent ID").replaceAll("[^0-9]", ""));
+		GUIHandler.addCondition(new InterfaceIsOpenConditional(parent));
+	    }
+	});
+	mnInterfaces.add(mntmInterfaceIsOpen);
+
+	JMenuItem mntmInterfaceIsClosed = new JMenuItem("Interface is closed");
+	mntmInterfaceIsClosed.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int parent = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter parent ID").replaceAll("[^0-9]", ""));
+		GUIHandler
+			.addCondition(new InterfaceIsClosedConditional(parent));
+	    }
+	});
+	mnInterfaces.add(mntmInterfaceIsClosed);
+
 	JMenuItem mntmExecuteBlock = new JMenuItem("Execute Block...");
 	mntmExecuteBlock.addActionListener(new ActionListener()
 	{
@@ -1315,6 +1348,61 @@ public class BlockBuilderGUI extends JFrame
 
 	JMenu mousePop = new JMenu("Mouse");
 	mnAddAction.add(mousePop);
+
+	JMenu mnInterfaces_1 = new JMenu("Interfaces");
+	mnAddAction.add(mnInterfaces_1);
+
+	JMenuItem mntmWaitUntilInterface = new JMenuItem(
+		"Wait until interface is open");
+	mntmWaitUntilInterface.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int parent = Integer.parseInt(JOptionPane.showInputDialog(null,
+			"Enter parent id").replaceAll("[^0-9]", ""));
+		double timeout = Double.parseDouble(JOptionPane
+			.showInputDialog(null, "Enter timeout in seconds")
+			.replaceAll("[^0-9.]", ""));
+		GUIHandler.setAction(new WaitUntilInterfaceIsOpenAction(parent,
+			(long) (timeout * 1000)));
+	    }
+	});
+	mnInterfaces_1.add(mntmWaitUntilInterface);
+
+	JMenuItem mntmWaitUntilInterface_1 = new JMenuItem(
+		"Wait until interface is closed");
+	mntmWaitUntilInterface_1.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int parent = Integer.parseInt(JOptionPane.showInputDialog(null,
+			"Enter parent id").replaceAll("[^0-9]", ""));
+		double timeout = Double.parseDouble(JOptionPane
+			.showInputDialog(null, "Enter timeout in seconds")
+			.replaceAll("[^0-9.]", ""));
+		GUIHandler.setAction(new WaitUntilInterfaceIsClosedAction(
+			parent, (long) (timeout * 1000)));
+	    }
+	});
+	mnInterfaces_1.add(mntmWaitUntilInterface_1);
+
+	JMenuItem mntmClickInterfacexy = new JMenuItem(
+		"Click interface [x][y] with the action [z]");
+	mntmClickInterfacexy.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int parent = Integer.parseInt(JOptionPane.showInputDialog(null,
+			"Enter parent id").replaceAll("[^0-9]", ""));
+		int child = Integer.parseInt(JOptionPane.showInputDialog(null,
+			"Enter child id").replaceAll("[^0-9]", ""));
+		String action = JOptionPane.showInputDialog(null,
+			"Enter action");
+		GUIHandler.setAction(new ClickInterfaceAction(parent, child,
+			action));
+	    }
+	});
+	mnInterfaces_1.add(mntmClickInterfacexy);
 
 	JMenu mnWait = new JMenu("Wait until...");
 	mnAddAction.add(mnWait);

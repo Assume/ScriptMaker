@@ -8,6 +8,10 @@ import javax.swing.SwingUtilities;
 
 import org.tribot.api.General;
 import org.tribot.api.input.Mouse;
+import org.tribot.api.types.generic.Filter;
+import org.tribot.api2007.Player;
+import org.tribot.api2007.Players;
+import org.tribot.api2007.types.RSPlayer;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.Ending;
