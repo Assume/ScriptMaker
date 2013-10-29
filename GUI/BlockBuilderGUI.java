@@ -148,7 +148,7 @@ public class BlockBuilderGUI extends JFrame
     {
 	listModel.clear();
 	indexModel.clear();
-	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	JScrollPane scrollPane_1 = new JScrollPane();
 	scrollPane_1.setBounds(0, 0, 38, 682);
 	getContentPane().add(scrollPane_1);
@@ -172,13 +172,21 @@ public class BlockBuilderGUI extends JFrame
 	{
 	    public void actionPerformed(ActionEvent e)
 	    {
-		vars.currentIntentList.clear();
-		GUIHandler.resetAll();
-		BlockHandler.resetAll();
-		vars.builderIsOpen = false;
-		GUIHandler.isCreating = false;
-		BlockBuilderGUI.this.setVisible(false);
-		BlockBuilderGUI.this.dispose();
+		if (JOptionPane
+			.showConfirmDialog(
+				null,
+				"Are you sure you want to cancel? You will lose all changes you have made",
+				"Really Closing?", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+		{
+		    vars.currentIntentList.clear();
+		    GUIHandler.resetAll();
+		    BlockHandler.resetAll();
+		    vars.builderIsOpen = false;
+		    GUIHandler.isCreating = false;
+		    BlockBuilderGUI.this.setVisible(false);
+		    BlockBuilderGUI.this.dispose();
+		}
 	    }
 	});
 	JButton btnDone = new JButton("Done");
@@ -230,11 +238,19 @@ public class BlockBuilderGUI extends JFrame
 	    @Override
 	    public void windowClosing(java.awt.event.WindowEvent windowEvent)
 	    {
-		vars.currentIntentList.clear();
-		GUIHandler.resetAll();
-		BlockHandler.resetAll();
-		vars.builderIsOpen = false;
-		GUIHandler.isCreating = false;
+		if (JOptionPane
+			.showConfirmDialog(
+				null,
+				"Are you sure to close this window? All changes you have made will be lost",
+				"Really Closing?", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+		{
+		    vars.currentIntentList.clear();
+		    GUIHandler.resetAll();
+		    BlockHandler.resetAll();
+		    vars.builderIsOpen = false;
+		    GUIHandler.isCreating = false;
+		}
 	    }
 	});
 

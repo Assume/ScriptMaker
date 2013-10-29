@@ -34,7 +34,7 @@ public class ObjectIsNotOnScreenConditional extends Conditional
 	@Override
 	public String toString()
 	{
-		return "If " + name +" is on screen";
+		return "If " + name +" is not on screen";
 	}
 
 }

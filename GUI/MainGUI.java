@@ -71,21 +71,22 @@ public class MainGUI extends JFrame
 	{
 	    public void actionPerformed(ActionEvent e)
 	    {
-		if (!vars.hasHitStart)
-		{
-		    vars.startTime = System.currentTimeMillis();
-		}
-		vars.hasHitStart = true;
-		if (!PaintHandler.isCreatorAdded())
-		{
-		    PaintHandler.addItem("CREATOR",
-			    new GenericPaintItem(Color.BLACK, Color.WHITE,
-				    "CREATOR", "Logic Script Creator: "
-					    + General.getTRiBotUsername()));
-		}
-		PaintHandler.initAll();
+
 		if (BlockHandler.isMainAdded())
 		{
+		    if (!vars.hasHitStart)
+		    {
+			vars.startTime = System.currentTimeMillis();
+		    }
+		    vars.hasHitStart = true;
+		    if (!PaintHandler.isCreatorAdded())
+		    {
+			PaintHandler.addItem("CREATOR",
+				new GenericPaintItem(Color.BLACK, Color.WHITE,
+					"CREATOR", "Logic Script Creator: "
+						+ General.getTRiBotUsername()));
+		    }
+		    PaintHandler.initAll();
 		    vars.stop = false;
 		    vars.thread = new Thread()
 		    {

@@ -1,6 +1,6 @@
 package scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals;
 
-import org.tribot.api2007.Player;
+import org.tribot.api2007.Combat;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
@@ -12,7 +12,7 @@ public class PlayerIsInCombatConditional extends Conditional
 	@Override
 	public boolean run()
 	{
-		return Player.getRSPlayer().isInCombat();
+		return Combat.getAttackingEntities().length > 0;
 	}
 	
 	@Override

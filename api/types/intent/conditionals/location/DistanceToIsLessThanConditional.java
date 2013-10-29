@@ -24,5 +24,11 @@ public class DistanceToIsLessThanConditional extends Conditional
 		return Player.getPosition().distanceTo(t.toTileWrapper()) <= distance;
 	}
 	
+	@Override
+	public String toString()
+	{
+	    return "if distance to "+t.toString() +" is less than "+distance;
+	}
+	
 	
 }

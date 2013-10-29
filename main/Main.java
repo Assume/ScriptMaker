@@ -54,11 +54,11 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	while (vars.gui.isVisible())
 	{
 	    General.sleep(3);
-
 	    if (vars.hasHitStart && vars.isLiteMode
 		    && System.currentTimeMillis() - vars.startTime > 1200000
 		    && !General.getTRiBotUsername().equals("Crimson")
-		    && !General.getTRiBotUsername().equals("YoHoJo"))
+		    && !General.getTRiBotUsername().equals("YoHoJo")
+		    && !General.getTRiBotUsername().equals("Violent"))
 	    {
 		vars.thread.interrupt();
 		vars.gui.removeAll();

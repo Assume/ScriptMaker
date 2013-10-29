@@ -6,21 +6,26 @@ import scripts.ScriptMaker.api.types.wrappers.CustomTile;
 public class LocationIsOnScreenConditional extends Conditional
 {
 
-	private static final long serialVersionUID = 1735929358962245255L;
+    private static final long serialVersionUID = 1735929358962245255L;
 
-	private int x;
-	private int y;
+    private int x;
+    private int y;
 
-	public LocationIsOnScreenConditional(int x, int y)
-	{
-		this.x = x;
-		this.y = y;
-	}
+    public LocationIsOnScreenConditional(int x, int y)
+    {
+	this.x = x;
+	this.y = y;
+    }
 
-	@Override
-	public boolean run()
-	{
-		return new CustomTile(x,y).toTileWrapper().isOnScreen();
-	}
+    @Override
+    public boolean run()
+    {
+	return new CustomTile(x, y).toTileWrapper().isOnScreen();
+    }
 
+    @Override
+    public String toString()
+    {
+	return "if [" + x + "," + y + "] is on screen";
+    }
 }
