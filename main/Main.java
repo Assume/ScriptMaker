@@ -116,33 +116,36 @@ public class Main extends Script implements Painting, Pausing, Ending,
     @Override
     public void onPause()
     {
-	System.out.println("In on pause");
-	/*
-	 * if (vars.thread != null) vars.thread.interrupt(); vars.stop = true;
-	 * vars.lastBlock = vars.currentBlock;
-	 */
+	if (vars.thread != null)
+	    vars.thread.interrupt();
+	vars.stop = true;
+	vars.lastBlock = vars.currentBlock;
     }
 
     @Override
     public void onResume()
     {
-	System.out.println("In on resume");
-	/*
-	 * vars.stop = false; if (vars.lastBlock != null) {
-	 * 
-	 * vars.thread = new Thread(new Runnable() {
-	 * 
-	 * @Override public void run() {
-	 * Intent.executeAllIntents(vars.lastBlock, vars.lastIndex); } });
-	 * vars.thread.start(); }
-	 */
-
+	vars.stop = false;
+	if (vars.lastBlock != null)
+	{
+	    vars.thread = new Thread(new Runnable()
+	    {
+		@Override
+		public void run()
+		{
+		    System.out.println(vars.lastBlock.getName());
+		    System.out.println(vars.lastIndex);
+		    Intent.executeAllIntents(BlockHandler.getMain(),
+			    vars.lastIndex);
+		}
+	    });
+	    vars.thread.start();
+	}
     }
 
     @Override
     public void onRandom(RANDOM_SOLVERS arg0)
     {
-	System.out.println("In on random");
 	if (vars.thread != null)
 	    vars.thread.interrupt();
 	vars.stop = true;
@@ -152,49 +155,43 @@ public class Main extends Script implements Painting, Pausing, Ending,
     @Override
     public boolean randomFailed(RANDOM_SOLVERS arg0)
     {
-	System.out.println("In on random failed");
 	vars.stop = false;
 	if (vars.lastBlock != null)
 	{
-
-	    vars.thread = new Thread(new Runnable()
-	    {
-
-		@Override
-		public void run()
-		{
-		    Intent.executeAllIntents(vars.lastBlock, vars.lastIndex);
-		}
-	    });
-	    vars.thread.start();
-	}
-
-	return true;
-    }
-
-    @Override
-    public void randomSolved(RANDOM_SOLVERS arg0)
-    {
-	System.out.println("In on random solved");
-	vars.stop = false;
-	if (vars.lastBlock != null)
-	{
-	    System.out.println("In thread creator");
 	    vars.thread = new Thread(new Runnable()
 	    {
 		@Override
 		public void run()
 		{
-		    System.out.println("In thread");
 		    System.out.println(vars.lastBlock.getName());
 		    System.out.println(vars.lastIndex);
 		    Intent.executeAllIntents(BlockHandler.getMain(),
 			    vars.lastIndex);
 		}
 	    });
-	    System.out.println("made thread");
 	    vars.thread.start();
-	    System.out.println("started thread");
+	}
+	return true;
+    }
+
+    @Override
+    public void randomSolved(RANDOM_SOLVERS arg0)
+    {
+	vars.stop = false;
+	if (vars.lastBlock != null)
+	{
+	    vars.thread = new Thread(new Runnable()
+	    {
+		@Override
+		public void run()
+		{
+		    System.out.println(vars.lastBlock.getName());
+		    System.out.println(vars.lastIndex);
+		    Intent.executeAllIntents(BlockHandler.getMain(),
+			    vars.lastIndex);
+		}
+	    });
+	    vars.thread.start();
 	}
 
     }

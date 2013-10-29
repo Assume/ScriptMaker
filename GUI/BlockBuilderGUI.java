@@ -54,6 +54,8 @@ import scripts.ScriptMaker.api.types.intent.bank.DepositAllExceptAction;
 import scripts.ScriptMaker.api.types.intent.bank.OpenBankAction;
 import scripts.ScriptMaker.api.types.intent.bank.WaitUntilBankIsOpenAction;
 import scripts.ScriptMaker.api.types.intent.bank.WithdrawItemAction;
+import scripts.ScriptMaker.api.types.intent.camera.CameraAngleAction;
+import scripts.ScriptMaker.api.types.intent.camera.CameraRotationAction;
 import scripts.ScriptMaker.api.types.intent.chooseoptionmenu.ChooseOptionFromMenuAction;
 import scripts.ScriptMaker.api.types.intent.conditionals.AnimationIsConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.AreaContainsPlayerConditional;
@@ -105,6 +107,7 @@ import scripts.ScriptMaker.api.types.intent.object.actions.ClickObjectAction;
 import scripts.ScriptMaker.api.types.intent.object.actions.MoveMouseToObject;
 import scripts.ScriptMaker.api.types.intent.object.actions.TurnToObjectAction;
 import scripts.ScriptMaker.api.types.intent.object.actions.WalkToObjectAction;
+import scripts.ScriptMaker.api.types.intent.walking.actions.AStarWalkAction;
 import scripts.ScriptMaker.api.types.intent.walking.actions.WalkToTileAction;
 import scripts.ScriptMaker.api.types.intent.walking.actions.WebWalkToBankAction;
 import scripts.ScriptMaker.api.types.intent.walking.actions.WebWalkToTileAction;
@@ -250,6 +253,8 @@ public class BlockBuilderGUI extends JFrame
 		    BlockHandler.resetAll();
 		    vars.builderIsOpen = false;
 		    GUIHandler.isCreating = false;
+		    BlockBuilderGUI.this.setVisible(false);
+		    BlockBuilderGUI.this.dispose();
 		}
 	    }
 	});
@@ -478,7 +483,7 @@ public class BlockBuilderGUI extends JFrame
 	    public void actionPerformed(ActionEvent e)
 	    {
 		int animation = Integer.parseInt(JOptionPane.showInputDialog(
-			"Enter animation id").replaceAll("[^0-9]", ""));
+			"Enter animation id").replaceAll("[^0-9-]", ""));
 		GUIHandler.addCondition(new AnimationIsConditional(animation));
 	    }
 	});
@@ -1063,6 +1068,20 @@ public class BlockBuilderGUI extends JFrame
 
 	JMenuItem walkToTile = new JMenuItem("Walk to tile");
 	mntmWalking.add(walkToTile);
+
+	JMenuItem mntmAWalkTo = new JMenuItem("A* walk to tile");
+	mntmAWalkTo.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int x = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter x coordinate").replaceAll("[^0-9]", ""));
+		int y = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter y coordinate").replaceAll("[^0-9]", ""));
+		GUIHandler.setAction(new AStarWalkAction(new CustomTile(x, y)));
+	    }
+	});
+	mntmWalking.add(mntmAWalkTo);
 	walkToTile.addActionListener(new ActionListener()
 	{
 	    @Override
@@ -1264,21 +1283,35 @@ public class BlockBuilderGUI extends JFrame
 	});
 	mntmNpcChat.add(mntmClickOptionx);
 
-	JMenu mnRightClickMenu = new JMenu("Right Click Menu");
-	mnAddAction.add(mnRightClickMenu);
+	JMenu mnCamera = new JMenu("Camera");
+	mnAddAction.add(mnCamera);
 
-	JMenuItem mntmChooseAnOption = new JMenuItem(
-		"Choose option[x]  from the right click menu");
-	mntmChooseAnOption.addActionListener(new ActionListener()
+	JMenuItem mntmSetCameraAngle = new JMenuItem("Set Camera Angle");
+	mntmSetCameraAngle.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent arg0)
+	    {
+		int angle = Integer.parseInt(JOptionPane.showInputDialog(null,
+			"Enter angle to set the camera to").replaceAll(
+			"[^0-9]", ""));
+		GUIHandler.setAction(new CameraAngleAction(angle));
+
+	    }
+	});
+	mnCamera.add(mntmSetCameraAngle);
+
+	JMenuItem mntmSetCameraRotation = new JMenuItem("Set Camera Rotation");
+	mntmSetCameraRotation.addActionListener(new ActionListener()
 	{
 	    public void actionPerformed(ActionEvent e)
 	    {
-		String option = JOptionPane
-			.showInputDialog("Enter the option to choose (be exact)");
-		GUIHandler.setAction(new ChooseOptionFromMenuAction(option));
+		int angle = Integer.parseInt(JOptionPane.showInputDialog(null,
+			"Enter rotation to set the camera to").replaceAll(
+			"[^0-9]", ""));
+		GUIHandler.setAction(new CameraRotationAction(angle));
 	    }
 	});
-	mnRightClickMenu.add(mntmChooseAnOption);
+	mnCamera.add(mntmSetCameraRotation);
 
 	JMenu mousePop = new JMenu("Mouse");
 	mnAddAction.add(mousePop);
@@ -1323,6 +1356,22 @@ public class BlockBuilderGUI extends JFrame
 
 	    }
 	});
+
+	JMenu mnRightClickMenu = new JMenu("Right Click Menu");
+	mousePop.add(mnRightClickMenu);
+
+	JMenuItem mntmChooseAnOption = new JMenuItem(
+		"Choose option[x]  from the right click menu");
+	mntmChooseAnOption.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		String option = JOptionPane
+			.showInputDialog("Enter the option to choose (be exact)");
+		GUIHandler.setAction(new ChooseOptionFromMenuAction(option));
+	    }
+	});
+	mnRightClickMenu.add(mntmChooseAnOption);
 
 	// MOUSE MENU STUFF
 	JMenuItem moveAndLeftClick = new JMenuItem("Move and left click");
