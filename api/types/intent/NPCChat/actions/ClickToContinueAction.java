@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.NPCChat.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.NPCChat;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class ClickToContinueAction extends Action
+public class ClickToContinueAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 8570185114111783216L;

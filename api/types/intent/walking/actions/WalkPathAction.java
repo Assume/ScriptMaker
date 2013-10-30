@@ -1,5 +1,6 @@
 package scripts.ScriptMaker.api.types.intent.walking.actions;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import scripts.ScriptMaker.api.types.main.Action;
 import scripts.ScriptMaker.api.types.wrappers.CustomTile;
 import scripts.ScriptMaker.api.types.wrappers.CustomTileUtil;
 
-public class WalkPathAction extends Action
+public class WalkPathAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = -2399295088209857390L;

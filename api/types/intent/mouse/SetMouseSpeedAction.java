@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.mouse;
 
+import java.io.Serializable;
+
 import org.tribot.api.input.Mouse;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class SetMouseSpeedAction extends Action
+public class SetMouseSpeedAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = -2762219048521022853L;

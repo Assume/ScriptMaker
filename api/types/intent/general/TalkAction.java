@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.general;
 
+import java.io.Serializable;
+
 import org.tribot.api.input.Keyboard;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class TalkAction extends Action
+public class TalkAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = -3888263562802211559L;

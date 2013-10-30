@@ -1,12 +1,14 @@
 package scripts.ScriptMaker.api.types.intent.object;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSObject;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class DistanceToObjectIsGreaterThanConditional extends Conditional
+public class DistanceToObjectIsGreaterThanConditional extends Conditional implements Serializable
 {
 
 	private static final long serialVersionUID = 5880035586303567515L;

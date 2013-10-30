@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.conditionals;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Game;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class RunIsAboveConditional extends Conditional
+public class RunIsAboveConditional extends Conditional implements Serializable
 {
 
 	private static final long serialVersionUID = 6549656485344855655L;

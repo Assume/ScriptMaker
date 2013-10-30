@@ -1,8 +1,10 @@
 package scripts.ScriptMaker.api.types.intent.gotos;
 
+import java.io.Serializable;
+
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class GOTOAction extends Action
+public class GOTOAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = -7046821599278740638L;

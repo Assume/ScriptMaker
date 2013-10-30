@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.NPCs.conditionals;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.NPCs;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class NPCIsOnScreenConditional extends Conditional
+public class NPCIsOnScreenConditional extends Conditional implements Serializable
 {
 	
 	private static final long serialVersionUID = -435831098606456531L;

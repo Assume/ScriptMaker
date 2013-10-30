@@ -1,6 +1,7 @@
 package scripts.ScriptMaker.api.types.intent.grounditems.actions;
 
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 
 import org.tribot.api.General;
 import org.tribot.api.input.Keyboard;
@@ -14,7 +15,7 @@ import org.tribot.api2007.types.RSTile;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class LootAllItemsAction extends Action
+public class LootAllItemsAction extends Action implements Serializable
 {
 
     private static final long serialVersionUID = -8400457127085801386L;

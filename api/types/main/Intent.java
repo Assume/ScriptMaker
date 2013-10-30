@@ -13,131 +13,141 @@ import scripts.ScriptMaker.main.vars;
 public class Intent implements Serializable
 {
 
-	private static final long serialVersionUID = -7958990025420919923L;
-	private static List<Intent> INTENTS = new ArrayList<Intent>();
+    private static final long serialVersionUID = 3828909368490305034L;
 
-	private Action action;
+    private static List<Intent> INTENTS = new ArrayList<Intent>();
 
-	public Intent(Action action)
-	{
-		this.action = action;
-	}
+    private Action action;
 
-	public boolean execute()
-	{
-		return action.run();
-	}
+    public Intent(Action action)
+    {
+	this.action = action;
+    }
 
-	public static List<Intent> getList()
+    public Intent()
+    {
+
+    }
+
+    public boolean execute()
+    {
+	return action.run();
+    }
+
+    public static List<Intent> getList()
+    {
+	return INTENTS;
+    }
+
+    public static void setList(List<Intent> l)
+    {
+	INTENTS = l;
+    }
+
+    public static String[] getAllLabels()
+    {
+	List<String> list = new ArrayList<String>();
+
+	for (Intent t : INTENTS.toArray(new Intent[INTENTS.size()]))
 	{
-		return INTENTS;
+	    if (t.getAction() instanceof Label)
+	    {
+		list.add(t.getAction().toString());
+	    }
 	}
-	
-	public static void setList(List<Intent> l)
+	return list.toArray(new String[list.size()]);
+    }
+
+    public static void remove(int index)
+    {
+	INTENTS.remove(index);
+    }
+
+    public static void executeAllIntents(Block b, int dt)
+    {
+	vars.currentBlock = b;
+	Intent[] intents = b.getIntets();
+	for (int i = dt; i < intents.length; i++)
 	{
-		INTENTS = l;
-	}
-	
-	public static String[] getAllLabels()
-	{
-		List<String> list = new ArrayList<String>();
-		
-		for (Intent t : INTENTS.toArray(new Intent[INTENTS.size()]))
+	    if (b.getName().equals("main"))
+		vars.lastIndex = i;
+	    if (vars.stop)
+	    {
+		// vars.lastIndex = i;
+		break;
+	    }
+	    if (intents[i] instanceof ConditionalIntent)
+	    {
+		if (((ConditionalIntent) intents[i]).shouldExecute())
 		{
-			if (t.getAction() instanceof Label)
+		    if (intents[i].getAction() instanceof GOTOAction)
+		    {
+			int index = BlockHandler.getLabelIndex(
+				((GOTOAction) intents[i].getAction())
+					.getLabel(), b.toString());
+			if (index != -1)
 			{
-				list.add(t.getAction().toString());
+			    i = index;
+			    continue;
 			}
+		    }
+		    vars.status = intents[i].getAction().toString();
+		    intents[i].execute();
 		}
-		return list.toArray(new String[list.size()]);
-	}
-
-	public static void remove(int index)
-	{
-		INTENTS.remove(index);
-	}
-	
-	public static void executeAllIntents(Block b, int dt)
-	{
-		vars.currentBlock = b;
-		Intent[] intents = b.getIntets();
-		for (int i = dt; i < intents.length; i++)
+	    } else
+	    {
+		if (intents[i].getAction() instanceof GOTOAction)
 		{
-			if(b.getName().equals("main")) vars.lastIndex = i;
-			if(vars.stop)
-			{
-				//vars.lastIndex = i;
-				break;
-			}
-			if (intents[i] instanceof ConditionalIntent)
-			{
-				if (((ConditionalIntent) intents[i]).shouldExecute())
-				{
-					if (intents[i].getAction() instanceof GOTOAction)
-					{
-						int index = BlockHandler.getLabelIndex(((GOTOAction)intents[i].getAction()).getLabel(), b.toString());
-						if (index != -1)
-						{
-							i = index;
-							continue;
-						}
-					}
-					vars.status = intents[i].getAction().toString();
-					intents[i].execute();
-				}
-			}
-			else
-			{
-				if (intents[i].getAction() instanceof GOTOAction)
-				{
-					int index = BlockHandler.getLabelIndex(((GOTOAction)intents[i].getAction()).getLabel(), b.toString());
-					if (index != -1)
-					{
-						i = index;
-						continue;
-					}
-				}
-				vars.status = intents[i].getAction().toString();
-				intents[i].execute();
-			}
+		    int index = BlockHandler.getLabelIndex(
+			    ((GOTOAction) intents[i].getAction()).getLabel(),
+			    b.toString());
+		    if (index != -1)
+		    {
+			i = index;
+			continue;
+		    }
 		}
-		BlockHandler.setCurrentName(BlockHandler.getLastName());
+		vars.status = intents[i].getAction().toString();
+		intents[i].execute();
+	    }
 	}
+	BlockHandler.setCurrentName(BlockHandler.getLastName());
+    }
 
-	public static Intent getIntent(int index)
-	{
-		return INTENTS.get(index);
-	}
+    public static Intent getIntent(int index)
+    {
+	return INTENTS.get(index);
+    }
 
-	public static Intent getLatestIntent()
-	{
-		return INTENTS.get(INTENTS.size() - 1);
-	}
+    public static Intent getLatestIntent()
+    {
+	return INTENTS.get(INTENTS.size() - 1);
+    }
 
-	public static void addIntent(Intent t)
-	{
-		INTENTS.add(t);
-	}
+    public static void addIntent(Intent t)
+    {
+	INTENTS.add(t);
+    }
 
-	public static void removeIntent(Intent t)
-	{
-		INTENTS.remove(t);
-	}
+    public static void removeIntent(Intent t)
+    {
+	INTENTS.remove(t);
+    }
 
-	public Action getAction()
-	{
-		return action;
-	}
+    public Action getAction()
+    {
+	return action;
+    }
 
-	public void setAction(Action action)
-	{
-		this.action = action;
-	}
+    public void setAction(Action action)
+    {
+	this.action = action;
+    }
 
-	@Override
-	public String toString()
-	{
-		return action.toString().trim();
-	}
+    @Override
+    public String toString()
+    {
+	return action.toString().trim();
+    }
 
 }

@@ -1,9 +1,11 @@
 package scripts.ScriptMaker.api.types.block;
 
+import java.io.Serializable;
+
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class BlockCaller extends Action
+public class BlockCaller extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = -8376953461369866983L;

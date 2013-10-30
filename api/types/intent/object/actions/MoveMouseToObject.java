@@ -1,6 +1,7 @@
 package scripts.ScriptMaker.api.types.intent.object.actions;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import org.tribot.api.input.Mouse;
 import org.tribot.api2007.Objects;
@@ -9,7 +10,7 @@ import org.tribot.api2007.types.RSObject;
 import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class MoveMouseToObject extends Action
+public class MoveMouseToObject extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 9193997494153329320L;

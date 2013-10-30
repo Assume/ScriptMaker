@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.walking.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.WebWalking;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class WebWalkToBankAction extends Action
+public class WebWalkToBankAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 3507956590499922236L;

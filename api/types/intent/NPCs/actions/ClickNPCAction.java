@@ -1,12 +1,14 @@
 package scripts.ScriptMaker.api.types.intent.NPCs.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.NPCs;
 import org.tribot.api2007.types.RSNPC;
 
 import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class ClickNPCAction extends Action
+public class ClickNPCAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 5397408705386141584L;

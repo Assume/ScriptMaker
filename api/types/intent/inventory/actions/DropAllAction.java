@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.inventory.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Inventory;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class DropAllAction extends Action
+public class DropAllAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 1368435444528312890L;

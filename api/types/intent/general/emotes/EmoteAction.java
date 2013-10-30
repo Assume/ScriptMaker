@@ -1,9 +1,11 @@
 package scripts.ScriptMaker.api.types.intent.general.emotes;
 
+import java.io.Serializable;
+
 import scripts.ScriptMaker.api.types.enums.EmoteHandler;
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class EmoteAction extends Action
+public class EmoteAction extends Action implements Serializable
 {
 	
 	private static final long serialVersionUID = -8315666462996285445L;

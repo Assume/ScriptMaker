@@ -1,14 +1,17 @@
 package scripts.ScriptMaker.api.types.intent.general;
 
+import java.io.Serializable;
+
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Inventory;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class WaitUntilInventoryContainsAction extends Action
+public class WaitUntilInventoryContainsAction extends Action implements Serializable
 {
-	private static final long serialVersionUID = 3799150617563480912L;
+	
+    	private static final long serialVersionUID = 3799150617563480912L;
 	private int itemID;
 	private long timeOut;
 

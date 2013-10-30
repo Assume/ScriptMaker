@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.walking.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.util.PathNavigator;
 
 import scripts.ScriptMaker.api.types.main.Action;
 import scripts.ScriptMaker.api.types.wrappers.CustomTile;
 
-public class AStarWalkAction extends Action
+public class AStarWalkAction extends Action implements Serializable
 {
 
     private static final long serialVersionUID = -36174339554504713L;

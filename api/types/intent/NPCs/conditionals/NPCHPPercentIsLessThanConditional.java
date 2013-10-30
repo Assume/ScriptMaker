@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.NPCs.conditionals;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.NPCs;
 import org.tribot.api2007.types.RSNPC;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class NPCHPPercentIsLessThanConditional extends Conditional
+public class NPCHPPercentIsLessThanConditional extends Conditional implements Serializable
 {
 
 	private static final long serialVersionUID = -1766256992141517498L;

@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.inventory;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Inventory;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class InventoryDoesNotContainConditional extends Conditional
+public class InventoryDoesNotContainConditional extends Conditional implements Serializable
 {
 
 

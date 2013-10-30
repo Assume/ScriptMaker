@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.NPCs.conditionals;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.NPCs;
 import org.tribot.api2007.Player;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class DistanceToNearestNPCIsGreaterThanConditional extends Conditional
+public class DistanceToNearestNPCIsGreaterThanConditional extends Conditional implements Serializable
 {
 
 	private static final long serialVersionUID = 219045661373186061L;

@@ -1,10 +1,11 @@
 package scripts.ScriptMaker.api.methods.paint;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import scripts.ScriptMaker.api.types.main.PaintItem;
 
-public class GenericPaintItem extends PaintItem
+public class GenericPaintItem extends PaintItem implements Serializable
 {
 
     private static final long serialVersionUID = -8137040480322441140L;

@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.camera;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Camera;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class CameraAngleAction extends Action
+public class CameraAngleAction extends Action implements Serializable
 {
     
     

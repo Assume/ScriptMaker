@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.grounditems;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.GroundItems;
 import org.tribot.api2007.types.RSGroundItem;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class ItemIsOnScreenConditional extends Conditional
+public class ItemIsOnScreenConditional extends Conditional implements Serializable
 {
 
     private static final long serialVersionUID = -5572369739889050996L;

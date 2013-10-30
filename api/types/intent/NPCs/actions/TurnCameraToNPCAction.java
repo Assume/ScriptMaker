@@ -1,12 +1,14 @@
 package scripts.ScriptMaker.api.types.intent.NPCs.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.NPCs;
 import org.tribot.api2007.types.RSNPC;
 
 import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class TurnCameraToNPCAction extends Action
+public class TurnCameraToNPCAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = -1868462594046822295L;

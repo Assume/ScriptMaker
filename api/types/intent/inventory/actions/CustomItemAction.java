@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.inventory.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class CustomItemAction extends Action
+public class CustomItemAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 5379878144716138839L;

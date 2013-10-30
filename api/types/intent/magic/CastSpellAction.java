@@ -1,9 +1,11 @@
 package scripts.ScriptMaker.api.types.intent.magic;
 
+import java.io.Serializable;
+
 import scripts.ScriptMaker.api.types.enums.Magic;
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class CastSpellAction extends Action
+public class CastSpellAction extends Action implements Serializable
 {
 	
 	private static final long serialVersionUID = -3898420033003141611L;

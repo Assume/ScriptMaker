@@ -1,12 +1,14 @@
 package scripts.ScriptMaker.api.types.intent.object.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Camera;
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.types.RSObject;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class TurnToObjectAction extends Action
+public class TurnToObjectAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 919392342153329320L;

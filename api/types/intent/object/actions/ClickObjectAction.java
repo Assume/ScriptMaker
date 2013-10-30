@@ -1,12 +1,14 @@
 package scripts.ScriptMaker.api.types.intent.object.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.types.RSObject;
 
 import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class ClickObjectAction extends Action
+public class ClickObjectAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 9193512364153329320L;

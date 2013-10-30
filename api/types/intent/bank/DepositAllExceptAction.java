@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.bank;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Banking;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class DepositAllExceptAction extends Action
+public class DepositAllExceptAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 2557236121401440311L;

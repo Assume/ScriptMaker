@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.interfaces.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.types.RSInterfaceChild;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class ClickInterfaceAction extends Action
+public class ClickInterfaceAction extends Action implements Serializable
 {
 
     private static final long serialVersionUID = 3931302981547242631L;

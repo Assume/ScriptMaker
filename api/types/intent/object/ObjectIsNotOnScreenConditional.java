@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.object;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.types.RSObject;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class ObjectIsNotOnScreenConditional extends Conditional
+public class ObjectIsNotOnScreenConditional extends Conditional implements Serializable
 {
 
 	private static final long serialVersionUID = 9193997494153329320L;

@@ -1,12 +1,14 @@
 package scripts.ScriptMaker.api.types.intent.object.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.util.PathNavigator;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class WalkToObjectAction extends Action
+public class WalkToObjectAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 91931234253329320L;

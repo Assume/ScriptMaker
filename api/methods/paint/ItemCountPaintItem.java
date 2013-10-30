@@ -1,12 +1,13 @@
 package scripts.ScriptMaker.api.methods.paint;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import org.tribot.api2007.Inventory;
 
 import scripts.ScriptMaker.api.types.main.PaintItem;
 
-public class ItemCountPaintItem extends PaintItem
+public class ItemCountPaintItem extends PaintItem implements Serializable
 {
 
     private static final long serialVersionUID = 3506224859497273503L;

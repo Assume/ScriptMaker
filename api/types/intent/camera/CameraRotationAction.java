@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.camera;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Camera;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class CameraRotationAction extends Action
+public class CameraRotationAction extends Action implements Serializable
 {
 
     private static final long serialVersionUID = -784850328600846716L;

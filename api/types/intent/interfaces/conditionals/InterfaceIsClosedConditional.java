@@ -1,10 +1,12 @@
 package scripts.ScriptMaker.api.types.intent.interfaces.conditionals;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.Interfaces;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class InterfaceIsClosedConditional extends Conditional
+public class InterfaceIsClosedConditional extends Conditional implements Serializable
 {
 
     private static final long serialVersionUID = 8567240906715042918L;

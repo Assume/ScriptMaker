@@ -3,6 +3,7 @@ package scripts.ScriptMaker.api.methods.paint;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 
 import org.tribot.api2007.Skills;
 
@@ -10,7 +11,7 @@ import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.types.main.PaintItem;
 import scripts.ScriptMaker.main.vars;
 
-public class ExperienceGainedPaintItem extends PaintItem
+public class ExperienceGainedPaintItem extends PaintItem implements Serializable
 {
 
     private static final long serialVersionUID = -9156180490877174777L;

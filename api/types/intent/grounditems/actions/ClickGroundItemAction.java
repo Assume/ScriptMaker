@@ -1,11 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.grounditems.actions;
 
+import java.io.Serializable;
+
 import org.tribot.api2007.GroundItems;
 import org.tribot.api2007.types.RSGroundItem;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class ClickGroundItemAction extends Action
+public class ClickGroundItemAction extends Action implements Serializable
 {
 
     private static final long serialVersionUID = -516844804153995986L;

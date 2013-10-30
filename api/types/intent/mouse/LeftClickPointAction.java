@@ -1,12 +1,13 @@
 package scripts.ScriptMaker.api.types.intent.mouse;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import org.tribot.api.input.Mouse;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class LeftClickPointAction extends Action
+public class LeftClickPointAction extends Action implements Serializable
 {
 
 	private static final long serialVersionUID = 7318027270822035156L;
