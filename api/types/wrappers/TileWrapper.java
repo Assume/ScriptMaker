@@ -7,7 +7,7 @@ import org.tribot.api2007.types.RSTile;
 public class TileWrapper extends RSTile implements Serializable
 {
 
-    private static final long serialVersionUID = 19981017L;
+    private static final long serialVersionUID = -6272670211312223042L;
 
     public TileWrapper()
     {

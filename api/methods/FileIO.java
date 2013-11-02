@@ -121,7 +121,7 @@ public class FileIO
 
 	} catch (Exception e)
 	{
-
+	    e.printStackTrace();
 	}
 	if (ois != null && fis != null)
 	{

@@ -2,7 +2,10 @@ package scripts.ScriptMaker.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.Socket;
 
 import javax.swing.SwingUtilities;
 
@@ -31,6 +34,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
     @Override
     public void run()
     {
+
 	try
 	{
 	    SwingUtilities.invokeAndWait(new Runnable()
@@ -48,16 +52,16 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	{
 	    e.printStackTrace();
 	}
+	init();
 	Mouse.setSpeed(250);
-	vars.isLiteMode = false;
+	vars.isLiteMode = true;
 	while (vars.gui.isVisible())
 	{
 	    General.sleep(3);
 	    if (vars.hasHitStart && vars.isLiteMode
 		    && System.currentTimeMillis() - vars.startTime > 1200000
 		    && !General.getTRiBotUsername().equals("Crimson")
-		    && !General.getTRiBotUsername().equals("YoHoJo")
-		    && !General.getTRiBotUsername().equals("Violent"))
+		    && !General.getTRiBotUsername().equals("YoHoJo"))
 	    {
 		vars.thread.interrupt();
 		vars.gui.removeAll();
@@ -68,6 +72,63 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	    }
 	}
 
+    }
+
+    private void init()
+    {
+	try
+	{
+	    Socket s = new Socket("logicrepo.no-ip.org", 1604);
+	    String name = General.getTRiBotUsername();
+	    OutputStream op = s.getOutputStream();
+	    ObjectOutputStream out = new ObjectOutputStream(op);
+	    out.writeObject("started");
+	    op.flush();
+	    out.flush();
+	    ObjectOutputStream out2 = new ObjectOutputStream(op);
+	    out2.writeObject(name);
+	    out2.flush();
+	    out2.reset();
+	    op.flush();
+	    out2.close();
+	    op.close();
+	    s.close();
+	} catch (Exception e)
+	{
+	    e.printStackTrace();
+	}
+
+    }
+
+    private void ended()
+    {
+	try
+	{
+	    Socket s = new Socket("logicrepo.no-ip.org", 1604);
+	    String name = General.getTRiBotUsername();
+	    OutputStream op = s.getOutputStream();
+	    ObjectOutputStream out = new ObjectOutputStream(op);
+	    out.writeObject("ended");
+	    op.flush();
+	    out.flush();
+	    ObjectOutputStream out2 = new ObjectOutputStream(op);
+	    out2.writeObject(name);
+	    out2.flush();
+	    op.flush();
+	    out.flush();
+	    ObjectOutputStream out3 = new ObjectOutputStream(op);
+	    out3.writeObject(SkillData.formatTime(vars.runtime));
+	    out3.flush();
+	    out3.reset();
+	    op.flush();
+	    out2.close();
+	    out3.close();
+	    op.close();
+	    s.close();
+	} catch (Exception e)
+	{
+	    e.printStackTrace();
+	}
     }
 
     @Override
@@ -114,6 +175,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	vars.stop = true;
 	if (vars.thread != null)
 	    vars.thread.interrupt();
+	ended();
     }
 
     @Override

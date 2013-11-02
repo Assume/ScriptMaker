@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import org.tribot.api.General;
@@ -25,6 +26,7 @@ import scripts.ScriptMaker.api.types.block.BlockExecutor;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
 import scripts.ScriptMaker.api.types.main.Intent;
 import scripts.ScriptMaker.main.vars;
+import scripts.ScriptMakerRepo.frontend.gui.RepoGUI;
 
 public class MainGUI extends JFrame
 {
@@ -35,7 +37,7 @@ public class MainGUI extends JFrame
     public MainGUI()
     {
 	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	setBounds(100, 100, 164, 426);
+	setBounds(100, 100, 164, 418);
 	contentPane = new JPanel();
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
@@ -320,30 +322,16 @@ public class MainGUI extends JFrame
 	btnEditMain.setBounds(11, 210, 131, 23);
 	contentPane.add(btnEditMain);
 
-	JButton btnNewButton = new JButton("Get Scripts!");
-	btnNewButton.addActionListener(new ActionListener()
+	JButton btnNewButton_1 = new JButton("Repo");
+	btnNewButton_1.addActionListener(new ActionListener()
 	{
-	    public void actionPerformed(ActionEvent arg0)
+	    public void actionPerformed(ActionEvent e)
 	    {
-		if (Desktop.isDesktopSupported())
-		{
-		    try
-		    {
-			Desktop.getDesktop()
-				.browse(new URI(
-					"https://tribot.org/forums/index.php?/topic/22111-logic-pro-premade-scripts/"));
-		    } catch (IOException | URISyntaxException e)
-		    {
-			e.printStackTrace();
-		    }
-		} else
-		{
-		    JOptionPane.showMessageDialog(null,
-			    "Visit Assume's thread to get premade scripts!");
-		}
+		RepoGUI g = new RepoGUI();
+		g.setVisible(true);
 	    }
 	});
-	btnNewButton.setBounds(11, 346, 133, 23);
-	contentPane.add(btnNewButton);
+	btnNewButton_1.setBounds(11, 346, 132, 23);
+	contentPane.add(btnNewButton_1);
     }
 }

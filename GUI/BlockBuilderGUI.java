@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -242,7 +243,7 @@ public class BlockBuilderGUI extends JFrame
 		+ BlockHandler.getCurrentBlockName());
 
 	this.addWindowListener(new java.awt.event.WindowAdapter()
-	{
+	{   
 	    @Override
 	    public void windowClosing(java.awt.event.WindowEvent windowEvent)
 	    {
