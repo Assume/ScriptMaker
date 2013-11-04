@@ -14,24 +14,28 @@ public class ClickGroundItemAction extends Action implements Serializable
 
     private int id;
     private String option;
-    
+
     public ClickGroundItemAction(int id, String option)
     {
 	this.id = id;
 	this.option = option;
     }
-    
+
     @Override
     public boolean run()
     {
 	RSGroundItem[] items = GroundItems.find(id);
-	if(items.length == 0)
+	if (items.length == 0)
 	    return false;
 	if (items[0].isOnScreen())
 	    items[0].click(option);
 	return false;
     }
 
-    
-    
+    @Override
+    public String toString()
+    {
+	return "click the item " + id + " with the action " + option;
+    }
+
 }

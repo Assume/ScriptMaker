@@ -46,6 +46,17 @@ public class LootAllItemsAction extends Action implements Serializable
 	return true;
     }
 
+    @Override
+    public String toString()
+    {
+	StringBuilder i = new StringBuilder();
+	for (int x : id)
+	{
+	    i.append(x + " ");
+	}
+	return "loot all items with the ids: " + i.toString();
+    }
+
     private void loot(int... id)
     {
 

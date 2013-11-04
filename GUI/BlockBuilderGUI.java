@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,10 +112,18 @@ import scripts.ScriptMaker.api.types.intent.object.actions.ClickObjectAction;
 import scripts.ScriptMaker.api.types.intent.object.actions.MoveMouseToObject;
 import scripts.ScriptMaker.api.types.intent.object.actions.TurnToObjectAction;
 import scripts.ScriptMaker.api.types.intent.object.actions.WalkToObjectAction;
+import scripts.ScriptMaker.api.types.intent.players.actions.ClickNearestPlayerWithAction;
+import scripts.ScriptMaker.api.types.intent.players.actions.RSPlayerClickAction;
+import scripts.ScriptMaker.api.types.intent.players.actions.RSPlayerTurnToAction;
+import scripts.ScriptMaker.api.types.intent.players.conditionals.RSPlayerCountConditional;
+import scripts.ScriptMaker.api.types.intent.players.conditionals.RSPlayerIsNotOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.players.conditionals.RSPlayerIsOnScreenConditional;
 import scripts.ScriptMaker.api.types.intent.walking.actions.AStarWalkAction;
 import scripts.ScriptMaker.api.types.intent.walking.actions.WalkToTileAction;
 import scripts.ScriptMaker.api.types.intent.walking.actions.WebWalkToBankAction;
 import scripts.ScriptMaker.api.types.intent.walking.actions.WebWalkToTileAction;
+import scripts.ScriptMaker.api.types.intent.worldhopping.HopToRandomWorldAction;
+import scripts.ScriptMaker.api.types.intent.worldhopping.HopToWorldAction;
 import scripts.ScriptMaker.api.types.main.Intent;
 import scripts.ScriptMaker.api.types.wrappers.CustomTile;
 import scripts.ScriptMaker.main.vars;
@@ -243,7 +250,7 @@ public class BlockBuilderGUI extends JFrame
 		+ BlockHandler.getCurrentBlockName());
 
 	this.addWindowListener(new java.awt.event.WindowAdapter()
-	{   
+	{
 	    @Override
 	    public void windowClosing(java.awt.event.WindowEvent windowEvent)
 	    {
@@ -803,6 +810,48 @@ public class BlockBuilderGUI extends JFrame
 	});
 	mnInterfaces.add(mntmInterfaceIsClosed);
 
+	JMenu mnOtherPlayers = new JMenu("Other Players");
+	mnNewMenu.add(mnOtherPlayers);
+
+	JMenuItem mntmAtLeastx = new JMenuItem(
+		"at least [x] players are around");
+	mntmAtLeastx.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent arg0)
+	    {
+		int amount = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter amount that should be around").replaceAll(
+			"[^0-9]", ""));
+		GUIHandler.addCondition(new RSPlayerCountConditional(amount));
+
+	    }
+	});
+	mnOtherPlayers.add(mntmAtLeastx);
+
+	JMenuItem mntmPlayerxIs_1 = new JMenuItem("Player [x] is on screen");
+	mntmPlayerxIs_1.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		String name = JOptionPane.showInputDialog("Enter players name");
+		GUIHandler
+			.addCondition(new RSPlayerIsOnScreenConditional(name));
+	    }
+	});
+	mnOtherPlayers.add(mntmPlayerxIs_1);
+
+	JMenuItem mntmPlayerxIs = new JMenuItem("Player [x] is not on screen");
+	mntmPlayerxIs.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		String name = JOptionPane.showInputDialog("Enter players name");
+		GUIHandler.addCondition(new RSPlayerIsNotOnScreenConditional(
+			name));
+	    }
+	});
+	mnOtherPlayers.add(mntmPlayerxIs);
+
 	JMenuItem mntmExecuteBlock = new JMenuItem("Execute Block...");
 	mntmExecuteBlock.addActionListener(new ActionListener()
 	{
@@ -972,7 +1021,7 @@ public class BlockBuilderGUI extends JFrame
 		int x;
 		while ((x = Integer.parseInt(JOptionPane.showInputDialog(
 			"Enter id to loot. Enter -1 to stop adding ids")
-			.replaceAll("[^0-9]", ""))) != -1)
+			.replaceAll("[^0-9-]", ""))) != -1)
 		{
 		    list.add(x);
 		}
@@ -982,6 +1031,48 @@ public class BlockBuilderGUI extends JFrame
 	    }
 	});
 	mnGroundItems_1.add(mntmLootAllItems);
+
+	JMenu mnNewMenu_1 = new JMenu("Other Players");
+	mnAddAction.add(mnNewMenu_1);
+
+	JMenuItem mntmClickNearestPlayer = new JMenuItem(
+		"Click nearest player with the action [x]");
+	mntmClickNearestPlayer.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		String action = JOptionPane
+			.showInputDialog("Enter the action to click with");
+		GUIHandler.setAction(new ClickNearestPlayerWithAction(action));
+	    }
+	});
+	mnNewMenu_1.add(mntmClickNearestPlayer);
+
+	JMenuItem mntmTurnToPlayer = new JMenuItem("Turn to Player [x]");
+	mntmTurnToPlayer.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		String name = JOptionPane
+			.showInputDialog("Enter name of player");
+		GUIHandler.setAction(new RSPlayerTurnToAction(name));
+	    }
+	});
+	mnNewMenu_1.add(mntmTurnToPlayer);
+
+	JMenuItem mntmClickPlayerx = new JMenuItem(
+		"Click Player [x] with the action [y]");
+	mntmClickPlayerx.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		String name = JOptionPane
+			.showInputDialog("Enter name of player");
+		String action = JOptionPane.showInputDialog("Enter action");
+		GUIHandler.setAction(new RSPlayerClickAction(name, action));
+	    }
+	});
+	mnNewMenu_1.add(mntmClickPlayerx);
 
 	JMenu mntmItems = new JMenu("Items");
 	mnAddAction.add(mntmItems);
@@ -1404,6 +1495,31 @@ public class BlockBuilderGUI extends JFrame
 	    }
 	});
 	mnInterfaces_1.add(mntmClickInterfacexy);
+
+	JMenu mnWorldHopping = new JMenu("World Hopping");
+	mnAddAction.add(mnWorldHopping);
+
+	JMenuItem mntmHopToWorld = new JMenuItem("Hop to World [x]");
+	mntmHopToWorld.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		int world = Integer.parseInt(JOptionPane.showInputDialog(null,
+			"Enter world").replaceAll("[^0-9]", ""));
+		GUIHandler.setAction(new HopToWorldAction(world));
+	    }
+	});
+	mnWorldHopping.add(mntmHopToWorld);
+
+	JMenuItem mntmHopToRandom = new JMenuItem("Hop to random world");
+	mntmHopToRandom.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		GUIHandler.setAction(new HopToRandomWorldAction());
+	    }
+	});
+	mnWorldHopping.add(mntmHopToRandom);
 
 	JMenu mnWait = new JMenu("Wait until...");
 	mnAddAction.add(mnWait);

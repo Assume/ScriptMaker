@@ -20,6 +20,7 @@ import org.tribot.script.interfaces.RandomEvents;
 
 import scripts.ScriptMaker.GUI.MainGUI;
 import scripts.ScriptMaker.api.methods.DefaultMethods;
+import scripts.ScriptMaker.api.methods.WorldHopping;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
 import scripts.ScriptMaker.api.types.enums.SkillData;
@@ -34,7 +35,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
     @Override
     public void run()
     {
-
+	vars.world = new WorldHopping(this);
 	try
 	{
 	    SwingUtilities.invokeAndWait(new Runnable()
@@ -54,7 +55,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	}
 	init();
 	Mouse.setSpeed(250);
-	vars.isLiteMode = true;
+	vars.isLiteMode = false;
 	while (vars.gui.isVisible())
 	{
 	    General.sleep(3);
@@ -176,6 +177,9 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	if (vars.thread != null)
 	    vars.thread.interrupt();
 	ended();
+	vars.gui.removeAll();
+	vars.gui.setVisible(false);
+	vars.gui.dispose();
     }
 
     @Override

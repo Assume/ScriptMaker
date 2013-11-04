@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scripts.ScriptMaker.GUI.MainGUI;
+import scripts.ScriptMaker.api.methods.WorldHopping;
 import scripts.ScriptMaker.api.types.block.Block;
 import scripts.ScriptMaker.api.types.main.Intent;
 
@@ -43,6 +44,8 @@ public class vars
 	public static boolean isMain;
 	public static String editName;
 	public static boolean isEdit;
+	
+	public static WorldHopping world;
 	
 	public static boolean hasHitStart = false;
 	public static boolean isLiteMode = false;
