@@ -28,9 +28,9 @@ public class ObjectIsNotOnScreenConditional extends Conditional implements Seria
 			return true;
 		if(ob[0].isOnScreen())
 		{
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 	@Override
