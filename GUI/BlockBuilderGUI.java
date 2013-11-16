@@ -591,8 +591,8 @@ public class BlockBuilderGUI extends JFrame
 						"Enter tile y").replaceAll("[^0-9]", ""));
 				int distance = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter distance").replaceAll("[^0-9]", ""));
-				GUIHandler
-						.addCondition(new DistanceToIsLessThanConditional(distance, new CustomTile(x, y)));
+				GUIHandler.addCondition(new DistanceToIsLessThanConditional(
+						distance, new CustomTile(x, y)));
 			}
 		});
 		mntmNewMenuItem.add(mntmDistanceTo_1);
