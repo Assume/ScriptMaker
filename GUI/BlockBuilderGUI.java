@@ -37,17 +37,28 @@ import scripts.ScriptMaker.api.types.enums.Magic;
 import scripts.ScriptMaker.api.types.intent.NPCChat.actions.ChooseNPCChatOptionAction;
 import scripts.ScriptMaker.api.types.intent.NPCChat.actions.ClickToContinueAction;
 import scripts.ScriptMaker.api.types.intent.NPCChat.conditionals.NPCChatIsOpenConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.actions.ClickNPCAction;
-import scripts.ScriptMaker.api.types.intent.NPCs.actions.TurnCameraToNPCAction;
-import scripts.ScriptMaker.api.types.intent.NPCs.actions.WalkToNearestNPCAction;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.DistanceToNearestNPCIsGreaterThanConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.DistanceToNearestNPCLessConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.NPCHPPercentIsLessThanConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.NPCIsInCombatConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.NPCIsNotInCombatConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.NPCIsNotOnScreenConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.NPCIsOnScreenConditional;
-import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.NPCIsValidConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.ClickNPCIDAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.TurnCameraToNPCIDAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.WalkToNearestNPCIDAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.name.ClickNPCAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.name.TurnCameraToNPCAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.name.WalkToNearestNPCAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.DistanceToNearestNPCIsGreaterThanIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.DistanceToNearestNPCIsLessIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCHPPercentIsLessThanIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsInCombatIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsNotInCombatIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsNotOnScreenIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsOnScreenIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsValidIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.DistanceToNearestNPCIsGreaterThanConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.DistanceToNearestNPCLessConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCHPPercentIsLessThanConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsInCombatConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsNotInCombatConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsNotOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsValidConditional;
 import scripts.ScriptMaker.api.types.intent.bank.CloseBankAction;
 import scripts.ScriptMaker.api.types.intent.bank.DepositAllAction;
 import scripts.ScriptMaker.api.types.intent.bank.DepositAllExceptAction;
@@ -61,6 +72,8 @@ import scripts.ScriptMaker.api.types.intent.conditionals.AnimationIsConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.AreaContainsPlayerConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.RunIsAboveConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.RunIsBelowConditional;
+import scripts.ScriptMaker.api.types.intent.conditionals.location.DistanceToIsGreaterConditional;
+import scripts.ScriptMaker.api.types.intent.conditionals.location.DistanceToIsLessThanConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.location.LocationIsOnScreenConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.PlayerIsInCombatConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.PlayerIsNotInCombatConditional;
@@ -104,24 +117,24 @@ import scripts.ScriptMaker.api.types.intent.mouse.LeftClickPointAction;
 import scripts.ScriptMaker.api.types.intent.mouse.MoveMouseAndChooseOptionAction;
 import scripts.ScriptMaker.api.types.intent.mouse.RightClickAction;
 import scripts.ScriptMaker.api.types.intent.mouse.SetMouseSpeedAction;
-import scripts.ScriptMaker.api.types.intent.object.DistanceToObjectIDConditional;
-import scripts.ScriptMaker.api.types.intent.object.DistanceToObjectIsGreaterThanConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectIsNotOnScreenConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectIsNotValidConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectIsNotValidIDConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectIsOnScreenConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectIsOnScreenIDConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectIsValidConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectIsValidIDConditional;
-import scripts.ScriptMaker.api.types.intent.object.ObjectisNotOnScreenIDConditional;
-import scripts.ScriptMaker.api.types.intent.object.actions.ClickObjectAction;
-import scripts.ScriptMaker.api.types.intent.object.actions.ClickObjectIDAction;
-import scripts.ScriptMaker.api.types.intent.object.actions.MoveMouseToObject;
-import scripts.ScriptMaker.api.types.intent.object.actions.MoveMouseToObjectIDAction;
-import scripts.ScriptMaker.api.types.intent.object.actions.TurnToObjectAction;
-import scripts.ScriptMaker.api.types.intent.object.actions.TurnToObjectIDAction;
-import scripts.ScriptMaker.api.types.intent.object.actions.WalkToObjectAction;
-import scripts.ScriptMaker.api.types.intent.object.actions.WalkToObjectIDAction;
+import scripts.ScriptMaker.api.types.intent.object.actions.id.ClickObjectIDAction;
+import scripts.ScriptMaker.api.types.intent.object.actions.id.MoveMouseToObjectIDAction;
+import scripts.ScriptMaker.api.types.intent.object.actions.id.TurnToObjectIDAction;
+import scripts.ScriptMaker.api.types.intent.object.actions.id.WalkToObjectIDAction;
+import scripts.ScriptMaker.api.types.intent.object.actions.name.ClickObjectAction;
+import scripts.ScriptMaker.api.types.intent.object.actions.name.MoveMouseToObject;
+import scripts.ScriptMaker.api.types.intent.object.actions.name.TurnToObjectAction;
+import scripts.ScriptMaker.api.types.intent.object.actions.name.WalkToObjectAction;
+import scripts.ScriptMaker.api.types.intent.object.id.DistanceToObjectIDConditional;
+import scripts.ScriptMaker.api.types.intent.object.id.ObjectIsNotValidIDConditional;
+import scripts.ScriptMaker.api.types.intent.object.id.ObjectIsOnScreenIDConditional;
+import scripts.ScriptMaker.api.types.intent.object.id.ObjectIsValidIDConditional;
+import scripts.ScriptMaker.api.types.intent.object.id.ObjectisNotOnScreenIDConditional;
+import scripts.ScriptMaker.api.types.intent.object.name.DistanceToObjectIsGreaterThanConditional;
+import scripts.ScriptMaker.api.types.intent.object.name.ObjectIsNotOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.object.name.ObjectIsNotValidConditional;
+import scripts.ScriptMaker.api.types.intent.object.name.ObjectIsOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.object.name.ObjectIsValidConditional;
 import scripts.ScriptMaker.api.types.intent.players.actions.ClickNearestPlayerWithAction;
 import scripts.ScriptMaker.api.types.intent.players.actions.RSPlayerClickAction;
 import scripts.ScriptMaker.api.types.intent.players.actions.RSPlayerTurnToAction;
@@ -550,10 +563,38 @@ public class BlockBuilderGUI extends JFrame
 
 		JMenuItem mntmDistanceTo = new JMenuItem(
 				"Distance to [...] is greater than");
+		mntmDistanceTo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int x = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter tile x").replaceAll("[^0-9]", ""));
+				int y = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter tile y").replaceAll("[^0-9]", ""));
+				int distance = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter distance").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new DistanceToIsGreaterConditional(
+						distance, new CustomTile(x, y)));
+			}
+		});
 		mntmNewMenuItem.add(mntmDistanceTo);
 
 		JMenuItem mntmDistanceTo_1 = new JMenuItem(
 				"Distance to [...] is less than");
+		mntmDistanceTo_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int x = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter tile x").replaceAll("[^0-9]", ""));
+				int y = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter tile y").replaceAll("[^0-9]", ""));
+				int distance = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter distance").replaceAll("[^0-9]", ""));
+				GUIHandler
+						.addCondition(new DistanceToIsLessThanConditional(distance, new CustomTile(x, y)));
+			}
+		});
 		mntmNewMenuItem.add(mntmDistanceTo_1);
 
 		JMenuItem mntmLocationIsOn = new JMenuItem("Location is on screen");
@@ -699,48 +740,191 @@ public class BlockBuilderGUI extends JFrame
 		JMenu mnNpcs = new JMenu("NPCs");
 		mnNewMenu.add(mnNpcs);
 
+		JMenu mnNames_2 = new JMenu("Names");
+		mnNpcs.add(mnNames_2);
+
 		JMenuItem mntmNearestNpcx = new JMenuItem(
 				"Nearest NPC [x] is on screen");
-		mntmNearestNpcx.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				String name = JOptionPane.showInputDialog("Enter NPC name");
-				GUIHandler.addCondition(new NPCIsOnScreenConditional(name));
-			}
-		});
-		mnNpcs.add(mntmNearestNpcx);
+		mnNames_2.add(mntmNearestNpcx);
 
 		JMenuItem mntmNearestNpcx_3 = new JMenuItem(
 				"Nearest NPC [x] is not on screen");
-		mntmNearestNpcx_3.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				String name = JOptionPane.showInputDialog("Enter NPC name");
-				GUIHandler.addCondition(new NPCIsNotOnScreenConditional(name));
-			}
-		});
-		mnNpcs.add(mntmNearestNpcx_3);
+		mnNames_2.add(mntmNearestNpcx_3);
 
 		JMenuItem mntmDistanceToNearest = new JMenuItem(
 				"Distance to nearest NPC [x] < [y]");
-		mntmDistanceToNearest.addActionListener(new ActionListener()
+		mnNames_2.add(mntmDistanceToNearest);
+
+		JMenuItem mntmDistanceToNearest_1 = new JMenuItem(
+				"Distance to nearest NPC [x] > [y]");
+		mnNames_2.add(mntmDistanceToNearest_1);
+
+		JMenuItem mntmNearestNpcx_1 = new JMenuItem(
+				"Nearest NPC [x] is in combat");
+		mnNames_2.add(mntmNearestNpcx_1);
+
+		JMenuItem mntmNearestNpcx_2 = new JMenuItem(
+				"Nearest NPC [x] is not in combat");
+		mnNames_2.add(mntmNearestNpcx_2);
+
+		JMenuItem mntmNearestNpcxs = new JMenuItem("Nearest NPC [x]'s HP < [y]");
+		mnNames_2.add(mntmNearestNpcxs);
+
+		JMenuItem mntmNpcxExists = new JMenuItem("NPC [x] exists");
+		mnNames_2.add(mntmNpcxExists);
+
+		JMenu mnIds_2 = new JMenu("IDs");
+		mnNpcs.add(mnIds_2);
+
+		JMenuItem mntmNearestNpcx_4 = new JMenuItem(
+				"Nearest NPC [x] is on screen");
+		mntmNearestNpcx_4.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new NPCIsOnScreenIDConditional(id));
+			}
+		});
+		mnIds_2.add(mntmNearestNpcx_4);
+
+		JMenuItem mntmNearestNpcx_5 = new JMenuItem(
+				"Nearest NPC [x] is not on screen");
+		mntmNearestNpcx_5.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new NPCIsNotOnScreenIDConditional(id));
+			}
+		});
+		mnIds_2.add(mntmNearestNpcx_5);
+
+		JMenuItem mntmDistanceToNearest_2 = new JMenuItem(
+				"Distance to nearest NPC [x] < [y]");
+		mntmDistanceToNearest_2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				int dis = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter distance").replaceAll("[^0-9]", ""));
+				GUIHandler
+						.addCondition(new DistanceToNearestNPCIsLessIDConditional(
+								id, dis));
+			}
+		});
+		mnIds_2.add(mntmDistanceToNearest_2);
+
+		JMenuItem mntmDistanceToNearest_3 = new JMenuItem(
+				"Distance to nearest NPC [x] > [y]");
+		mntmDistanceToNearest_3.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				int dis = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter distance").replaceAll("[^0-9]", ""));
+				GUIHandler
+						.addCondition(new DistanceToNearestNPCIsGreaterThanIDConditional(
+								id, dis));
+			}
+		});
+		mnIds_2.add(mntmDistanceToNearest_3);
+
+		JMenuItem mntmNearestNpcx_6 = new JMenuItem(
+				"Nearest NPC [x] is in combat");
+		mntmNearestNpcx_6.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new NPCIsInCombatIDConditional(id));
+			}
+		});
+		mnIds_2.add(mntmNearestNpcx_6);
+
+		JMenuItem mntmNearestNpcx_7 = new JMenuItem(
+				"Nearest NPC [x] is not in combat");
+		mntmNearestNpcx_7.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new NPCIsNotInCombatIDConditional(id));
+			}
+		});
+		mnIds_2.add(mntmNearestNpcx_7);
+
+		JMenuItem mntmNearestNpcx_8 = new JMenuItem(
+				"Nearest NPC [x]'s HP  < [y]");
+		mntmNearestNpcx_8.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				int hp = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter HP").replaceAll("[^0-9]", ""));
+				GUIHandler
+						.addCondition(new NPCHPPercentIsLessThanIDConditional(
+								id, hp));
+			}
+		});
+		mnIds_2.add(mntmNearestNpcx_8);
+
+		JMenuItem mntmNpcxExists_1 = new JMenuItem("NPC [x] exists");
+		mntmNpcxExists_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new NPCIsValidIDConditional(id));
+			}
+		});
+		mnIds_2.add(mntmNpcxExists_1);
+		mntmNpcxExists.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				String name = JOptionPane.showInputDialog("Enter NPC name");
-				int distance = Integer.parseInt(JOptionPane.showInputDialog(
-						"Enter distance").replaceAll("[^0-9]", ""));
-				GUIHandler
-						.addCondition(new DistanceToNearestNPCLessConditional(
-								name, distance));
+				GUIHandler.addCondition(new NPCIsValidConditional(name));
 			}
 		});
-		mnNpcs.add(mntmDistanceToNearest);
-
-		JMenuItem mntmDistanceToNearest_1 = new JMenuItem(
-				"Distance to nearest NPC [x] > [y]");
+		mntmNearestNpcxs.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String name = JOptionPane.showInputDialog("Enter NPC name");
+				int percent = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter HP percent").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new NPCHPPercentIsLessThanConditional(
+						name, percent));
+			}
+		});
+		mntmNearestNpcx_2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String name = JOptionPane.showInputDialog("Enter NPC name");
+				GUIHandler.addCondition(new NPCIsNotInCombatConditional(name));
+			}
+		});
+		mntmNearestNpcx_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String name = JOptionPane.showInputDialog("Enter NPC name");
+				GUIHandler.addCondition(new NPCIsInCombatConditional(name));
+			}
+		});
 		mntmDistanceToNearest_1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -753,56 +937,34 @@ public class BlockBuilderGUI extends JFrame
 								name, distance));
 			}
 		});
-		mnNpcs.add(mntmDistanceToNearest_1);
-
-		JMenuItem mntmNearestNpcx_1 = new JMenuItem(
-				"Nearest NPC [x] is in combat");
-		mntmNearestNpcx_1.addActionListener(new ActionListener()
+		mntmDistanceToNearest.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				String name = JOptionPane.showInputDialog("Enter NPC name");
-				GUIHandler.addCondition(new NPCIsInCombatConditional(name));
+				int distance = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter distance").replaceAll("[^0-9]", ""));
+				GUIHandler
+						.addCondition(new DistanceToNearestNPCLessConditional(
+								name, distance));
 			}
 		});
-		mnNpcs.add(mntmNearestNpcx_1);
-
-		JMenuItem mntmNearestNpcx_2 = new JMenuItem(
-				"Nearest NPC [x] is not in combat");
-		mntmNearestNpcx_2.addActionListener(new ActionListener()
+		mntmNearestNpcx_3.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				String name = JOptionPane.showInputDialog("Enter NPC name");
-				GUIHandler.addCondition(new NPCIsNotInCombatConditional(name));
+				GUIHandler.addCondition(new NPCIsNotOnScreenConditional(name));
 			}
 		});
-		mnNpcs.add(mntmNearestNpcx_2);
-
-		JMenuItem mntmNearestNpcxs = new JMenuItem("Nearest NPC [x]'s HP < [y]");
-		mntmNearestNpcxs.addActionListener(new ActionListener()
+		mntmNearestNpcx.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				String name = JOptionPane.showInputDialog("Enter NPC name");
-				int percent = Integer.parseInt(JOptionPane.showInputDialog(
-						"Enter HP percent").replaceAll("[^0-9]", ""));
-				GUIHandler.addCondition(new NPCHPPercentIsLessThanConditional(
-						name, percent));
+				GUIHandler.addCondition(new NPCIsOnScreenConditional(name));
 			}
 		});
-		mnNpcs.add(mntmNearestNpcxs);
-
-		JMenuItem mntmNpcxExists = new JMenuItem("NPC [x] exists");
-		mntmNpcxExists.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				String name = JOptionPane.showInputDialog("Enter NPC name");
-				GUIHandler.addCondition(new NPCIsValidConditional(name));
-			}
-		});
-		mnNpcs.add(mntmNpcxExists);
 
 		JMenu mnInventory = new JMenu("Inventory");
 		mnNewMenu.add(mnInventory);
@@ -1487,9 +1649,11 @@ public class BlockBuilderGUI extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				int timeout = Integer.parseInt(JOptionPane.showInputDialog(
-						"Enter a timeout").replaceAll("[^0-9]", ""));
-				GUIHandler.setAction(new WaitUntilBankIsOpenAction(timeout));
+				double timeout = Double.parseDouble(JOptionPane
+						.showInputDialog("Enter a timeout in seconds")
+						.replaceAll("[^0-9.]", ""));
+				GUIHandler.setAction(new WaitUntilBankIsOpenAction(
+						(long) (timeout * 1000)));
 			}
 		});
 		mntmBanking.add(mntmWaitUntilBank);
@@ -1497,8 +1661,34 @@ public class BlockBuilderGUI extends JFrame
 		JMenu mntmNpcs = new JMenu("NPCs");
 		mnAddAction.add(mntmNpcs);
 
+		JMenu mnNames_3 = new JMenu("Names");
+		mntmNpcs.add(mnNames_3);
+
 		JMenuItem mntmClickNpcx = new JMenuItem(
 				"Click NPC [x] with the action [y]");
+		mnNames_3.add(mntmClickNpcx);
+
+		JMenuItem mntmWalkToNpc = new JMenuItem("Walk to NPC [x]");
+		mnNames_3.add(mntmWalkToNpc);
+
+		JMenuItem mntmTurnCameraTo_1 = new JMenuItem("Turn camera to NPC [x]");
+		mnNames_3.add(mntmTurnCameraTo_1);
+		mntmTurnCameraTo_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String name = JOptionPane.showInputDialog("Enter NPC name");
+				GUIHandler.setAction(new TurnCameraToNPCAction(name));
+			}
+		});
+		mntmWalkToNpc.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String name = JOptionPane.showInputDialog("Enter NPC name");
+				GUIHandler.setAction(new WalkToNearestNPCAction(name));
+			}
+		});
 		mntmClickNpcx.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1509,29 +1699,48 @@ public class BlockBuilderGUI extends JFrame
 				GUIHandler.setAction(new ClickNPCAction(name, option));
 			}
 		});
-		mntmNpcs.add(mntmClickNpcx);
 
-		JMenuItem mntmWalkToNpc = new JMenuItem("Walk to NPC [x]");
-		mntmWalkToNpc.addActionListener(new ActionListener()
+		JMenu mnIds_3 = new JMenu("IDs");
+		mntmNpcs.add(mnIds_3);
+
+		JMenuItem mntmClickNpcx_1 = new JMenuItem(
+				"Click NPC [x] with the action [y]");
+		mntmClickNpcx_1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				String name = JOptionPane.showInputDialog("Enter NPC name");
-				GUIHandler.setAction(new WalkToNearestNPCAction(name));
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", "'"));
+				String option = JOptionPane
+						.showInputDialog("Enter the option to click the NPC with (be exact)");
+				GUIHandler.setAction(new ClickNPCIDAction(id, option));
 			}
 		});
-		mntmNpcs.add(mntmWalkToNpc);
+		mnIds_3.add(mntmClickNpcx_1);
 
-		JMenuItem mntmTurnCameraTo_1 = new JMenuItem("Turn camera to NPC [x]");
-		mntmTurnCameraTo_1.addActionListener(new ActionListener()
+		JMenuItem mntmWalkToNpc_1 = new JMenuItem("Walk to NPC [x]");
+		mntmWalkToNpc_1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				String name = JOptionPane.showInputDialog("Enter NPC name");
-				GUIHandler.setAction(new TurnCameraToNPCAction(name));
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", "'"));
+				GUIHandler.setAction(new WalkToNearestNPCIDAction(id));
 			}
 		});
-		mntmNpcs.add(mntmTurnCameraTo_1);
+		mnIds_3.add(mntmWalkToNpc_1);
+
+		JMenuItem mntmTurnCameraTo_3 = new JMenuItem("Turn camera to NPC [x]");
+		mntmTurnCameraTo_3.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", "'"));
+				GUIHandler.setAction(new TurnCameraToNPCIDAction(id));
+			}
+		});
+		mnIds_3.add(mntmTurnCameraTo_3);
 
 		JMenu mntmMagic = new JMenu("Magic");
 		mnAddAction.add(mntmMagic);
