@@ -10,33 +10,33 @@ import scripts.ScriptMaker.api.types.main.Action;
 public class ClickInterfaceAction extends Action implements Serializable
 {
 
-    private static final long serialVersionUID = 3931302981547242631L;
+	private static final long serialVersionUID = 3931302981547242631L;
 
-    private int parent;
-    private int child;
-    private String action;
+	private int parent;
+	private int child;
+	private String action;
 
-    public ClickInterfaceAction(int parent, int child, String action)
-    {
-	this.parent = parent;
-	this.child = child;
-	this.action = action;
-    }
+	public ClickInterfaceAction(int parent, int child, String action)
+	{
+		this.parent = parent;
+		this.child = child;
+		this.action = action;
+	}
 
-    @Override
-    public boolean run()
-    {
-	RSInterfaceChild face = Interfaces.get(parent, child);
-	if (face == null)
-	    return false;
-	return face.click(action);
+	@Override
+	public boolean run()
+	{
+		RSInterfaceChild face = Interfaces.get(parent, child);
+		if (face == null)
+			return false;
+		return face.click(action);
 
-    }
-    
-    @Override
-    public String toString()
-    {
-	return "click "+ parent + ", " + child + " with the action"+action;
-    }
+	}
+
+	@Override
+	public String toString()
+	{
+		return "click " + parent + ", " + child + " with the action " + action;
+	}
 
 }

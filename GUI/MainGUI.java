@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 import org.tribot.api.General;
 
 import scripts.ScriptMaker.api.methods.FileIO;
-import scripts.ScriptMaker.api.methods.paint.GenericPaintItem;
+import scripts.ScriptMaker.api.methods.paint.GenericPaintItemString;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.BlockExecutor;
 import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
@@ -79,9 +79,9 @@ public class MainGUI extends JFrame
 					if (!PaintHandler.isCreatorAdded())
 					{
 						PaintHandler.addItem("CREATOR",
-								new GenericPaintItem(Color.BLACK, Color.WHITE,
+								new GenericPaintItemString(Color.BLACK, Color.WHITE,
 										"CREATOR", "Logic Script Creator: "
-												+ General.getTRiBotUsername()));
+												+ General.getTRiBotUsername(), ""));
 					}
 					PaintHandler.initAll();
 					vars.stop = false;

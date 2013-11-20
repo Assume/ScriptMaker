@@ -22,6 +22,7 @@ import org.tribot.api2007.Skills.SKILLS;
 
 import scripts.ScriptMaker.api.methods.paint.ExperienceGainedPaintItem;
 import scripts.ScriptMaker.api.methods.paint.GenericPaintItem;
+import scripts.ScriptMaker.api.methods.paint.GenericPaintItemString;
 import scripts.ScriptMaker.api.methods.paint.ItemCountPaintItem;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.methods.paint.generic.XPGainedGeneric;
@@ -66,13 +67,13 @@ public class PaintSetupGUI extends JFrame
 		contentPane.add(lblPaintItemName);
 
 		final JComboBox<PaintItem> paintTypeBox = new JComboBox<PaintItem>(
-						model);
+				model);
 		paintTypeBox.setBounds(126, 131, 185, 20);
 		contentPane.add(paintTypeBox);
 		model.addElement(new ItemCountPaintItem(border, border, null, null, 0));
 		model.addElement(new GenericPaintItem(border, border, null, null));
-		model.addElement(new XPGainedGeneric(border, border, null,
-						null));
+		model.addElement(new XPGainedGeneric(border, border, null, null));
+		model.addElement(new GenericPaintItemString(border, border, null, null, null));
 
 		JLabel lblPaintType = new JLabel("Paint type");
 		lblPaintType.setBounds(10, 134, 65, 14);
@@ -93,40 +94,53 @@ public class PaintSetupGUI extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				final PaintItem t;
-				if (paintTypeBox.getSelectedItem() instanceof GenericPaintItem)
+				final PaintItem selected = (PaintItem) paintTypeBox.getSelectedItem();
+				if (selected instanceof GenericPaintItem)
 				{
-					t = new GenericPaintItem(border, inside, paintItemName
-									.getText(), textField_1.getText());
+					t = new GenericPaintItem(border, inside,
+							paintItemName.getText(), textField_1.getText());
 					PaintHandler.addItem(paintItemName.getText(), t);
 					t.init();
 				}
-				else if (paintTypeBox.getSelectedItem() instanceof XPGainedGeneric)
+				else if(selected instanceof GenericPaintItemString)
 				{
-					JComboBox<SKILLS> b = new JComboBox<SKILLS>(Skills.SKILLS.values());
-					JOptionPane.showMessageDialog( null, b, "Select a skill", JOptionPane.QUESTION_MESSAGE);
-					Skills.SKILLS sk = (SKILLS) b.getSelectedItem();
-					if (sk != null)
+					String text = JOptionPane.showInputDialog("Enter the default text for this paint item");
+					t = new GenericPaintItemString(border, inside,
+							paintItemName.getText(), textField_1.getText(), text);
+					PaintHandler.addItem(paintItemName.getText(), t);
+					t.init();
+				}
+				else
+					if (selected instanceof XPGainedGeneric)
 					{
-						t = new ExperienceGainedPaintItem(border, inside,
-										paintItemName.getText(), textField_1
-														.getText(), sk);
-						PaintHandler.addItem(paintItemName.getText(), t);
-						t.init();
+						JComboBox<SKILLS> b = new JComboBox<SKILLS>(
+								Skills.SKILLS.values());
+						JOptionPane.showMessageDialog(null, b,
+								"Select a skill", JOptionPane.QUESTION_MESSAGE);
+						Skills.SKILLS sk = (SKILLS) b.getSelectedItem();
+						if (sk != null)
+						{
+							t = new ExperienceGainedPaintItem(border, inside,
+									paintItemName.getText(), textField_1
+											.getText(), sk);
+							PaintHandler.addItem(paintItemName.getText(), t);
+							t.init();
+						}
 					}
-				}
-				else if (paintTypeBox.getSelectedItem() instanceof ItemCountPaintItem)
-				{
-					int itemId = Integer
-									.parseInt(JOptionPane
-													.showInputDialog("Enter the id of the item to track"));
-					t = new ItemCountPaintItem(border, inside, paintItemName
-									.getText(), textField_1.getText(), itemId);
-					PaintHandler.addItem(paintItemName.getText(), t);
-					t.init();
-				}
+					else
+						if (selected instanceof ItemCountPaintItem)
+						{
+							int itemId = Integer.parseInt(JOptionPane
+									.showInputDialog("Enter the id of the item to track"));
+							t = new ItemCountPaintItem(border, inside,
+									paintItemName.getText(), textField_1
+											.getText(), itemId);
+							PaintHandler.addItem(paintItemName.getText(), t);
+							t.init();
+						}
 			}
 		});
-		//hi
+		// hi
 		btnAdd.setBounds(234, 162, 89, 23);
 		contentPane.add(btnAdd);
 
@@ -179,5 +193,42 @@ public class PaintSetupGUI extends JFrame
 		});
 		btnSetBorder.setBounds(126, 99, 185, 23);
 		contentPane.add(btnSetBorder);
+
+		JButton btnRemoveItem = new JButton("Remove Item");
+		btnRemoveItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					String[] p1 = PaintHandler.getAllExpItems();
+					String[] p2 = PaintHandler.getAllOther();
+					String[] f = new String[p1.length + p2.length];
+					boolean d = false;
+					for (int i = 0; i < p1.length + p2.length; i++)
+					{
+						if (i == p1.length)
+							d = true;
+						if (d == false)
+							f[i] = p1[i];
+						else
+							f[i] = p2[i];
+					}
+					JComboBox<String> box = new JComboBox<String>(f);
+					JOptionPane.showMessageDialog(null, box,
+							"Select a paint to remove",
+							JOptionPane.QUESTION_MESSAGE);
+					String remove = (String) box.getSelectedItem();
+					PaintHandler.remove(remove);
+				}
+				catch (Exception d)
+				{
+					d.printStackTrace();
+				}
+
+			}
+		});
+		btnRemoveItem.setBounds(10, 165, 106, 23);
+		contentPane.add(btnRemoveItem);
 	}
 }

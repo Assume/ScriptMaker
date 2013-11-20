@@ -27,6 +27,7 @@ import javax.swing.WindowConstants;
 import org.tribot.api2007.Skills.SKILLS;
 
 import scripts.ScriptMaker.GUI.handler.GUIHandler;
+import scripts.ScriptMaker.api.methods.paint.GenericPaintItemString;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.block.Block;
 import scripts.ScriptMaker.api.types.block.BlockCaller;
@@ -86,6 +87,7 @@ import scripts.ScriptMaker.api.types.intent.general.TurnRunOnAction;
 import scripts.ScriptMaker.api.types.intent.general.UnEquipItemAction;
 import scripts.ScriptMaker.api.types.intent.general.UnequipAllAction;
 import scripts.ScriptMaker.api.types.intent.general.UpdatePaintAction;
+import scripts.ScriptMaker.api.types.intent.general.UpdatePaintItemStringAction;
 import scripts.ScriptMaker.api.types.intent.general.WaitUntilIdleAction;
 import scripts.ScriptMaker.api.types.intent.general.WaitUntilInventoryContainsAction;
 import scripts.ScriptMaker.api.types.intent.general.WaitUntilInventoryDoesntContainItem;
@@ -335,7 +337,22 @@ public class BlockBuilderGUI extends JFrame
 						JOptionPane.QUESTION_MESSAGE);
 				String d = (String) b.getSelectedItem();
 				if (d != null)
-					GUIHandler.setAction(new UpdatePaintAction(d));
+				{
+					if (PaintHandler.getItem(d) instanceof GenericPaintItemString)
+					{
+						String extra = JOptionPane
+								.showInputDialog("Enter text to replace current text");
+						GUIHandler.setAction(new UpdatePaintItemStringAction(d,
+								extra));
+
+					}
+					else
+					{
+						GUIHandler.setAction(new UpdatePaintAction(d));
+					}
+
+				}
+
 			}
 		});
 
@@ -2101,10 +2118,24 @@ public class BlockBuilderGUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
+				if (GUIHandler.isCreating)
+					return;
 				GUIHandler.setIndex(indexTemp);
 			}
 		});
+
 		JMenuItem removeRight = new JMenuItem("Remove");
+		final JMenuItem removeLastConditional = new JMenuItem(
+				"Remove last conditional");
+		removeLastConditional.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				GUIHandler.removeLastCondition();
+				menu.remove(removeLastConditional);
+			}
+		});
 		menu.add(removeRight);
 		menu.add(insert);
 		removeRight.addActionListener(new ActionListener()
@@ -2113,9 +2144,14 @@ public class BlockBuilderGUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (GUIHandler.isCreating)
+				if (indexTemp == -1)
 					return;
-				if (indexTemp != -1)
+				if (GUIHandler.isCreating)
+				{
+					GUIHandler.removeCurrentBuilder();
+					GUIHandler.resetAll();
+				}
+				else
 				{
 					listModel.remove(indexTemp);
 					GUIHandler.resetAll();
@@ -2133,14 +2169,9 @@ public class BlockBuilderGUI extends JFrame
 			{
 				if (SwingUtilities.isRightMouseButton(arg0))
 				{
-					if (GUIHandler.isCreating)
-					{
-						JOptionPane
-								.showMessageDialog(list,
-										"Please finish your current action/conditional before removing/insert");
-						return;
-					}
 					indexTemp = list.locationToIndex(arg0.getPoint());
+					if (GUIHandler.isCreating)
+						menu.add(removeLastConditional);
 					menu.show(list, arg0.getX(), arg0.getY());
 				}
 			}

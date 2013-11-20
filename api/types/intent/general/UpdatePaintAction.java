@@ -19,7 +19,7 @@ public class UpdatePaintAction extends Action implements Serializable
 	@Override
 	public boolean run()
 	{
-		PaintHandler.updateItem(name);
+		PaintHandler.updateItem(name, null);
 		return true;
 	}
 	
