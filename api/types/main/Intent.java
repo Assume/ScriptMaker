@@ -72,6 +72,11 @@ public class Intent implements Serializable
 		Intent[] intents = b.getIntets();
 		for (int i = dt; i < intents.length; i++)
 		{
+			if(vars.isHopping)
+			{
+				i--;
+				continue;
+			}
 			vars.currentIntent = intents[i];
 			DebugGUI.refresh();
 			if (b.getName().equals("main"))

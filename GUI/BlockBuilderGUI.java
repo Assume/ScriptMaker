@@ -80,6 +80,7 @@ import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.Pla
 import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.PlayerIsNotInCombatConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.skills.HPIsLessThanConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.skills.SkillIsLessThanConditional;
+import scripts.ScriptMaker.api.types.intent.general.EndScriptAction;
 import scripts.ScriptMaker.api.types.intent.general.SleepAction;
 import scripts.ScriptMaker.api.types.intent.general.TalkAction;
 import scripts.ScriptMaker.api.types.intent.general.TurnRunOffAction;
@@ -116,6 +117,7 @@ import scripts.ScriptMaker.api.types.intent.inventory.actions.DropAllExceptActio
 import scripts.ScriptMaker.api.types.intent.magic.CastSpellAction;
 import scripts.ScriptMaker.api.types.intent.mouse.LeftClickAction;
 import scripts.ScriptMaker.api.types.intent.mouse.LeftClickPointAction;
+import scripts.ScriptMaker.api.types.intent.mouse.MousePointAction;
 import scripts.ScriptMaker.api.types.intent.mouse.MoveMouseAndChooseOptionAction;
 import scripts.ScriptMaker.api.types.intent.mouse.RightClickAction;
 import scripts.ScriptMaker.api.types.intent.mouse.SetMouseSpeedAction;
@@ -1233,6 +1235,16 @@ public class BlockBuilderGUI extends JFrame
 				GUIHandler.setAction(new TurnRunOnAction());
 			}
 		});
+
+		JMenuItem mntmEndScript = new JMenuItem("End Script");
+		mntmEndScript.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				GUIHandler.setAction(new EndScriptAction());
+			}
+		});
+		mnGeneral.add(mntmEndScript);
 		mnGeneral.add(mntmTurnRunOn);
 
 		JMenuItem mntmTurnRunOff = new JMenuItem("Turn run off");
@@ -2001,6 +2013,20 @@ public class BlockBuilderGUI extends JFrame
 			}
 		});
 		mnRightClickMenu.add(mntmChooseAnOption);
+
+		JMenuItem mntmMoveMouseTo_1 = new JMenuItem("Move mouse to point");
+		mntmMoveMouseTo_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int x = Integer.parseInt(JOptionPane
+						.showInputDialog("Enter x coordinate"));
+				int y = Integer.parseInt(JOptionPane
+						.showInputDialog("Enter y coordinate"));
+				GUIHandler.setAction(new MousePointAction(new Point(x, y)));
+			}
+		});
+		mousePop.add(mntmMoveMouseTo_1);
 
 		// MOUSE MENU STUFF
 		JMenuItem moveAndLeftClick = new JMenuItem("Move and left click");

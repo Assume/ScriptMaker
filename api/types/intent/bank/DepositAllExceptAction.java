@@ -11,7 +11,7 @@ public class DepositAllExceptAction extends Action implements Serializable
 
 	private static final long serialVersionUID = 2557236121401440311L;
 	private int[] itemIDs;
-	
+
 	public DepositAllExceptAction(final int... itemIDs)
 	{
 		this.itemIDs = itemIDs;
@@ -22,24 +22,23 @@ public class DepositAllExceptAction extends Action implements Serializable
 	{
 		return Banking.depositAllExcept(itemIDs) == 0;
 	}
-	
-	
+
 	@Override
 	public String toString()
 	{
 		StringBuilder b = new StringBuilder("Deposit all except ");
-		for(int i = 0; i < itemIDs.length; i++)
+		for (int i = 0; i < itemIDs.length; i++)
 		{
-			if(i < itemIDs.length - 1)
+			if (i < itemIDs.length - 1)
 			{
-				b.append(""+itemIDs[i]+",");
+				b.append("" + itemIDs[i] + ",");
 			}
 			else
 			{
-				b.append(""+itemIDs[i]);
+				b.append("" + itemIDs[i]);
 			}
 		}
-		return "Deposit all except "+b.toString();
+		return b.toString();
 	}
 
 }

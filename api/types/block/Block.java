@@ -13,7 +13,7 @@ public class Block implements Serializable
 
 	private Intent[] intets;
 	private String name;
-	
+
 	public Block(Intent[] intents, String name)
 	{
 		this.intets = intents;
@@ -23,6 +23,18 @@ public class Block implements Serializable
 	public Intent[] getIntets()
 	{
 		return intets;
+	}
+
+	public void replaceIntent(Intent orig, Intent ne)
+	{
+		for(int i = 0; i < intets.length; i++)
+		{
+			if(intets[i].equals(orig))
+			{
+				intets[i] = ne;
+				break;
+			}
+		}
 	}
 
 	public void setIntets(Intent[] intets)

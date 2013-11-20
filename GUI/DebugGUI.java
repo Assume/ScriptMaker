@@ -11,7 +11,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import scripts.ScriptMaker.api.types.main.Intent;

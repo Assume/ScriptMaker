@@ -38,7 +38,7 @@ public class WaitUntilInterfaceIsOpenAction extends Action implements Serializab
     @Override
     public String toString()
     {
-	return "sleep until "+parent + " is open";
+	return "sleep until "+ parent + " is open";
     }
 
 }
