@@ -33,7 +33,7 @@ public class ClickObjectIDAction extends Action
 	@Override
 	public String toString()
 	{
-		return "Clicking "+id +" with the action "+action;
+		return "Click "+id +" with the action "+action;
 	}
 	
 }

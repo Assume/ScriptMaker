@@ -34,7 +34,7 @@ public class ClickObjectAction extends Action implements Serializable
 	@Override
 	public String toString()
 	{
-		return "Clicking "+name +" with the action "+action;
+		return "Click "+name +" with the action "+action;
 	}
 
 }
