@@ -1022,6 +1022,7 @@ public class BlockBuilderGUI extends JFrame
 		while ((x = Integer.parseInt(JOptionPane.showInputDialog(
 			"Enter id. Enter -1 to stop adding ids").replaceAll(
 			"[^0-9-]", ""))) != -1)
+		    //
 		{
 		    list.add(x);
 		}
