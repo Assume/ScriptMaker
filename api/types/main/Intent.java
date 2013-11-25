@@ -77,11 +77,24 @@ public class Intent implements Serializable
 				i--;
 				continue;
 			}
+			if(vars.pause)
+			{
+				i--;
+				try
+				{
+					Thread.sleep(500);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				continue;	
+			}
 			vars.currentIntent = intents[i];
 			DebugGUI.refresh();
 			if (b.getName().equals("main"))
 				vars.lastIndex = i;
-			if (vars.stop)
+			if (vars.fullStop)
 			{
 				break;
 			}

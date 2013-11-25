@@ -52,7 +52,7 @@ public class MainGUI extends JFrame
 				{
 					if (vars.thread != null)
 					{
-						vars.stop = true;
+						vars.fullStop = true;
 					}
 					General.println("You closed the GUI so the script stopped!");
 					setVisible(false);
@@ -84,7 +84,7 @@ public class MainGUI extends JFrame
 												+ General.getTRiBotUsername(), ""));
 					}
 					PaintHandler.initAll();
-					vars.stop = false;
+					vars.fullStop = false;
 					vars.thread = new Thread()
 					{
 						@Override
@@ -114,7 +114,7 @@ public class MainGUI extends JFrame
 			{
 				if (vars.thread != null)
 				{
-					vars.stop = true;
+					vars.fullStop = true;
 					vars.thread.interrupt();
 				}
 			}

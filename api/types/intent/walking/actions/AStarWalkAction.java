@@ -24,5 +24,11 @@ public class AStarWalkAction extends Action implements Serializable
     {
 	return new PathNavigator().traverse(tile.toTileWrapper());
     }
+    
+    @Override
+    public String toString()
+    {
+	return "A* walk to "+tile.toString();
+    }
 
 }

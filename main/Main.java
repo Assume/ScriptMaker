@@ -56,7 +56,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
 		}
 		init();
 		Mouse.setSpeed(250);
-		vars.isLiteMode = true;
+		vars.isLiteMode = false;
 		while (vars.gui.isVisible())
 		{
 			General.sleep(3);
@@ -176,7 +176,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	@Override
 	public void onEnd()
 	{
-		vars.stop = true;
+		vars.fullStop = true;
 		if (vars.thread != null)
 			vars.thread.interrupt();
 		ended();
@@ -188,16 +188,14 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	@Override
 	public void onPause()
 	{
-		if (vars.thread != null)
-			vars.thread.interrupt();
-		vars.stop = true;
+		vars.pause = true;
 		vars.lastBlock = vars.currentBlock;
 	}
 
 	@Override
 	public void onResume()
 	{
-		vars.stop = false;
+		vars.pause = false;
 		if (vars.lastBlock != null)
 		{
 			vars.thread = new Thread(new Runnable()
@@ -218,17 +216,15 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	@Override
 	public void onRandom(RANDOM_SOLVERS arg0)
 	{
-		if (vars.thread != null)
-			vars.thread.interrupt();
-		vars.stop = true;
+		vars.pause = true;
 		vars.lastBlock = vars.currentBlock;
 	}
 
 	@Override
 	public boolean randomFailed(RANDOM_SOLVERS arg0)
 	{
-		vars.stop = false;
-		if (vars.lastBlock != null)
+		vars.pause = false;
+		/*if (vars.lastBlock != null)
 		{
 			vars.thread = new Thread(new Runnable()
 			{
@@ -242,15 +238,15 @@ public class Main extends Script implements Painting, Pausing, Ending,
 				}
 			});
 			vars.thread.start();
-		}
+		}*/
 		return true;
 	}
 
 	@Override
 	public void randomSolved(RANDOM_SOLVERS arg0)
 	{
-		vars.stop = false;
-		if (vars.lastBlock != null)
+		vars.pause= false;
+		/*if (vars.lastBlock != null)
 		{
 			vars.thread = new Thread(new Runnable()
 			{
@@ -264,7 +260,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
 				}
 			});
 			vars.thread.start();
-		}
+		}*/
 
 	}
 
