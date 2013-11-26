@@ -33,6 +33,16 @@ import org.tribot.api2007.types.RSTile;
 public class DefaultMethods
 {
 
+   public static int[] convertIntegerToInt(Integer[] ar)
+   {
+       int[] arrs = new int[ar.length];
+       for(int i = 0; i < arrs.length; i++)
+       {
+	   arrs[i] = ar[i];
+       }
+       return arrs;
+   }
+    
     public static double getHPPercent()
     {
 	return ((double) Skills.getCurrentLevel(Skills.SKILLS.HITPOINTS)
@@ -48,7 +58,7 @@ public class DefaultMethods
 	return new Point(randomX, randomY);
     }
 
-    static int getRandomInteger(double min, double max)
+    public static int getRandomInteger(double min, double max)
     {
 	return General.random((int) min, (int) max);
     }
@@ -81,7 +91,7 @@ public class DefaultMethods
 	return area;
     }
 
-    static RSTile getNearestSafespot(ArrayList<RSTile> p)
+    public static RSTile getNearestSafespot(ArrayList<RSTile> p)
     {
 	RSTile[] g = p.toArray(new RSTile[p.size()]);
 	RSTile temp;
@@ -120,7 +130,7 @@ public class DefaultMethods
 	return false;
     }
 
-    static void clickObject(RSObject o, String option, int fail)
+    public static void clickObject(RSObject o, String option, int fail)
     {
 	if (fail > 4)
 	    return;
@@ -188,7 +198,7 @@ public class DefaultMethods
 	}
     }
 
-    static void turnTo(final RSTile loc)
+    public static void turnTo(final RSTile loc)
     {
 	if (loc == null)
 	{
@@ -205,7 +215,7 @@ public class DefaultMethods
 		+ ((dir > 0 ^ Math.abs(dir) > 180) ? 10 : -10));
     }
 
-    static void turnTo(final RSObject loc)
+    public static void turnTo(final RSObject loc)
     {
 	if (loc == null)
 	{
@@ -308,7 +318,7 @@ public class DefaultMethods
 	return false;
     }
 
-    static boolean click(RSObject m, String option)
+    public static boolean click(RSObject m, String option)
     {
 	try
 	{
@@ -352,14 +362,14 @@ public class DefaultMethods
 	return false;
     }
 
-    static boolean inBuildingMode()
+    public static boolean inBuildingMode()
     {
 	if (Game.getSetting(261) == 1)
 	    return true;
 	return false;
     }
 
-    static boolean isBuildingInterfaceOpen()
+    public static boolean isBuildingInterfaceOpen()
     {
 	if (Game.getSetting(262) == 14)
 	    return true;
@@ -432,13 +442,13 @@ public class DefaultMethods
 	}, 1);
     }
 
-    static void leftClick(int x, int y)
+    public static void leftClick(int x, int y)
     {
 	leftClick(new Point(x, y));
     }
 
     // Fast accurate Drop Method for trash randoms events (some ids missing)
-    void dropAllExcept(ArrayList<Integer> t)
+    public void dropAllExcept(ArrayList<Integer> t)
     {
 	for (RSItem d : Inventory.getAll())
 	{
@@ -466,7 +476,7 @@ public class DefaultMethods
 		+ ((dir > 0 ^ Math.abs(dir) > 180) ? 10 : -10));
     }
 
-    static String lastMessage()
+    public static String lastMessage()
     {
 	try
 	{
@@ -515,7 +525,7 @@ public class DefaultMethods
 	return t.length + 1;
     }
 
-    static void logOut()
+    public static void logOut()
     {
 	if (Player.getRSPlayer().isInCombat())
 	{
@@ -540,7 +550,8 @@ public class DefaultMethods
 
     public static void doStrongholdDoor()
     {
-	String[] ops = {
+	String[] ops =
+	{
 		"Don't give him my password.",
 		"Don't tell them anything and inform Jagex through the game website.",
 		"Nobody",

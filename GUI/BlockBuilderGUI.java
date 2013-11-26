@@ -66,6 +66,7 @@ import scripts.ScriptMaker.api.types.intent.bank.DepositAllExceptAction;
 import scripts.ScriptMaker.api.types.intent.bank.OpenBankAction;
 import scripts.ScriptMaker.api.types.intent.bank.WaitUntilBankIsOpenAction;
 import scripts.ScriptMaker.api.types.intent.bank.WithdrawItemAction;
+import scripts.ScriptMaker.api.types.intent.bank.WithdrawXOfYMultipleAction;
 import scripts.ScriptMaker.api.types.intent.camera.CameraAngleAction;
 import scripts.ScriptMaker.api.types.intent.camera.CameraRotationAction;
 import scripts.ScriptMaker.api.types.intent.chooseoptionmenu.ChooseOptionFromMenuAction;
@@ -1022,7 +1023,7 @@ public class BlockBuilderGUI extends JFrame
 		while ((x = Integer.parseInt(JOptionPane.showInputDialog(
 			"Enter id. Enter -1 to stop adding ids").replaceAll(
 			"[^0-9-]", ""))) != -1)
-		    //
+		//
 		{
 		    list.add(x);
 		}
@@ -1722,6 +1723,29 @@ public class BlockBuilderGUI extends JFrame
 			(long) (timeout * 1000)));
 	    }
 	});
+
+	JMenuItem mntmWithdrawATotal = new JMenuItem(
+		"Withdraw a total of [x] of [y...] items (Multiple Items)");
+	mntmWithdrawATotal.addActionListener(new ActionListener()
+	{
+	    public void actionPerformed(ActionEvent e)
+	    {
+		List<Integer> list = new ArrayList<Integer>();
+		int x;
+		while ((x = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter id. Enter -1 to stop adding ids").replaceAll(
+			"[^0-9-]", ""))) != -1)
+		{
+		    list.add(x);
+		}
+		int total = Integer.parseInt(JOptionPane.showInputDialog(
+			"Enter amount to withdraw in total").replaceAll(
+			"[^0-9-]", ""));
+		GUIHandler.setAction(new WithdrawXOfYMultipleAction(list
+			.toArray(new Integer[list.size()]), total));
+	    }
+	});
+	mntmBanking.add(mntmWithdrawATotal);
 	mntmBanking.add(mntmWaitUntilBank);
 
 	JMenu mntmNpcs = new JMenu("NPCs");
@@ -2173,16 +2197,6 @@ public class BlockBuilderGUI extends JFrame
 	getContentPane().add(scrollPane);
 	final JPopupMenu menu = new JPopupMenu();
 	JMenuItem insert = new JMenuItem("Insert");
-	insert.addActionListener(new ActionListener()
-	{
-	    @Override
-	    public void actionPerformed(ActionEvent arg0)
-	    {
-		if (GUIHandler.isCreating)
-		    return;
-		GUIHandler.setIndex(indexTemp);
-	    }
-	});
 
 	JMenuItem removeRight = new JMenuItem("Remove");
 	final JMenuItem removeLastConditional = new JMenuItem(
@@ -2193,6 +2207,21 @@ public class BlockBuilderGUI extends JFrame
 	    public void actionPerformed(ActionEvent e)
 	    {
 		GUIHandler.removeLastCondition();
+		menu.remove(removeLastConditional);
+	    }
+	});
+	insert.addActionListener(new ActionListener()
+	{
+	    @Override
+	    public void actionPerformed(ActionEvent arg0)
+	    {
+		if (GUIHandler.isCreating)
+		{
+		    menu.remove(removeLastConditional);
+		    return;
+		}
+
+		GUIHandler.setIndex(indexTemp);
 		menu.remove(removeLastConditional);
 	    }
 	});
@@ -2218,6 +2247,7 @@ public class BlockBuilderGUI extends JFrame
 		}
 		BlockBuilderGUI.resetIndexes();
 		indexTemp = -1;
+		menu.remove(removeLastConditional);
 	    }
 	});
 	list.addMouseListener(new MouseAdapter()
@@ -2230,7 +2260,7 @@ public class BlockBuilderGUI extends JFrame
 		{
 		    indexTemp = list.locationToIndex(arg0.getPoint());
 		    if (GUIHandler.isCreating)
-			menu.add(removeLastConditional);
+			//menu.add(removeLastConditional);
 		    menu.show(list, arg0.getX(), arg0.getY());
 		}
 	    }

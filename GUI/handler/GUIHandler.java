@@ -58,7 +58,7 @@ public class GUIHandler
 			else
 				b.append(c[i] + " ");
 		}
-		if (BlockBuilderGUI.listModel.size() > 0 && con.size() >= 2)
+		if (BlockBuilderGUI.listModel.size() > 0 && con.size() > 1)
 			BlockBuilderGUI.listModel.remove(indexTemp);
 		BlockBuilderGUI.listModel.add(indexTemp, new ConditionalIntent(
 				new NilAction(), con.toArray(new Conditional[con.size()])));
