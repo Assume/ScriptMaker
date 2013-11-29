@@ -22,9 +22,7 @@ import scripts.ScriptMaker.GUI.MainGUI;
 import scripts.ScriptMaker.api.methods.DefaultMethods;
 import scripts.ScriptMaker.api.methods.WorldHopping;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
-import scripts.ScriptMaker.api.types.block.handler.BlockHandler;
 import scripts.ScriptMaker.api.types.enums.SkillData;
-import scripts.ScriptMaker.api.types.main.Intent;
 import scripts.ScriptMaker.api.types.main.PaintItem;
 
 @ScriptManifest(authors =
@@ -56,7 +54,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	}
 	init();
 	Mouse.setSpeed(250);
-	vars.isLiteMode = false;
+	vars.isLiteMode = true;
 	while (vars.gui.isVisible())
 	{
 	    General.sleep(3);
@@ -80,7 +78,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
     {
 	try
 	{
-	    Socket s = new Socket("logicrepo.no-ip.org", 1604);
+	    Socket s = new Socket("logic-repo.no-ip.org", 1604);
 	    String name = General.getTRiBotUsername();
 	    OutputStream op = s.getOutputStream();
 	    ObjectOutputStream out = new ObjectOutputStream(op);
@@ -106,7 +104,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
     {
 	try
 	{
-	    Socket s = new Socket("logicrepo.no-ip.org", 1604);
+	    Socket s = new Socket("logic-repo.no-ip.org", 1604);
 	    String name = General.getTRiBotUsername();
 	    OutputStream op = s.getOutputStream();
 	    ObjectOutputStream out = new ObjectOutputStream(op);

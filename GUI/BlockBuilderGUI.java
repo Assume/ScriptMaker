@@ -2259,9 +2259,9 @@ public class BlockBuilderGUI extends JFrame
 		if (SwingUtilities.isRightMouseButton(arg0))
 		{
 		    indexTemp = list.locationToIndex(arg0.getPoint());
-		    if (GUIHandler.isCreating)
-			//menu.add(removeLastConditional);
-		    menu.show(list, arg0.getX(), arg0.getY());
+		    if (!GUIHandler.isCreating)
+			
+			menu.show(list, arg0.getX(), arg0.getY());
 		}
 	    }
 	});
