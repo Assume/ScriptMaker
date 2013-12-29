@@ -54,7 +54,7 @@ public class Main extends Script implements Painting, Pausing, Ending,
 	}
 	init();
 	Mouse.setSpeed(250);
-	vars.isLiteMode = true;
+	vars.isLiteMode = false;
 	while (vars.gui.isVisible())
 	{
 	    General.sleep(3);

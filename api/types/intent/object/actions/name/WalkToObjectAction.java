@@ -8,21 +8,18 @@ import org.tribot.api2007.util.PathNavigator;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class WalkToObjectAction extends Action implements Serializable
-{
+public class WalkToObjectAction extends Action implements Serializable {
 
 	private static final long serialVersionUID = 91931234253329320L;
-	
+
 	private String name;
 
-	public WalkToObjectAction(final String name)
-	{
+	public WalkToObjectAction(final String name) {
 		this.name = name;
 	}
 
 	@Override
-	public boolean run()
-	{
+	public boolean run() {
 		RSObject[] ob = Objects.findNearest(50, name);
 		if (ob.length == 0)
 			return false;
@@ -31,9 +28,8 @@ public class WalkToObjectAction extends Action implements Serializable
 	}
 
 	@Override
-	public String toString()
-	{
-		return "If " + name + " is on screen";
+	public String toString() {
+		return "Walk to " + name;
 	}
 
 }
