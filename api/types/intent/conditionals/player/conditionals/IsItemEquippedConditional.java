@@ -18,5 +18,11 @@ public class IsItemEquippedConditional extends Conditional {
 	public boolean run() {
 		return Equipment.isEquipped(id);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "if "+id+" is equipped";
+	}
 
 }

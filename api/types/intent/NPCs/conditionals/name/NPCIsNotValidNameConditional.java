@@ -19,4 +19,9 @@ public class NPCIsNotValidNameConditional extends Conditional {
 		return NPCs.find(name).length == 0;
 	}
 
+	@Override
+	public String toString() {
+		return "if NPC " + name + " is not valid";
+	}
+
 }

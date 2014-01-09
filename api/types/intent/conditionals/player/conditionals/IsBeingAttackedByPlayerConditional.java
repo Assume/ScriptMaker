@@ -19,4 +19,8 @@ public class IsBeingAttackedByPlayerConditional extends Conditional {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "if you are being attacked by another player";
+	}
 }
