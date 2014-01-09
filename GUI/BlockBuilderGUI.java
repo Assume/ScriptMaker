@@ -37,6 +37,7 @@ import scripts.ScriptMaker.api.types.enums.Equipment;
 import scripts.ScriptMaker.api.types.enums.Magic;
 import scripts.ScriptMaker.api.types.intent.NPCChat.actions.ChooseNPCChatOptionAction;
 import scripts.ScriptMaker.api.types.intent.NPCChat.actions.ClickToContinueAction;
+import scripts.ScriptMaker.api.types.intent.NPCChat.conditionals.NPCChatIsNotOpen;
 import scripts.ScriptMaker.api.types.intent.NPCChat.conditionals.NPCChatIsOpenConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.ClickNPCIDAction;
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.TurnCameraToNPCIDAction;
@@ -74,6 +75,7 @@ import scripts.ScriptMaker.api.types.intent.camera.CameraRotationAction;
 import scripts.ScriptMaker.api.types.intent.chooseoptionmenu.ChooseOptionFromMenuAction;
 import scripts.ScriptMaker.api.types.intent.conditionals.AnimationIsConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.AreaContainsPlayerConditional;
+import scripts.ScriptMaker.api.types.intent.conditionals.AreaDoesntContainPlayerConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.RunIsAboveConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.RunIsBelowConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.location.DistanceToIsGreaterConditional;
@@ -578,6 +580,26 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mntmNewMenuItem.add(mntmPlayerIsIn);
 
+<<<<<<< HEAD
+=======
+		JMenuItem mntmPlayerIsNot_1 = new JMenuItem("Player is not in area");
+		mntmPlayerIsNot_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int nwX = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter North East Tile x").replaceAll("[^0-9]", ""));
+				int nwY = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter North east Tile y").replaceAll("[^0-9]", ""));
+				int swX = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter South West Tile x").replaceAll("[^0-9]", ""));
+				int swY = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter South West Tile y").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new AreaDoesntContainPlayerConditional(
+						nwX, nwY, swX, swY));
+			}
+		});
+		mntmNewMenuItem.add(mntmPlayerIsNot_1);
+
+>>>>>>> 88d948404fae5c6f0e0cf38f5f9b242b4fcea155
 		JMenu mntmGeneral = new JMenu("General");
 		mnNewMenu.add(mntmGeneral);
 
@@ -617,6 +639,17 @@ public class BlockBuilderGUI extends JFrame {
 				GUIHandler.addCondition(new AnimationIsConditional(animation));
 			}
 		});
+<<<<<<< HEAD
+=======
+
+		JMenuItem mntmNpcChatIs_1 = new JMenuItem("NPC chat is not on screen");
+		mntmNpcChatIs_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GUIHandler.addCondition(new NPCChatIsNotOpen());
+			}
+		});
+		mntmGeneral.add(mntmNpcChatIs_1);
+>>>>>>> 88d948404fae5c6f0e0cf38f5f9b242b4fcea155
 		mntmGeneral.add(mntmAnimationEqualsx);
 
 		JMenu mnSkills = new JMenu("Skills");
@@ -668,6 +701,7 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnCombat.add(mntmPlayerIsIn_1);
 
+<<<<<<< HEAD
 		JMenuItem mntmPlayerIsAttacked = new JMenuItem(
 				"Player is being attacked by other player");
 		mntmPlayerIsAttacked.addActionListener(new ActionListener() {
@@ -678,6 +712,8 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnCombat.add(mntmPlayerIsAttacked);
 
+=======
+>>>>>>> 88d948404fae5c6f0e0cf38f5f9b242b4fcea155
 		JMenu mnNpcs = new JMenu("NPCs");
 		mnNewMenu.add(mnNpcs);
 
@@ -714,6 +750,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmNpcxExists = new JMenuItem("NPC [x] exists");
 		mnNames_2.add(mntmNpcxExists);
 
+<<<<<<< HEAD
 		JMenuItem mntmNpcxDoesnt = new JMenuItem("NPC [x] doesn't exist");
 		mntmNpcxDoesnt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -723,6 +760,8 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnNames_2.add(mntmNpcxDoesnt);
 
+=======
+>>>>>>> 88d948404fae5c6f0e0cf38f5f9b242b4fcea155
 		JMenu mnIds_2 = new JMenu("IDs");
 		mnNpcs.add(mnIds_2);
 
@@ -824,6 +863,7 @@ public class BlockBuilderGUI extends JFrame {
 			}
 		});
 		mnIds_2.add(mntmNpcxExists_1);
+<<<<<<< HEAD
 
 		JMenuItem mntmNpcxDoesnt_1 = new JMenuItem("NPC [x] doesn't exist");
 		mntmNpcxDoesnt_1.addActionListener(new ActionListener() {
@@ -834,6 +874,8 @@ public class BlockBuilderGUI extends JFrame {
 			}
 		});
 		mnIds_2.add(mntmNpcxDoesnt_1);
+=======
+>>>>>>> 88d948404fae5c6f0e0cf38f5f9b242b4fcea155
 		mntmNpcxExists.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
@@ -1071,6 +1113,7 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnOtherPlayers.add(mntmPlayerxIs);
 
+<<<<<<< HEAD
 		JMenu mnEquipment = new JMenu("Equipment");
 		mnNewMenu.add(mnEquipment);
 
@@ -1084,6 +1127,8 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnEquipment.add(mntmIsItemEquipped);
 
+=======
+>>>>>>> 88d948404fae5c6f0e0cf38f5f9b242b4fcea155
 		JMenuItem mntmExecuteBlock = new JMenuItem("Execute Block...");
 		mntmExecuteBlock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1408,6 +1453,7 @@ public class BlockBuilderGUI extends JFrame {
 		mntmItems.add(mntmDropAllItems);
 
 		JMenuItem mntmDropAllItems_1 = new JMenuItem(
+<<<<<<< HEAD
 				"Drop all items in inventory except [x...]");
 		mntmDropAllItems_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1420,6 +1466,15 @@ public class BlockBuilderGUI extends JFrame {
 				}
 				GUIHandler.setAction(new DropAllExceptMultipleAction(list
 						.toArray(new Integer[list.size()])));
+=======
+				"Drop all items in inventory except [x]");
+		mntmDropAllItems_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter of id of item that you don't want to drop")
+						.replaceAll("[^0-9]", ""));
+				GUIHandler.setAction(new DropAllExceptAction(id));
+>>>>>>> 88d948404fae5c6f0e0cf38f5f9b242b4fcea155
 			}
 		});
 		mntmItems.add(mntmDropAllItems_1);
