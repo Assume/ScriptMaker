@@ -31,7 +31,7 @@ public class WalkToObjectIDAction extends Action
 	@Override
 	public String toString()
 	{
-		return "If " + id + " is on screen";
+		return "Walk to "+id+"";
 	}
 
 }
