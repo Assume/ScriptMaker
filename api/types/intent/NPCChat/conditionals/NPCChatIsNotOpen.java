@@ -10,8 +10,8 @@ public class NPCChatIsNotOpen extends Conditional {
 
 	@Override
 	public boolean run() {
-		return NPCChat.getOptions().length > 0
-				|| NPCChat.getClickContinueInterface() != null;
+		return NPCChat.getOptions() == null
+				&& NPCChat.getClickContinueInterface() == null;
 	}
 
 	@Override

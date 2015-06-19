@@ -1,377 +1,196 @@
 package scripts.ScriptMaker.api.methods;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.tribot.api.General;
-import org.tribot.api.Screen;
 import org.tribot.api.Timing;
 import org.tribot.api.input.Mouse;
-import org.tribot.api.types.colour.Tolerance;
 import org.tribot.api.types.generic.Condition;
+import org.tribot.api2007.Combat;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
 import org.tribot.api2007.GameTab.TABS;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.Login;
 import org.tribot.api2007.Login.STATE;
+import org.tribot.api2007.Screen;
 import org.tribot.api2007.types.RSInterfaceChild;
 
 import scripts.ScriptMaker.main.Main;
-import scripts.ScriptMaker.main.vars;
 
-public class WorldHopping
-{
+public class WorldHopping {
 
-	Main m;
+	public final static Color WORLD_SWITCH_COLOUR = new Color(189, 152, 57);
+	public final Color WORLD_GREEN_ARROW_COLOUR = new Color(47, 130, 43);
+	public final static Color WORLD_RED_ARROW_COLOUR = new Color(172, 12, 4);
 
-	public WorldHopping(Main m)
-	{
-		this.m = m;
+	public final static int WORLD_PIXEL_SIZE_X = 78;
+	public final static int WORLD_PIXEL_SIZE_Y = 17;
+
+	public static int[] worldsNotSupported = new int[] { 26, 35, 0, 1, 7, 8,
+			37, 15, 16, 23, 24, 25, 31, 37, 32, 39, 40, 47, 48, 55, 56, 63, 64,
+			71, 72, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93,
+			94 };
+	public final static int[] WORLDS_DONT_EXIST = new int[] { 7, 15, 23, 24,
+			31, 32, 39, 40, 47, 48, 55, 56, 63, 64, 71, 72, 79, 80, 85, 86, 87,
+			88, 89, 90, 91, 92 };
+	public final static int WORLD_MAXIMUM_END = 94;
+
+	private static boolean isAtWorldHopScreen() {
+
+		return Screen.getColorAt(11, 0).equals(WORLD_SWITCH_COLOUR);
 	}
 
-	private boolean needToSwitchWorlds = false;
-	private final Color WORLD_SWITCH_COLOUR = new Color(189, 152, 57);
-	private final Color WORLD_RED_ARROW_COLOUR = new Color(172, 12, 4);
-	private final int WORLD_PIXEL_SIZE_X = 80;
-	private final int WORLD_PIXEL_SIZE_Y = 18;
-	private final int[] WORLDS_NOT_SUPPORTED = new int[] { 1, 2, 7, 8, 15, 16,
-			23, 24, 25, 31, 32, 37, 39, 40, 47, 48, 55, 56, 63, 64, 71, 72 };
+	public static boolean hasMisconfiguredWorldSettings() {
+		return Screen.getColorAt(301, 9).equals(WORLD_RED_ARROW_COLOUR);
 
-	public boolean hop(int world)
-	{
-		vars.isHopping = true;
-		switchWorlds(world);
+	}
+
+	private Main main;
+
+	public WorldHopping(Main main) {
+		this.main = main;
+	}
+
+	public static int getWorld() {
+		int world = Game.getCurrentWorld();
+		return world - 300;
+	}
+
+	public boolean hopp(int world) {
+		main.setLoginBotState(false);
+		if (world == -1)
+			switchWorld(getRandomWorld());
+		else
+			switchWorld(world);
+		Login.login();
+		main.setLoginBotState(true);
 		return true;
 	}
 
-	private void switchWorlds(int world)
-	{
-		if (Game.getUptext().startsWith("Cast Curse ->"))
-			Mouse.click(1);
-		final int mouseSpeed = Mouse.getSpeed();
-		Mouse.setSpeed(80);
-		m.setLoginBotState(false);
-		world = world == -1 ? getNextMembersWorld() : world;
-		while (world == 0)
-			world = getNextMembersWorld();
+	public boolean switchWorld(final int world) {
 
-		if (switchWorld(world))
-		{
-			
-			m.setLoginBotState(true);
-			if (Timing.waitCondition(new Condition()
-			{
-				@Override
-				public boolean active()
-				{
-					return Login.getLoginState() == Login.STATE.INGAME;
-				}
-			}, 50000))
-			{
-				Mouse.setSpeed(mouseSpeed);
-				needToSwitchWorlds = false;
-				vars.isHopping = false;
+		long timeout = Timing.currentTimeMillis() + 60000;
+
+		while (true && timeout > Timing.currentTimeMillis()) {
+			Interfaces.closeAll();
+			if (Combat.isUnderAttack()) {
+				General.println("under attack exiting world hop loop");
+				return false;
 			}
-		}
-	}
 
-	private int getNextMembersWorld()
-	{
-		final int world = General.random(1, 78);
-		if (!contains(WORLDS_NOT_SUPPORTED, world))
-			return world;
-		return 0;
-	}
-
-	private boolean contains(final int[] array, final int num)
-	{
-		for (final int i : array)
-		{
-			if (i == num)
+			if (!isAtWorldHopScreen() && getWorld() == world) {
+				// General.println("it returned true, currenet world = designated world");
 				return true;
-		}
-		return false;
-	}
+			}
 
-	private boolean switchWorld(final int world)
-	{
-		final long timeout = System.currentTimeMillis() + 25000;
-		while (true && timeout > System.currentTimeMillis())
-		{
-			if (Login.getLoginState() == STATE.INGAME)
-			{
-				if (GameTab.getOpen() == TABS.LOGOUT)
-				{
-					final RSInterfaceChild child = Interfaces.get(182, 6);
-					child.click("Ok");
-				}
-				else
-				{
+			if (Login.getLoginState() == STATE.INGAME) {
+				if (GameTab.getOpen() == TABS.LOGOUT) {
+
+					RSInterfaceChild child = Interfaces.get(182, 6);
+					if (child != null)
+						child.click("Ok");
+				} else {
 					GameTab.open(TABS.LOGOUT);
 				}
-			}
-			else
-				if (isAtWorldHopScreen())
-				{
-					if (this.hasMisconfiguredWorldSettings())
-					{
-						Mouse.click(301, 9, 0);
-						Timing.waitCondition(new Condition()
-						{
-							@Override
-							public boolean active()
-							{
-								return !hasMisconfiguredWorldSettings();
-							}
-						}, 2000);
-					}
-					else
-					{
-						final Rectangle clickArea = getWorldClickArea(world);
-						Mouse.moveBox(clickArea.x, clickArea.y, clickArea.x
-								+ clickArea.width, clickArea.y
-								+ clickArea.height);
-						General.sleep(1500, 1600);
-						Mouse.click(1);
-						Timing.waitCondition(new Condition()
-						{
-							@Override
-							public boolean active()
-							{
-								return !isAtWorldHopScreen();
-							}
-						}, 2000);
-						if (!isAtWorldHopScreen())
-						{
-							return true;
-						}
-					}
-				}
-				else
-				{
-					Mouse.clickBox(10, 486, 100, 493, 0);
-					Timing.waitCondition(new Condition()
-					{
+			} else if (Login.getLoginState().equals(STATE.WELCOMESCREEN)) {
+				Login.login();
+			} else if (isAtWorldHopScreen()) {
+				if (hasMisconfiguredWorldSettings()) {
+					Mouse.click(301, 9, 1);
+					Timing.waitCondition(new Condition() {
 						@Override
-						public boolean active()
-						{
-							return isAtWorldHopScreen();
+						public boolean active() {
+							General.sleep(50, 100);
+							return !hasMisconfiguredWorldSettings();
 						}
-					}, 5000);
+					}, 2000);
+				} else {
+					Rectangle clickArea = getWorldClickArea(world);
+					Point location = new Point((int) clickArea.getCenterX(),
+							(int) clickArea.getCenterY());
+					Mouse.hop(location);
+					General.sleep(200);
+					Mouse.sendPress(location, 1);
+					Mouse.sendRelease(location, 1);
+					Mouse.sendClickEvent(location, 1);
+
+					if (Timing.waitCondition(new Condition() {
+						@Override
+						public boolean active() {
+							General.sleep(50, 100);
+							return !isAtWorldHopScreen() && getWorld() == world;
+						}
+					}, 2000)) {
+						// General.println("it returned true, we not at world hop screen and currenet world = designated world");
+						return true;
+					}
 				}
+			} else if (getWorld() != world) {
+				Rectangle rec = new Rectangle(10, 486, 100, 493);
+				Point location = rec.getLocation();
+				Mouse.hop(location);
+				Mouse.sendPress(location, 1);
+				Mouse.sendRelease(location, 1);
+				Mouse.sendClickEvent(location, 1);
+				Timing.waitCondition(new Condition() {
+					@Override
+					public boolean active() {
+						General.sleep(50, 100);
+						return isAtWorldHopScreen();
+					}
+				}, 5000);
+			}
+
 		}
-		return false;
+		return !isAtWorldHopScreen() && getWorld() == world;
 	}
 
-	private Rectangle getWorldClickArea(final int world)
-	{
-		switch (world)
-		{
-		case 1:
-			return new Rectangle(206, 73, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 2:
-			return new Rectangle(206, 97, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 3:
-			return new Rectangle(206, 121, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 4:
-			return new Rectangle(206, 145, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 5:
-			return new Rectangle(206, 169, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 6:
-			return new Rectangle(206, 193, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 8:
-			return new Rectangle(206, 217, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 9:
-			return new Rectangle(206, 241, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 10:
-			return new Rectangle(206, 265, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 11:
-			return new Rectangle(206, 289, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 12:
-			return new Rectangle(206, 313, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 13:
-			return new Rectangle(206, 337, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 14:
-			return new Rectangle(206, 361, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 16:
-			return new Rectangle(206, 385, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 17:
-			return new Rectangle(206, 409, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 18:
-			return new Rectangle(206, 433, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
+	public boolean isWorldSupported(int world) {
+		for (int i = 0; i < worldsNotSupported.length; i++) {
+			if (worldsNotSupported[i] == world) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-		case 19:
-			return new Rectangle(299, 73, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 20:
-			return new Rectangle(299, 97, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 21:
-			return new Rectangle(299, 121, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 22:
-			return new Rectangle(299, 145, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 25:
-			return new Rectangle(299, 169, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 26:
-			return new Rectangle(299, 193, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 27:
-			return new Rectangle(299, 217, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 28:
-			return new Rectangle(299, 241, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 29:
-			return new Rectangle(299, 265, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 30:
-			return new Rectangle(299, 289, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 33:
-			return new Rectangle(299, 313, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 34:
-			return new Rectangle(299, 337, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 35:
-			return new Rectangle(299, 361, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 36:
-			return new Rectangle(299, 385, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 37:
-			return new Rectangle(299, 409, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 38:
-			return new Rectangle(299, 433, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
+	public int getRandomWorld() {
+		int randomWorld;
+		while (!isWorldSupported((randomWorld = General.random(3,
+				WORLD_MAXIMUM_END))))
+			;
+		return randomWorld;
+	}
 
-		case 41:
-			return new Rectangle(392, 73, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 42:
-			return new Rectangle(392, 97, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 43:
-			return new Rectangle(392, 121, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 44:
-			return new Rectangle(392, 145, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 45:
-			return new Rectangle(392, 169, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 46:
-			return new Rectangle(392, 193, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 49:
-			return new Rectangle(392, 217, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 50:
-			return new Rectangle(392, 241, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 51:
-			return new Rectangle(392, 265, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 52:
-			return new Rectangle(392, 289, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 53:
-			return new Rectangle(392, 313, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 54:
-			return new Rectangle(392, 337, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 57:
-			return new Rectangle(392, 361, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 58:
-			return new Rectangle(392, 385, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 59:
-			return new Rectangle(392, 409, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 60:
-			return new Rectangle(392, 433, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
+	public Rectangle getWorldClickArea(int world) {
+		for (int w : worldsNotSupported) {
+			if (w == world) {
+				return null;
+			}
+		}
 
-		case 61:
-			return new Rectangle(485, 73, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 62:
-			return new Rectangle(485, 97, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 65:
-			return new Rectangle(485, 121, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 66:
-			return new Rectangle(485, 145, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 67:
-			return new Rectangle(485, 169, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 68:
-			return new Rectangle(485, 193, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 69:
-			return new Rectangle(485, 217, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 70:
-			return new Rectangle(485, 241, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 73:
-			return new Rectangle(485, 265, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 74:
-			return new Rectangle(485, 289, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 75:
-			return new Rectangle(485, 313, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 76:
-			return new Rectangle(485, 337, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 77:
-			return new Rectangle(485, 361, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
-		case 78:
-			return new Rectangle(485, 385, WORLD_PIXEL_SIZE_X,
-					WORLD_PIXEL_SIZE_Y);
+		int diff = 0;
+		for (int i : WORLDS_DONT_EXIST) {
+			if (world > i) {
+				diff++;
+			}
+		}
 
-		default:
+		int x = (world - diff) / 17;
+		int y = (world - diff) % 17;
+		if (x == -1 || y == -1) {
 			return null;
+		} else {
+			if (y == 0) {
+				y = 17;
+				x -= 1;
+			}
+			int xR = 208 + (x * 93);
+			int yR = 62 + ((y - 1) * 24);
+			return new Rectangle(xR, yR, WORLD_PIXEL_SIZE_X, WORLD_PIXEL_SIZE_Y);
 		}
-	}
-
-	private boolean hasMisconfiguredWorldSettings()
-	{
-		return Screen.coloursMatch(Screen.getColourAt(301, 9),
-				WORLD_RED_ARROW_COLOUR, new Tolerance(0));
-	}
-
-	private boolean isAtWorldHopScreen()
-	{
-		return Screen.findColour(WORLD_SWITCH_COLOUR, 0, 0, 124, 22,
-				new Tolerance(0)) != null;
 	}
 }

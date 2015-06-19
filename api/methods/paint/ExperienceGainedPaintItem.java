@@ -67,14 +67,14 @@ public class ExperienceGainedPaintItem extends PaintItem implements Serializable
 
     public long timeToLevel(long runtime)
     {
-	long timeTillLevel = (long) (((double) Skills.getXPToNextLevel(sk) * 3600000.0) / (double) getXpPerHour(runtime));
+	long timeTillLevel = (long) ((Skills.getXPToNextLevel(sk) * 3600000.0) / getXpPerHour(runtime));
 
 	return timeTillLevel;
     }
 
     public int getXpPerHour(long runtime)
     {
-	return (int) ((3600000.0 / (double) runtime) * this.exp);
+	return (int) ((3600000.0 / runtime) * this.exp);
     }
 
     public static String formatTime(long runTime)

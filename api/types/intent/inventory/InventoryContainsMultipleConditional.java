@@ -9,53 +9,43 @@ import org.tribot.api2007.types.RSItem;
 
 import scripts.ScriptMaker.api.types.main.Conditional;
 
-public class InventoryContainsMultipleConditional extends Conditional
-{
+public class InventoryContainsMultipleConditional extends Conditional {
 
-    private static final long serialVersionUID = 11235234234234L;
+	private static final long serialVersionUID = 11235234234234L;
 
-    private Integer[] itemID;
-    private List<Integer> list;
+	private Integer[] itemID;
+	private List<Integer> list;
 
-    public InventoryContainsMultipleConditional(final Integer[] itemID)
-    {
-	this.itemID = itemID;
-	list = Arrays.asList(itemID);
-    }
+	public InventoryContainsMultipleConditional(final Integer[] itemID) {
+		this.itemID = itemID;
+		list = Arrays.asList(itemID);
+	}
 
-    @Override
-    public boolean run()
-    {
-	return Inventory.find(Inventory
-		.generateFilterGroup(new Filter<RSItem>()
-		{
+	@Override
+	public boolean run() {
+		return Inventory.find(new Filter<RSItem>() {
+			@Override
+			public boolean accept(RSItem arg0) {
+				return list.contains(arg0.getID());
+			}
+		}).length > 0;
+	}
 
-		    @Override
-		    public boolean accept(RSItem arg0)
-		    {
-			return list.contains(arg0.getID());
-		    }
-		})).length > 0;
-    }
+	public Integer[] getItemID() {
+		return itemID;
+	}
 
-    public Integer[] getItemID()
-    {
-	return itemID;
-    }
+	public void setItemID(Integer[] itemID) {
+		this.itemID = itemID;
+	}
 
-    public void setItemID(Integer[] itemID)
-    {
-	this.itemID = itemID;
-    }
-
-    @Override
-    public String toString()
-    {
-	StringBuilder b = new StringBuilder();
-	b.append("if inventory contains: ");
-	for (int x : this.itemID)
-	    b.append(x + ", ");
-	return b.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		b.append("if inventory contains: ");
+		for (int x : this.itemID)
+			b.append(x + ", ");
+		return b.toString();
+	}
 
 }

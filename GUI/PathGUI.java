@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.tribot.api2007.Player;
@@ -38,7 +39,7 @@ public class PathGUI extends JFrame
 	{
 		th = this;
 		list = new ArrayList<CustomTile>();
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 710, 299);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -48,6 +49,7 @@ public class PathGUI extends JFrame
 		JButton btnAddTile = new JButton("Add Tile");
 		btnAddTile.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				RSTile pos = Player.getPosition();
@@ -68,6 +70,7 @@ public class PathGUI extends JFrame
 		JButton btnDone = new JButton("Done");
 		btnDone.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				GUIHandler.setAction(new WalkPathAction(list.toArray(new CustomTile[list.size()])));
@@ -80,6 +83,7 @@ public class PathGUI extends JFrame
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				int d = jlist.getSelectedIndex();

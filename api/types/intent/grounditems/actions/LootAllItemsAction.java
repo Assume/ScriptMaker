@@ -87,8 +87,8 @@ public class LootAllItemsAction extends Action implements Serializable
 		} else if (!itemsOnG[a].isOnScreen() && itemsOnG[a] != null)
 		{
 		    Keyboard.pressKey((char) KeyEvent.VK_CONTROL);
-		    Walking.walkPath((Positionable[]) Walking
-			    .generateStraightPath((Positionable) lootLoc));
+		    Walking.walkPath(Walking
+			    .generateStraightPath(lootLoc));
 		    General.sleep(250, 350);
 		    while (Player.isMoving())
 			General.sleep(40);

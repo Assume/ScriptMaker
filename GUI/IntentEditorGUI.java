@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import scripts.ScriptMaker.api.types.block.Block;
@@ -52,7 +53,7 @@ public class IntentEditorGUI extends JFrame
 		this.t = t;
 		this.isConditional = t instanceof ConditionalIntent;
 
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 372, 503);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,6 +79,7 @@ public class IntentEditorGUI extends JFrame
 		JButton doneBtn = new JButton("Done");
 		doneBtn.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 

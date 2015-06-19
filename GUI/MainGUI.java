@@ -10,6 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.tribot.api.General;
@@ -23,35 +24,29 @@ import scripts.ScriptMaker.api.types.main.Intent;
 import scripts.ScriptMaker.main.vars;
 import scripts.ScriptMakerRepo.frontend.gui.RepoGUI;
 
-public class MainGUI extends JFrame
-{
+public class MainGUI extends JFrame {
 
 	private static final long serialVersionUID = -1379705500204890724L;
 	private JPanel contentPane;
 
-	public MainGUI()
-	{
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	public MainGUI() {
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 164, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		this.addWindowListener(new java.awt.event.WindowAdapter()
-		{
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
-			public void windowClosing(java.awt.event.WindowEvent windowEvent)
-			{
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				if (JOptionPane
 						.showConfirmDialog(
 								null,
 								"Are you sure to close this window? This will end the script.",
 								"Really Closing?", JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
-				{
-					if (vars.thread != null)
-					{
+								JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					if (vars.thread != null) {
 						vars.fullStop = true;
 					}
 					General.println("You closed the GUI so the script stopped!");
@@ -64,39 +59,34 @@ public class MainGUI extends JFrame
 		});
 
 		JButton btnStartScript = new JButton("Start Script");
-		btnStartScript.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnStartScript.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-				if (BlockHandler.isMainAdded())
-				{
-					if (!vars.hasHitStart)
-					{
+				if (BlockHandler.isMainAdded()) {
+					if (!vars.hasHitStart) {
 						vars.startTime = System.currentTimeMillis();
 					}
 					vars.hasHitStart = true;
-					if (!PaintHandler.isCreatorAdded())
-					{
-						PaintHandler.addItem("CREATOR",
-								new GenericPaintItemString(Color.BLACK, Color.WHITE,
-										"CREATOR", "Logic Script Creator: "
-												+ General.getTRiBotUsername(), ""));
+					if (!PaintHandler.isCreatorAdded()) {
+						PaintHandler.addItem(
+								"CREATOR",
+								new GenericPaintItemString(Color.BLACK,
+										Color.WHITE, "CREATOR",
+										"Logic Script Creator: "
+												+ General.getTRiBotUsername(),
+										""));
 					}
 					PaintHandler.initAll();
 					vars.fullStop = false;
-					vars.thread = new Thread()
-					{
+					vars.thread = new Thread() {
 						@Override
-						public void run()
-						{
+						public void run() {
 							BlockExecutor.execute(BlockHandler.getMain());
 						}
 					};
 					vars.thread.start();
-				}
-				else
-				{
+				} else {
 					JOptionPane
 							.showMessageDialog(null,
 									"You must setup your main block before running the script");
@@ -108,12 +98,10 @@ public class MainGUI extends JFrame
 		contentPane.add(btnStartScript);
 
 		JButton btnStopScript = new JButton("Stop Script");
-		btnStopScript.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (vars.thread != null)
-				{
+		btnStopScript.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (vars.thread != null) {
 					vars.fullStop = true;
 					vars.thread.interrupt();
 				}
@@ -123,10 +111,9 @@ public class MainGUI extends JFrame
 		contentPane.add(btnStopScript);
 
 		JButton btnShowAllBlocks = new JButton("Show all Blocks");
-		btnShowAllBlocks.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnShowAllBlocks.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				new ShowAllBlocksGUI().setVisible(true);
 			}
 		});
@@ -134,12 +121,10 @@ public class MainGUI extends JFrame
 		contentPane.add(btnShowAllBlocks);
 
 		JButton btnCreateNewBlock = new JButton("Create new Block");
-		btnCreateNewBlock.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (vars.builderIsOpen)
-				{
+		btnCreateNewBlock.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (vars.builderIsOpen) {
 					JOptionPane.showMessageDialog(null,
 							"You can only build one Block at a time. You are currently building block: "
 									+ BlockHandler.getCurrentBlockName());
@@ -148,10 +133,8 @@ public class MainGUI extends JFrame
 				String name = JOptionPane
 						.showInputDialog("Enter a name for the block. This should relate to what it will do");
 
-				if (name != null)
-				{
-					if (BlockHandler.getBlock(name) != null)
-					{
+				if (name != null) {
+					if (BlockHandler.getBlock(name) != null) {
 						JOptionPane
 								.showMessageDialog(
 										null,
@@ -171,18 +154,15 @@ public class MainGUI extends JFrame
 		contentPane.add(btnCreateNewBlock);
 
 		JButton btnMainBlock = new JButton("Setup Main Block");
-		btnMainBlock.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (BlockHandler.isMainAdded())
-				{
+		btnMainBlock.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (BlockHandler.isMainAdded()) {
 					JOptionPane.showMessageDialog(null,
 							"Please choose edit main instead");
 					return;
 				}
-				if (vars.builderIsOpen)
-				{
+				if (vars.builderIsOpen) {
 					JOptionPane.showMessageDialog(null,
 							"You can only build one Block at a time. You are currently building block: "
 									+ BlockHandler.getCurrentBlockName());
@@ -199,10 +179,9 @@ public class MainGUI extends JFrame
 		contentPane.add(btnMainBlock);
 
 		JButton btnSetupPaint = new JButton("Setup Paint");
-		btnSetupPaint.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnSetupPaint.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				new PaintSetupGUI().setVisible(true);
 			}
 		});
@@ -210,10 +189,9 @@ public class MainGUI extends JFrame
 		contentPane.add(btnSetupPaint);
 
 		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				FileIO.save();
 			}
 		});
@@ -221,10 +199,9 @@ public class MainGUI extends JFrame
 		contentPane.add(btnSave);
 
 		JButton btnLoad = new JButton("Load");
-		btnLoad.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnLoad.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				FileIO.load();
 				PaintHandler.resetAllPaintItems();
 			}
@@ -233,26 +210,22 @@ public class MainGUI extends JFrame
 		contentPane.add(btnLoad);
 
 		JButton btnEditButton = new JButton("Edit Block");
-		btnEditButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (vars.builderIsOpen)
-				{
+		btnEditButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (vars.builderIsOpen) {
 					JOptionPane.showMessageDialog(null,
 							"You can only build one Block at a time. You are currently building block: "
 									+ BlockHandler.getCurrentBlockName());
 					return;
 				}
 				String[] blocks = BlockHandler.getAllBlockNames();
-				if (blocks.length == 0)
-				{
+				if (blocks.length == 0) {
 					JOptionPane.showMessageDialog(null,
 							"You have not made any blocks.");
 					return;
 				}
-				if (blocks.length == 1 && BlockHandler.isMainAdded())
-				{
+				if (blocks.length == 1 && BlockHandler.isMainAdded()) {
 					JOptionPane.showMessageDialog(null,
 							"You have not made any blocks.");
 					return;
@@ -266,15 +239,11 @@ public class MainGUI extends JFrame
 				String name = (String) box.getSelectedItem();
 				vars.builderIsOpen = true;
 				vars.isMain = false;
-				try
-				{
-					for (Intent t : BlockHandler.getBlock(name).getIntets())
-					{
+				try {
+					for (Intent t : BlockHandler.getBlock(name).getIntets()) {
 						vars.currentIntentList.add(t);
 					}
-				}
-				catch (Exception d)
-				{
+				} catch (Exception d) {
 					d.printStackTrace();
 				}
 
@@ -286,26 +255,22 @@ public class MainGUI extends JFrame
 		contentPane.add(btnEditButton);
 
 		JButton btnEditMain = new JButton("Edit Main Block");
-		btnEditMain.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (vars.builderIsOpen)
-				{
+		btnEditMain.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (vars.builderIsOpen) {
 					JOptionPane.showMessageDialog(null,
 							"You can only build one Block at a time. You are currently building block: "
 									+ BlockHandler.getCurrentBlockName());
 					return;
 				}
-				if (!BlockHandler.isMainAdded())
-				{
+				if (!BlockHandler.isMainAdded()) {
 					JOptionPane.showMessageDialog(null,
 							"Please click setup main block first!");
 					return;
 				}
 				{
-					for (Intent t : BlockHandler.getBlock("main").getIntets())
-					{
+					for (Intent t : BlockHandler.getBlock("main").getIntets()) {
 						vars.currentIntentList.add(t);
 					}
 				}
@@ -320,10 +285,9 @@ public class MainGUI extends JFrame
 		contentPane.add(btnEditMain);
 
 		JButton btnNewButton_1 = new JButton("Repo");
-		btnNewButton_1.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				RepoGUI g = new RepoGUI();
 				g.setVisible(true);
 			}
@@ -332,10 +296,9 @@ public class MainGUI extends JFrame
 		contentPane.add(btnNewButton_1);
 
 		JButton btnNewButton = new JButton("Debug");
-		btnNewButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnNewButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				DebugGUI g = new DebugGUI();
 				g.setVisible(true);
 			}

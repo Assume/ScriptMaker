@@ -25,7 +25,7 @@ public class DistanceToNearestNPCIsGreaterThanConditional extends Conditional im
 	public boolean run()
 	{
 		if(NPCs.find(name).length == 0) return false;
-		if(NPCs.findNearest(name)[0].getPosition().distanceTo(Player.getPosition()) < distance) return true;
+		if(NPCs.findNearest(name)[0].getPosition().distanceTo(Player.getPosition()) > distance) return true;
 		return false;
 	}
 	

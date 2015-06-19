@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import org.tribot.api2007.Prayer.PRAYERS;
 import org.tribot.api2007.Skills.SKILLS;
 
 import scripts.ScriptMaker.GUI.handler.GUIHandler;
@@ -42,9 +43,11 @@ import scripts.ScriptMaker.api.types.intent.NPCChat.conditionals.NPCChatIsOpenCo
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.ClickNPCIDAction;
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.TurnCameraToNPCIDAction;
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.WalkToNearestNPCIDAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.id.WalkToNearestNPCNotInCombatID;
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.name.ClickNPCAction;
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.name.TurnCameraToNPCAction;
 import scripts.ScriptMaker.api.types.intent.NPCs.actions.name.WalkToNearestNPCAction;
+import scripts.ScriptMaker.api.types.intent.NPCs.actions.name.WalkToNearestNPCNotInCombatAction;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.DistanceToNearestNPCIsGreaterThanIDConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.DistanceToNearestNPCIsLessIDConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCHPPercentIsLessThanIDConditional;
@@ -74,6 +77,8 @@ import scripts.ScriptMaker.api.types.intent.chooseoptionmenu.ChooseOptionFromMen
 import scripts.ScriptMaker.api.types.intent.conditionals.AnimationIsConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.AreaContainsPlayerConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.AreaDoesntContainPlayerConditional;
+import scripts.ScriptMaker.api.types.intent.conditionals.PrayerIsEnabledConditional;
+import scripts.ScriptMaker.api.types.intent.conditionals.PrayerIsNotEnabledConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.RunIsAboveConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.RunIsBelowConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.location.DistanceToIsGreaterConditional;
@@ -135,6 +140,7 @@ import scripts.ScriptMaker.api.types.intent.object.actions.name.MoveMouseToObjec
 import scripts.ScriptMaker.api.types.intent.object.actions.name.TurnToObjectAction;
 import scripts.ScriptMaker.api.types.intent.object.actions.name.WalkToObjectAction;
 import scripts.ScriptMaker.api.types.intent.object.id.DistanceToObjectIDConditional;
+import scripts.ScriptMaker.api.types.intent.object.id.DistanceToObjectIDLess;
 import scripts.ScriptMaker.api.types.intent.object.id.ObjectIsNotValidIDConditional;
 import scripts.ScriptMaker.api.types.intent.object.id.ObjectIsOnScreenIDConditional;
 import scripts.ScriptMaker.api.types.intent.object.id.ObjectIsValidIDConditional;
@@ -211,6 +217,7 @@ public class BlockBuilderGUI extends JFrame {
 		//
 
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (JOptionPane
 						.showConfirmDialog(
@@ -232,6 +239,7 @@ public class BlockBuilderGUI extends JFrame {
 		menuBar.add(btnDone);
 
 		btnDone.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (BlockHandler.isMain()) {
 					BlockHandler.addBlock(
@@ -330,7 +338,6 @@ public class BlockBuilderGUI extends JFrame {
 					} else {
 						GUIHandler.setAction(new UpdatePaintAction(d));
 					}
-
 				}
 
 			}
@@ -361,6 +368,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmIfObjectx_3 = new JMenuItem(
 				"If object [x] doesn't exist (Name)");
 		mntmIfObjectx_3.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter Object name");
 				GUIHandler.addCondition(new ObjectIsNotValidConditional(name));
@@ -432,6 +440,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmIfDistanceTo = new JMenuItem(
 				"If distance to [x] is greater than [y] (ID)");
 		mntmIfDistanceTo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int id = Integer.parseInt(JOptionPane
@@ -451,6 +460,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmIfObjectx = new JMenuItem(
 				"If object [x] is on screen (ID)");
 		mntmIfObjectx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int id = Integer.parseInt(JOptionPane
@@ -463,11 +473,32 @@ public class BlockBuilderGUI extends JFrame {
 				}
 			}
 		});
+
+		JMenuItem mntmIfDistanceTo_1 = new JMenuItem(
+				"If distance to [x] is < [y] (ID)");
+		mntmIfDistanceTo_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					int id = Integer.parseInt(JOptionPane
+							.showInputDialog("Enter the objects id: "));
+					int distance = Integer.parseInt(JOptionPane
+							.showInputDialog("Enter the distance to the object must be greater than: "));
+					GUIHandler.addCondition(new DistanceToObjectIDLess(id,
+							distance));
+				} catch (NumberFormatException ex) {
+					JOptionPane.showInternalMessageDialog(null,
+							"Please only enter numbers");
+				}
+			}
+		});
+		mnIds.add(mntmIfDistanceTo_1);
 		mnIds.add(mntmIfObjectx);
 
 		JMenuItem mntmIfObjectx_1 = new JMenuItem(
 				"If object [x] is not on screen (ID)");
 		mntmIfObjectx_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int id = Integer.parseInt(JOptionPane
@@ -485,6 +516,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmIfObjectx_2 = new JMenuItem("If object [x] exists (ID)");
 		mntmIfObjectx_2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int id = Integer.parseInt(JOptionPane
@@ -501,6 +533,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmIfObjectx_4 = new JMenuItem(
 				"If object [x] doesn't exist (ID)");
 		mntmIfObjectx_4.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane
 						.showInputDialog("Enter Object id"));
@@ -517,6 +550,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmDistanceTo = new JMenuItem(
 				"Distance to [...] is greater than");
 		mntmDistanceTo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int x = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter tile x").replaceAll("[^0-9]", ""));
@@ -533,6 +567,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmDistanceTo_1 = new JMenuItem(
 				"Distance to [...] is less than");
 		mntmDistanceTo_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int x = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter tile x").replaceAll("[^0-9]", ""));
@@ -548,6 +583,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmLocationIsOn = new JMenuItem("Location is on screen");
 		mntmLocationIsOn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int x = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter tile x").replaceAll("[^0-9]", ""));
@@ -561,6 +597,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmPlayerIsIn = new JMenuItem("Player is in area");
 		mntmPlayerIsIn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int nwX = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter North East Tile x").replaceAll("[^0-9]", ""));
@@ -578,6 +615,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmPlayerIsNot_1 = new JMenuItem("Player is not in area");
 		mntmPlayerIsNot_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int nwX = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter North East Tile x").replaceAll("[^0-9]", ""));
@@ -598,6 +636,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmRunIsAbove = new JMenuItem("Run is above [x]");
 		mntmRunIsAbove.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int percent = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter percent").replaceAll("[^0-9]", ""));
@@ -608,6 +647,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmRunIsBelow = new JMenuItem("Run is below [x]");
 		mntmRunIsBelow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int percent = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter percent").replaceAll("[^0-9]", ""));
@@ -618,6 +658,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmNpcChatIs = new JMenuItem("NPC chat is on screen");
 		mntmNpcChatIs.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.addCondition(new NPCChatIsOpenConditional());
 			}
@@ -626,6 +667,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmAnimationEqualsx = new JMenuItem("Animation equals [x]");
 		mntmAnimationEqualsx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int animation = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter animation id").replaceAll("[^0-9-]", ""));
@@ -635,6 +677,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmNpcChatIs_1 = new JMenuItem("NPC chat is not on screen");
 		mntmNpcChatIs_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.addCondition(new NPCChatIsNotOpen());
 			}
@@ -642,11 +685,39 @@ public class BlockBuilderGUI extends JFrame {
 		mntmGeneral.add(mntmNpcChatIs_1);
 		mntmGeneral.add(mntmAnimationEqualsx);
 
+		JMenuItem mntmPrayerIsEnabled = new JMenuItem("Prayer is enabled");
+		mntmPrayerIsEnabled.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				JComboBox<PRAYERS> b = new JComboBox<PRAYERS>(PRAYERS.values());
+				JOptionPane.showMessageDialog(null, b, "Select a prayer",
+						JOptionPane.QUESTION_MESSAGE);
+				PRAYERS d = (PRAYERS) b.getSelectedItem();
+				GUIHandler.addCondition(new PrayerIsEnabledConditional(d));
+
+			}
+		});
+		mntmGeneral.add(mntmPrayerIsEnabled);
+
+		JMenuItem mntmPrayerIsNot = new JMenuItem("Prayer is not enabled");
+		mntmPrayerIsNot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				JComboBox<PRAYERS> b = new JComboBox<PRAYERS>(PRAYERS.values());
+				JOptionPane.showMessageDialog(null, b, "Select a prayer",
+						JOptionPane.QUESTION_MESSAGE);
+				PRAYERS d = (PRAYERS) b.getSelectedItem();
+				GUIHandler.addCondition(new PrayerIsNotEnabledConditional(d));
+			}
+		});
+		mntmGeneral.add(mntmPrayerIsNot);
+
 		JMenu mnSkills = new JMenu("Skills");
 		mnNewMenu.add(mnSkills);
 
 		JMenuItem mntmHpIsLess = new JMenuItem("HP is less than [x] percent");
 		mntmHpIsLess.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int percent = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter percent").replaceAll("[^0-9]", ""));
@@ -658,6 +729,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmSkillIsLess = new JMenuItem(
 				"Skill is less than [x] level");
 		mntmSkillIsLess.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<SKILLS> box = new JComboBox<SKILLS>(SKILLS.values());
 				JOptionPane.showMessageDialog(null, box, "Select a skill",
@@ -677,6 +749,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmPlayerIsNot = new JMenuItem("Player is not in combat");
 		mntmPlayerIsNot.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.addCondition(new PlayerIsNotInCombatConditional());
 			}
@@ -685,6 +758,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmPlayerIsIn_1 = new JMenuItem("Player is in combat");
 		mntmPlayerIsIn_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.addCondition(new PlayerIsInCombatConditional());
 			}
@@ -733,6 +807,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmNearestNpcx_4 = new JMenuItem(
 				"Nearest NPC [x] is on screen");
 		mntmNearestNpcx_4.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -744,6 +819,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmNearestNpcx_5 = new JMenuItem(
 				"Nearest NPC [x] is not on screen");
 		mntmNearestNpcx_5.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -755,6 +831,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmDistanceToNearest_2 = new JMenuItem(
 				"Distance to nearest NPC [x] < [y]");
 		mntmDistanceToNearest_2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -770,6 +847,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmDistanceToNearest_3 = new JMenuItem(
 				"Distance to nearest NPC [x] > [y]");
 		mntmDistanceToNearest_3.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -785,6 +863,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmNearestNpcx_6 = new JMenuItem(
 				"Nearest NPC [x] is in combat");
 		mntmNearestNpcx_6.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -796,6 +875,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmNearestNpcx_7 = new JMenuItem(
 				"Nearest NPC [x] is not in combat");
 		mntmNearestNpcx_7.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -807,6 +887,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmNearestNpcx_8 = new JMenuItem(
 				"Nearest NPC [x]'s HP  < [y]");
 		mntmNearestNpcx_8.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -821,6 +902,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmNpcxExists_1 = new JMenuItem("NPC [x] exists");
 		mntmNpcxExists_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", ""));
@@ -829,12 +911,14 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnIds_2.add(mntmNpcxExists_1);
 		mntmNpcxExists.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				GUIHandler.addCondition(new NPCIsValidConditional(name));
 			}
 		});
 		mntmNearestNpcxs.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				int percent = Integer.parseInt(JOptionPane.showInputDialog(
@@ -844,18 +928,21 @@ public class BlockBuilderGUI extends JFrame {
 			}
 		});
 		mntmNearestNpcx_2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				GUIHandler.addCondition(new NPCIsNotInCombatConditional(name));
 			}
 		});
 		mntmNearestNpcx_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				GUIHandler.addCondition(new NPCIsInCombatConditional(name));
 			}
 		});
 		mntmDistanceToNearest_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				int distance = Integer.parseInt(JOptionPane.showInputDialog(
@@ -866,6 +953,7 @@ public class BlockBuilderGUI extends JFrame {
 			}
 		});
 		mntmDistanceToNearest.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				int distance = Integer.parseInt(JOptionPane.showInputDialog(
@@ -876,12 +964,14 @@ public class BlockBuilderGUI extends JFrame {
 			}
 		});
 		mntmNearestNpcx_3.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				GUIHandler.addCondition(new NPCIsNotOnScreenConditional(name));
 			}
 		});
 		mntmNearestNpcx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				GUIHandler.addCondition(new NPCIsOnScreenConditional(name));
@@ -894,6 +984,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmInventoryContainsx = new JMenuItem(
 				"Inventory contains at least [y] of [x]");
 		mntmInventoryContainsx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of the item").replaceAll("[^0-9]", ""));
@@ -909,6 +1000,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmInventoryDoesntContainx = new JMenuItem(
 				"Inventory doesn't contain [x]");
 		mntmInventoryDoesntContainx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of the item").replaceAll("[^0-9]", ""));
@@ -920,6 +1012,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmInventoryContainsx_1 = new JMenuItem(
 				"Inventory contains [x...] (Multiple items)");
 		mntmInventoryContainsx_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<Integer> list = new ArrayList<Integer>();
 				int x;
@@ -940,6 +1033,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmInventoryIsEmpty = new JMenuItem("Inventory is empty");
 		mntmInventoryIsEmpty.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.addCondition(new InventoryIsEmptyConditional());
 			}
@@ -948,6 +1042,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmInventoryIsFull = new JMenuItem("Inventory is full");
 		mntmInventoryIsFull.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.addCondition(new InventoryIsFullConditional());
 			}
@@ -956,6 +1051,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmInventoryIsNot = new JMenuItem("Inventory is not full");
 		mntmInventoryIsNot.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.addCondition(new InventoryIsNotFullConditional());
 			}
@@ -967,6 +1063,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmItemxIs = new JMenuItem("Item [x] is not on the ground");
 		mntmItemxIs.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of the item").replaceAll("[^0-9]", ""));
@@ -977,6 +1074,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmItemxIs_1 = new JMenuItem("Item [x] is on the ground");
 		mntmItemxIs_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of the item").replaceAll("[^0-9]", ""));
@@ -987,6 +1085,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmItemxIsOn = new JMenuItem("Item [x] is on screen");
 		mntmItemxIsOn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of the item").replaceAll("[^0-9]", ""));
@@ -997,6 +1096,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmItemxIs_2 = new JMenuItem("Item [x] is not on screen");
 		mntmItemxIs_2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of the item").replaceAll("[^0-9]", ""));
@@ -1010,6 +1110,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmInterfaceIsOpen = new JMenuItem("Interface is open");
 		mntmInterfaceIsOpen.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int parent = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter parent ID").replaceAll("[^0-9]", ""));
@@ -1020,6 +1121,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmInterfaceIsClosed = new JMenuItem("Interface is closed");
 		mntmInterfaceIsClosed.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int parent = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter parent ID").replaceAll("[^0-9]", ""));
@@ -1035,6 +1137,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmAtLeastx = new JMenuItem(
 				"at least [x] players are around");
 		mntmAtLeastx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int amount = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter amount that should be around").replaceAll(
@@ -1047,6 +1150,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmPlayerxIs_1 = new JMenuItem("Player [x] is on screen");
 		mntmPlayerxIs_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter players name");
 				GUIHandler
@@ -1057,6 +1161,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmPlayerxIs = new JMenuItem("Player [x] is not on screen");
 		mntmPlayerxIs.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter players name");
 				GUIHandler.addCondition(new RSPlayerIsNotOnScreenConditional(
@@ -1067,6 +1172,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmExecuteBlock = new JMenuItem("Execute Block...");
 		mntmExecuteBlock.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] blocks = BlockHandler.getAllBlockNames();
 				JComboBox<String> box = new JComboBox<String>(
@@ -1106,6 +1212,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmSleepForx = new JMenuItem("Sleep for [x] seconds");
 		mntmSleepForx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				double seconds = Double.parseDouble(JOptionPane
 						.showInputDialog("Enter seconds to sleep for")
@@ -1117,6 +1224,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmTurnRunOn = new JMenuItem("Turn run on");
 		mntmTurnRunOn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new TurnRunOnAction());
 			}
@@ -1124,6 +1232,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmEndScript = new JMenuItem("End Script");
 		mntmEndScript.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new EndScriptAction());
 			}
@@ -1133,6 +1242,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmTurnRunOff = new JMenuItem("Turn run off");
 		mntmTurnRunOff.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new TurnRunOffAction());
 			}
@@ -1142,6 +1252,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmTypexMessage = new JMenuItem(
 				"Type [x] message and hit enter");
 		mntmTypexMessage.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String message = JOptionPane
 						.showInputDialog("Enter the message to send");
@@ -1178,6 +1289,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickNearestObject_1 = new JMenuItem(
 				"Click nearest object [x] with the action [y] (ID)");
 		mntmClickNearestObject_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane
 						.showInputDialog("Enter object id"));
@@ -1190,6 +1302,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickNearest = new JMenuItem(
 				"Move mouse to object [x] (ID)");
 		mntmClickNearest.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane
 						.showInputDialog("Enter object id"));
@@ -1201,6 +1314,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmTurnCameraTo_2 = new JMenuItem(
 				"Turn camera to object [x] (ID)");
 		mntmTurnCameraTo_2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane
 						.showInputDialog("Enter object id"));
@@ -1212,6 +1326,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmWalkToNearest_1 = new JMenuItem(
 				"Walk to nearest object [x] (ID)");
 		mntmWalkToNearest_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane
 						.showInputDialog("Enter object id"));
@@ -1220,24 +1335,28 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnIds_1.add(mntmWalkToNearest_1);
 		mntmWalkToNearest.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter object name");
 				GUIHandler.setAction(new WalkToObjectAction(name));
 			}
 		});
 		mntmTurnCameraTo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter object name");
 				GUIHandler.setAction(new TurnToObjectAction(name));
 			}
 		});
 		mntmMoveMouseTo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter object name");
 				GUIHandler.setAction(new MoveMouseToObject(name));
 			}
 		});
 		mntmClickNearestObject.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter object name");
 				String action = JOptionPane.showInputDialog("Enter action");
@@ -1251,6 +1370,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickItemx_1 = new JMenuItem(
 				"Click item [x] with the action [y]");
 		mntmClickItemx_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int x = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of the item to click").replaceAll("[^0-9]",
@@ -1265,6 +1385,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmLootAllItems = new JMenuItem(
 				"Loot all items with the ids [x...]");
 		mntmLootAllItems.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				List<Integer> list = new ArrayList<Integer>();
 				int x;
@@ -1286,6 +1407,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickNearestPlayer = new JMenuItem(
 				"Click nearest player with the action [x]");
 		mntmClickNearestPlayer.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String action = JOptionPane
 						.showInputDialog("Enter the action to click with");
@@ -1296,6 +1418,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmTurnToPlayer = new JMenuItem("Turn to Player [x]");
 		mntmTurnToPlayer.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane
 						.showInputDialog("Enter name of player");
@@ -1307,6 +1430,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickPlayerx = new JMenuItem(
 				"Click Player [x] with the action [y]");
 		mntmClickPlayerx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane
 						.showInputDialog("Enter name of player");
@@ -1322,6 +1446,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmWaitUntilInventory = new JMenuItem(
 				"Wait until inventory doesn't contain [x]");
 		mntmWaitUntilInventory.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter of id of item").replaceAll("[^0-9]", ""));
@@ -1336,6 +1461,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmWaitUntilInventory_1 = new JMenuItem(
 				"Wait until inventory contains [x]");
 		mntmWaitUntilInventory_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter of id of item").replaceAll("[^0-9]", ""));
@@ -1350,6 +1476,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickItemx = new JMenuItem(
 				"Click item [x]  with the action [y]");
 		mntmClickItemx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter of id of item").replaceAll("[^0-9]", ""));
@@ -1363,6 +1490,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmDropAllItems = new JMenuItem(
 				"Drop all items in inventory");
 		mntmDropAllItems.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new DropAllAction());
 			}
@@ -1371,6 +1499,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickFirstOf = new JMenuItem(
 				"Click first of items [x...] with the action [y]");
 		mntmClickFirstOf.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<Integer> list = new ArrayList<Integer>();
 				int x;
@@ -1391,6 +1520,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmDropAllItems_1 = new JMenuItem(
 				"Drop all items in inventory except [x]");
 		mntmDropAllItems_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter of id of item that you don't want to drop")
@@ -1441,6 +1571,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmAWalkTo = new JMenuItem("A* walk to tile");
 		mntmAWalkTo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int x = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter x coordinate").replaceAll("[^0-9]", ""));
@@ -1467,6 +1598,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmCloseBank = new JMenuItem("Close Bank");
 		mntmCloseBank.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new CloseBankAction());
 			}
@@ -1475,6 +1607,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmDepositall = new JMenuItem("DepositAll");
 		mntmDepositall.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new DepositAllAction());
 			}
@@ -1483,6 +1616,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmDepositAllExcept = new JMenuItem("Deposit All Except [x]");
 		mntmDepositAllExcept.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter id of item you don't want to deposit")
@@ -1494,6 +1628,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmOpenBank = new JMenuItem("Open Bank");
 		mntmOpenBank.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new OpenBankAction());
 			}
@@ -1503,6 +1638,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmWithdrawItem = new JMenuItem(
 				"Withdraw [x] amount of item [y]");
 		mntmWithdrawItem.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter ID of the item you want to withdraw")
@@ -1517,6 +1653,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmWaitUntilBank = new JMenuItem("Wait until bank is open");
 		mntmWaitUntilBank.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				double timeout = Double.parseDouble(JOptionPane
 						.showInputDialog("Enter a timeout in seconds")
@@ -1529,6 +1666,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmWithdrawATotal = new JMenuItem(
 				"Withdraw a total of [x] of [y...] items (Multiple Items)");
 		mntmWithdrawATotal.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<Integer> list = new ArrayList<Integer>();
 				int x;
@@ -1562,19 +1700,33 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmTurnCameraTo_1 = new JMenuItem("Turn camera to NPC [x]");
 		mnNames_3.add(mntmTurnCameraTo_1);
+
+		JMenuItem mntmWalkToNpcx = new JMenuItem(
+				"Walk To NPC[x] (not in combat)");
+		mntmWalkToNpcx.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = JOptionPane.showInputDialog("Enter NPC name");
+				GUIHandler
+						.setAction(new WalkToNearestNPCNotInCombatAction(name));
+			}
+		});
+		mnNames_3.add(mntmWalkToNpcx);
 		mntmTurnCameraTo_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				GUIHandler.setAction(new TurnCameraToNPCAction(name));
 			}
 		});
 		mntmWalkToNpc.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				GUIHandler.setAction(new WalkToNearestNPCAction(name));
 			}
 		});
 		mntmClickNpcx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter NPC name");
 				String option = JOptionPane
@@ -1589,6 +1741,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickNpcx_1 = new JMenuItem(
 				"Click NPC [x] with the action [y]");
 		mntmClickNpcx_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", "'"));
@@ -1601,6 +1754,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmWalkToNpc_1 = new JMenuItem("Walk to NPC [x]");
 		mntmWalkToNpc_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", "'"));
@@ -1611,6 +1765,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmTurnCameraTo_3 = new JMenuItem("Turn camera to NPC [x]");
 		mntmTurnCameraTo_3.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(JOptionPane.showInputDialog(
 						"Enter NPC id").replaceAll("[^0-9]", "'"));
@@ -1619,11 +1774,23 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnIds_3.add(mntmTurnCameraTo_3);
 
+		JMenuItem mntmWalkToNpc_2 = new JMenuItem(
+				"Walk to NPC [x] (not in combat)");
+		mntmWalkToNpc_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter NPC id").replaceAll("[^0-9]", "'"));
+				GUIHandler.setAction(new WalkToNearestNPCNotInCombatID(id));
+			}
+		});
+		mnIds_3.add(mntmWalkToNpc_2);
+
 		JMenu mntmMagic = new JMenu("Magic");
 		mnAddAction.add(mntmMagic);
 
 		JMenuItem mntmCastSpellx = new JMenuItem("Cast spell [x]");
 		mntmCastSpellx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<Magic.Spell> b = new JComboBox<Magic.Spell>(
 						Magic.Spell.values());
@@ -1641,6 +1808,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmRemoveEquipmentAt = new JMenuItem(
 				"Unequip equipment at slot [x]");
 		mntmRemoveEquipmentAt.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<Equipment.Gear> b = new JComboBox<Equipment.Gear>(
 						Equipment.Gear.values());
@@ -1655,6 +1823,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmUnequipAllEquipment = new JMenuItem(
 				"Unequip all equipment");
 		mntmUnequipAllEquipment.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new UnequipAllAction());
 			}
@@ -1666,6 +1835,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmClickToContinue = new JMenuItem("Click to continue");
 		mntmClickToContinue.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new ClickToContinueAction());
 			}
@@ -1674,6 +1844,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmClickOptionx = new JMenuItem("Click option [x]");
 		mntmClickOptionx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String option = JOptionPane
 						.showInputDialog("Enter the option to choose (must be exact)");
@@ -1687,6 +1858,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmSetCameraAngle = new JMenuItem("Set Camera Angle");
 		mntmSetCameraAngle.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int angle = Integer.parseInt(JOptionPane.showInputDialog(null,
 						"Enter angle to set the camera to").replaceAll(
@@ -1699,6 +1871,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmSetCameraRotation = new JMenuItem("Set Camera Rotation");
 		mntmSetCameraRotation.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int angle = Integer.parseInt(JOptionPane.showInputDialog(null,
 						"Enter rotation to set the camera to").replaceAll(
@@ -1717,6 +1890,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmWaitUntilInterface = new JMenuItem(
 				"Wait until interface is open");
 		mntmWaitUntilInterface.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int parent = Integer.parseInt(JOptionPane.showInputDialog(null,
 						"Enter parent id").replaceAll("[^0-9]", ""));
@@ -1732,6 +1906,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmWaitUntilInterface_1 = new JMenuItem(
 				"Wait until interface is closed");
 		mntmWaitUntilInterface_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int parent = Integer.parseInt(JOptionPane.showInputDialog(null,
 						"Enter parent id").replaceAll("[^0-9]", ""));
@@ -1747,6 +1922,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmClickInterfacexy = new JMenuItem(
 				"Click interface [x][y] with the action [z]");
 		mntmClickInterfacexy.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int parent = Integer.parseInt(JOptionPane.showInputDialog(null,
 						"Enter parent id").replaceAll("[^0-9]", ""));
@@ -1765,6 +1941,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmHopToWorld = new JMenuItem("Hop to World [x]");
 		mntmHopToWorld.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int world = Integer.parseInt(JOptionPane.showInputDialog(null,
 						"Enter world").replaceAll("[^0-9]", ""));
@@ -1775,6 +1952,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmHopToRandom = new JMenuItem("Hop to random world");
 		mntmHopToRandom.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new HopToRandomWorldAction());
 			}
@@ -1786,6 +1964,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmWaitUntilIdle = new JMenuItem("Wait until idle");
 		mntmWaitUntilIdle.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new WaitUntilIdleAction());
 			}
@@ -1794,6 +1973,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmWaitUntilStopped = new JMenuItem("Wait until stopped");
 		mntmWaitUntilStopped.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				GUIHandler.setAction(new WaitUntilStoppedAction());
 			}
@@ -1822,6 +2002,7 @@ public class BlockBuilderGUI extends JFrame {
 		JMenuItem mntmChooseAnOption = new JMenuItem(
 				"Choose option[x]  from the right click menu");
 		mntmChooseAnOption.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String option = JOptionPane
 						.showInputDialog("Enter the option to choose (be exact)");
@@ -1832,6 +2013,7 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmMoveMouseTo_1 = new JMenuItem("Move mouse to point");
 		mntmMoveMouseTo_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int x = Integer.parseInt(JOptionPane
 						.showInputDialog("Enter x coordinate"));
@@ -1919,6 +2101,7 @@ public class BlockBuilderGUI extends JFrame {
 		});
 
 		btnAddLabel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String d = JOptionPane
 						.showInputDialog("Enter a name for the label");

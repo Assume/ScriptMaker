@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -42,7 +43,7 @@ public class PaintSetupGUI extends JFrame
 
 	public PaintSetupGUI()
 	{
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 349, 238);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -91,6 +92,7 @@ public class PaintSetupGUI extends JFrame
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				final PaintItem t;
@@ -147,6 +149,7 @@ public class PaintSetupGUI extends JFrame
 		JButton btnSetInside = new JButton("Set");
 		btnSetInside.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				JFrame t = new JFrame();
@@ -172,6 +175,7 @@ public class PaintSetupGUI extends JFrame
 		JButton btnSetBorder = new JButton("Set");
 		btnSetBorder.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				JFrame t = new JFrame();
@@ -197,6 +201,7 @@ public class PaintSetupGUI extends JFrame
 		JButton btnRemoveItem = new JButton("Remove Item");
 		btnRemoveItem.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				try

@@ -217,11 +217,11 @@ public class SkillData {
 		}
 
 		public int getXpPerHour(long runtime) {
-			return (int) ((3600000.0 / (double) runtime) * getXpGained());
+			return (int) ((3600000.0 / runtime) * getXpGained());
 		}
 
 		public long TimeToLevel(long runtime) {
-			long timeTillLevel = (long) (((double) xpToNextLevel() * 3600000.0) / (double) getXpPerHour(runtime));
+			long timeTillLevel = (long) ((xpToNextLevel() * 3600000.0) / getXpPerHour(runtime));
 
 			return timeTillLevel;
 		}
