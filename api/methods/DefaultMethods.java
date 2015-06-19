@@ -242,26 +242,13 @@ public class DefaultMethods {
 				if (Game.getUptext().contains(option)) {
 					Mouse.click(1);
 					return true;
-				} else {
-					Mouse.click(DefaultMethods.getAverage(m.getModel()
-							.getAllVisiblePoints(), 0), 3);
-					General.sleep(80, 120);
-					for (int fSafe = 0; fSafe < 20 && !ChooseOption.isOpen(); fSafe++)
-						General.sleep(General.random(10, 15));
-					if (ChooseOption.isOpen()) {
-						if (ChooseOption.isOptionValid(option)) {
-							return ChooseOption.select(option);
-						} else {
-							ChooseOption.close();
-							return false;
-						}
-					}
 				}
 			}
 		} catch (Exception e) {
 
 		}
 		return false;
+
 	}
 
 	public static boolean click(RSObject m, String option) {

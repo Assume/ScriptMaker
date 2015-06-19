@@ -54,6 +54,7 @@ import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCHPPercentIsL
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsInCombatIDConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsNotInCombatIDConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsNotOnScreenIDConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsNotValidConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsOnScreenIDConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.id.NPCIsValidIDConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.DistanceToNearestNPCIsGreaterThanConditional;
@@ -62,6 +63,7 @@ import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCHPPercentI
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsInCombatConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsNotInCombatConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsNotOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsNotValidNameConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsOnScreenConditional;
 import scripts.ScriptMaker.api.types.intent.NPCs.conditionals.name.NPCIsValidConditional;
 import scripts.ScriptMaker.api.types.intent.bank.CloseBankAction;
@@ -84,6 +86,8 @@ import scripts.ScriptMaker.api.types.intent.conditionals.RunIsBelowConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.location.DistanceToIsGreaterConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.location.DistanceToIsLessThanConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.location.LocationIsOnScreenConditional;
+import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.IsBeingAttackedByPlayerConditional;
+import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.IsItemEquippedConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.PlayerIsInCombatConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.player.conditionals.PlayerIsNotInCombatConditional;
 import scripts.ScriptMaker.api.types.intent.conditionals.skills.HPIsLessThanConditional;
@@ -123,7 +127,7 @@ import scripts.ScriptMaker.api.types.intent.inventory.InventoryIsNotFullConditio
 import scripts.ScriptMaker.api.types.intent.inventory.actions.ClickFirstItemMultipleAction;
 import scripts.ScriptMaker.api.types.intent.inventory.actions.CustomItemAction;
 import scripts.ScriptMaker.api.types.intent.inventory.actions.DropAllAction;
-import scripts.ScriptMaker.api.types.intent.inventory.actions.DropAllExceptAction;
+import scripts.ScriptMaker.api.types.intent.inventory.actions.DropAllExceptMultipleAction;
 import scripts.ScriptMaker.api.types.intent.magic.CastSpellAction;
 import scripts.ScriptMaker.api.types.intent.mouse.LeftClickAction;
 import scripts.ScriptMaker.api.types.intent.mouse.LeftClickPointAction;
@@ -765,6 +769,16 @@ public class BlockBuilderGUI extends JFrame {
 		});
 		mnCombat.add(mntmPlayerIsIn_1);
 
+		JMenuItem mntmPlayerIsAttacked = new JMenuItem(
+				"Player is being attacked by other player");
+		mntmPlayerIsAttacked.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GUIHandler
+						.addCondition(new IsBeingAttackedByPlayerConditional());
+			}
+		});
+		mnCombat.add(mntmPlayerIsAttacked);
+
 		JMenu mnNpcs = new JMenu("NPCs");
 		mnNewMenu.add(mnNpcs);
 
@@ -800,6 +814,15 @@ public class BlockBuilderGUI extends JFrame {
 
 		JMenuItem mntmNpcxExists = new JMenuItem("NPC [x] exists");
 		mnNames_2.add(mntmNpcxExists);
+
+		JMenuItem mntmNpcxDoesnt = new JMenuItem("NPC [x] doesn't exist");
+		mntmNpcxDoesnt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GUIHandler.addCondition(new NPCIsNotValidNameConditional(
+						JOptionPane.showInputDialog("Enter name: ")));
+			}
+		});
+		mnNames_2.add(mntmNpcxDoesnt);
 
 		JMenu mnIds_2 = new JMenu("IDs");
 		mnNpcs.add(mnIds_2);
@@ -910,6 +933,17 @@ public class BlockBuilderGUI extends JFrame {
 			}
 		});
 		mnIds_2.add(mntmNpcxExists_1);
+
+		JMenuItem mntmNpcxDoesnt_1 = new JMenuItem("NPC [x] doesn't exist");
+		mntmNpcxDoesnt_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter id: ").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new NPCIsNotValidConditional(id));
+			}
+		});
+		mnIds_2.add(mntmNpcxDoesnt_1);
+
 		mntmNpcxExists.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1169,6 +1203,19 @@ public class BlockBuilderGUI extends JFrame {
 			}
 		});
 		mnOtherPlayers.add(mntmPlayerxIs);
+
+		JMenu mnEquipment = new JMenu("Equipment");
+		mnNewMenu.add(mnEquipment);
+
+		JMenuItem mntmIsItemEquipped = new JMenuItem("Is Item equipped");
+		mntmIsItemEquipped.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter id: ").replaceAll("[^0-9]", ""));
+				GUIHandler.addCondition(new IsItemEquippedConditional(id));
+			}
+		});
+		mnEquipment.add(mntmIsItemEquipped);
 
 		JMenuItem mntmExecuteBlock = new JMenuItem("Execute Block...");
 		mntmExecuteBlock.addActionListener(new ActionListener() {
@@ -1518,14 +1565,19 @@ public class BlockBuilderGUI extends JFrame {
 		mntmItems.add(mntmDropAllItems);
 
 		JMenuItem mntmDropAllItems_1 = new JMenuItem(
-				"Drop all items in inventory except [x]");
+				"Drop all items in inventory except [x...]");
 		mntmDropAllItems_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int id = Integer.parseInt(JOptionPane.showInputDialog(
-						"Enter of id of item that you don't want to drop")
-						.replaceAll("[^0-9]", ""));
-				GUIHandler.setAction(new DropAllExceptAction(id));
+				List<Integer> list = new ArrayList<Integer>();
+				int x;
+				while ((x = Integer.parseInt(JOptionPane.showInputDialog(
+						"Enter id. Enter -1 to stop adding ids").replaceAll(
+						"[^0-9-]", ""))) != -1) {
+					list.add(x);
+				}
+				GUIHandler.setAction(new DropAllExceptMultipleAction(list
+						.toArray(new Integer[list.size()])));
 			}
 		});
 		mntmItems.add(mntmDropAllItems_1);
@@ -2174,5 +2226,6 @@ public class BlockBuilderGUI extends JFrame {
 		scrollPane.setViewportView(list);
 		fillList();
 		GUIHandler.setIndex(listModel.size());
+
 	}
 }
