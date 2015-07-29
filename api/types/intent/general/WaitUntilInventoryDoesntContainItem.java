@@ -8,36 +8,31 @@ import org.tribot.api2007.Inventory;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
-public class WaitUntilInventoryDoesntContainItem extends Action implements Serializable
-{
+public class WaitUntilInventoryDoesntContainItem extends Action implements
+		Serializable {
 
 	private static final long serialVersionUID = 3799150687233480912L;
 	private int itemID;
 	private long timeOut;
 
-	public WaitUntilInventoryDoesntContainItem(final int itemID, long timeOut)
-	{
+	public WaitUntilInventoryDoesntContainItem(final int itemID, long timeOut) {
 		this.itemID = itemID;
 		this.timeOut = timeOut;
 	}
 
 	@Override
-	public boolean run()
-	{
-		return Timing.waitCondition(new Condition()
-		{
+	public boolean run() {
+		return Timing.waitCondition(new Condition() {
 			@Override
-			public boolean active()
-			{
+			public boolean active() {
 				return Inventory.find(itemID).length == 0;
-			}	
+			}
 		}, timeOut);
 	}
-	
+
 	@Override
-	public String toString()
-	{
-		return "wait until inventory doesn't contain "+itemID;
+	public String toString() {
+		return "wait until inventory doesn't contain " + itemID;
 	}
-	
+
 }

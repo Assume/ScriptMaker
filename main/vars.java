@@ -36,7 +36,7 @@ public class vars {
 
 	public static boolean hasHitStart = false;
 	public static boolean isLiteMode = false;
-	public static String version = "1.3.9";
+	public static String version = "1.3.9_1";
 	public static Intent currentIntent;
 	public static boolean isHopping;
 

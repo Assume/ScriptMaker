@@ -13,15 +13,13 @@ import org.tribot.api2007.Skills;
 
 import scripts.ScriptMaker.api.methods.DefaultMethods;
 
-
 public class Prayer {
 
 	public enum Prayers {
-		Piety(55, 54, "Piety", 70),
-		Chivalry(53, 52, "Chivalry", 60),
-		ProtectFromMelee(41, 40, "Protect from Melee", 43),
-		ProtectFromMissiles(39, 38,	"Protect from Missiles", 40),
-		ProtectFromMagic(37, 36, "Protect from Magic", 37);
+		Piety(55, 54, "Piety", 70), Chivalry(53, 52, "Chivalry", 60), ProtectFromMelee(
+				41, 40, "Protect from Melee", 43), ProtectFromMissiles(39, 38,
+				"Protect from Missiles", 40), ProtectFromMagic(37, 36,
+				"Protect from Magic", 37);
 
 		private int interfaceId, hiddenId, levelRequired;
 		private String name;
@@ -51,11 +49,7 @@ public class Prayer {
 		}
 
 		public boolean isActivated() {
-			if (Interfaces.get(271, hiddenId).isHidden()) {
-				return false;
-			} else {
-				return true;
-			}
+			return !Interfaces.get(271, hiddenId).isHidden();
 		}
 	}
 
@@ -71,8 +65,7 @@ public class Prayer {
 				pr.getInterfaceId()).getAbsoluteBounds());
 		Mouse.hop(p);// Could be move doesn't really matter
 		for (int fsafe = 0; fsafe < 20
-				&& !Game.getUptext().contains(
-						"Deactivate " + pr.getName()); fsafe++) {
+				&& !Game.getUptext().contains("Deactivate " + pr.getName()); fsafe++) {
 			General.sleep(30);
 		}
 		if (Game.getUptext().contains("Deactivate " + pr.getName())) {
@@ -88,8 +81,7 @@ public class Prayer {
 				pr.getInterfaceId()).getAbsoluteBounds());
 		Mouse.hop(p);// Could be move doesn't really matter
 		for (int fsafe = 0; fsafe < 20
-				&& !Game.getUptext().contains(
-						"Activate " + pr.getName()); fsafe++) {
+				&& !Game.getUptext().contains("Activate " + pr.getName()); fsafe++) {
 			General.sleep(30);
 		}
 		if (Game.getUptext().contains("Activate " + pr.getName())) {

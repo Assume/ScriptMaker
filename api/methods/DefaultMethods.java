@@ -3,28 +3,23 @@ package scripts.ScriptMaker.api.methods;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.tribot.api.DynamicClicking;
 import org.tribot.api.General;
 import org.tribot.api.input.Keyboard;
-import org.tribot.api.input.Mouse;
 import org.tribot.api.types.generic.CustomRet_0P;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Camera;
-import org.tribot.api2007.ChooseOption;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Login;
 import org.tribot.api2007.NPCChat;
-import org.tribot.api2007.Objects;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Skills;
-import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSItem;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSObject;
@@ -98,74 +93,11 @@ public class DefaultMethods {
 	}
 
 	public static void clickObject(RSObject o, String option) {
-		clickObject(o, option, 0);
+		DynamicClicking.clickRSObject(o, option);
 	}
 
-	private static boolean objectCheck(RSObject o) {
-		for (RSObject a : Objects.getAt(o.getPosition())) {
-			if (a.getID() == o.getID()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static void clickObject(RSObject o, String option, int fail) {
-		if (fail > 4)
-			return;
-		if (o == null || o.getModel() == null
-				|| Objects.find(50, o.getID()).length == 0 || !objectCheck(o))
-			return;
-		if (!o.isOnScreen() || fail > 4) {
-			RSTile tile = o.getPosition();
-			Keyboard.pressKey((char) KeyEvent.VK_CONTROL);
-			Walking.walkTo(tile);
-			Keyboard.releaseKey((char) KeyEvent.VK_CONTROL);
-			General.sleep(250, 350);
-			while (Player.isMoving() && !o.isOnScreen()) {
-				// If Object is moving or if using
-				// NPC pass the npc/Object
-				turnTo(tile);
-			}
-			// Additonal Failsafe so that it always clicks properly
-			while (Player.isMoving())
-				General.sleep(30, 50);
-			// Probably not needed
-			if (!o.isOnScreen()) {
-				clickObject(o, option, fail + 1);
-			}
-			fail = 0;
-		}
-		// 5 Is a default offset of 5 Increase this to make it more random
-		Point p = getAverage(o.getModel().getAllVisiblePoints(), 10);
-		Mouse.move(p);
-		for (int fSafe = 0; fSafe < 20 && !Game.getUptext().contains(option)
-				|| fSafe < 20 && !Game.getUptext().contains("Use"); fSafe++)
-			General.sleep(10, 15);
-		if (Game.getUptext().contains(option)
-				|| Game.getUptext().contains("Use")) {
-			Keyboard.pressKey((char) KeyEvent.VK_CONTROL);
-			Mouse.click(1);
-			Keyboard.releaseKey((char) KeyEvent.VK_CONTROL);
-		} else {
-			Mouse.click(3);
-			for (int fSafe = 0; fSafe < 20 && !ChooseOption.isOpen(); fSafe++)
-				General.sleep(20, 25);
-			if (ChooseOption.isOpen() && ChooseOption.isOptionValid(option)) {
-				Keyboard.pressKey((char) KeyEvent.VK_CONTROL);
-				ChooseOption.select(option);
-				Keyboard.releaseKey((char) KeyEvent.VK_CONTROL);
-			} else if (ChooseOption.isOpen()) {
-				ChooseOption.close();
-				clickObject(o, option, fail + 1);
-			} else {
-				clickObject(o, option, fail + 1);
-			}
-		}
-		General.sleep(350, 500);
-		while (Player.isMoving() && Player.getAnimation() == -1) {
-			General.sleep(20, 30);
-		}
+	public static boolean click(RSNPC m, String option) {
+		return DynamicClicking.clickRSNPC(m, option);
 	}
 
 	public static void turnTo(final RSTile loc) {
@@ -194,96 +126,6 @@ public class DefaultMethods {
 		}
 		Camera.setCameraRotation(Camera.getCameraRotation()
 				+ ((dir > 0 ^ Math.abs(dir) > 180) ? 10 : -10));
-	}
-
-	public static boolean rightClick(RSNPC m, String option) {
-		try {
-			Mouse.setSpeed(500);
-			if (m.isValid()) {
-				if (m.getModel() != null) {
-
-					Mouse.move(DefaultMethods.getAverage(m.getModel()
-							.getAllVisiblePoints(), 0));
-					Mouse.click(DefaultMethods.getAverage(m.getModel()
-							.getAllVisiblePoints(), 0), 3);
-					General.sleep(80, 120);
-					for (int fSafe = 0; fSafe < 20 && !ChooseOption.isOpen(); fSafe++)
-						General.sleep(General.random(10, 15));
-					if (ChooseOption.isOpen()) {
-						if (ChooseOption.isOptionValid(option)) {
-							return ChooseOption.select(option);
-						} else {
-							ChooseOption.close();
-							return false;
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-
-		}
-		return false;
-	}
-
-	public static boolean click(RSNPC m, String option) {
-		return clickR(m, option);
-	}
-
-	public static boolean clickR(RSNPC m, String option) {
-		try {
-			Mouse.setSpeed(500);
-			if (m.isValid()) {
-				if (m.getModel() != null)
-					Mouse.move(DefaultMethods.getAverage(m.getModel()
-							.getAllVisiblePoints(), 0));
-				for (int fSafe = 0; fSafe < 20
-						&& !Game.getUptext().contains(option); fSafe++)
-					General.sleep(General.random(10, 15));
-				if (Game.getUptext().contains(option)) {
-					Mouse.click(1);
-					return true;
-				}
-			}
-		} catch (Exception e) {
-
-		}
-		return false;
-
-	}
-
-	public static boolean click(RSObject m, String option) {
-		try {
-			Mouse.setSpeed(500);
-			if (m != null) {
-				if (m.getModel() != null)
-					Mouse.move(DefaultMethods.getAverage(m.getModel()
-							.getAllVisiblePoints(), 0));
-				for (int fSafe = 0; fSafe < 20
-						&& !Game.getUptext().contains(option); fSafe++)
-					General.sleep(General.random(10, 15));
-				if (Game.getUptext().contains(option)) {
-					Mouse.click(1);
-					return true;
-				} else {
-					Mouse.click(DefaultMethods.getAverage(m.getModel()
-							.getAllVisiblePoints(), 0), 3);
-					General.sleep(80, 120);
-					for (int fSafe = 0; fSafe < 20 && !ChooseOption.isOpen(); fSafe++)
-						General.sleep(General.random(10, 15));
-					if (ChooseOption.isOpen()) {
-						if (ChooseOption.isOptionValid(option)) {
-							return ChooseOption.select(option);
-						} else {
-							ChooseOption.close();
-							return false;
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-
-		}
-		return false;
 	}
 
 	public static boolean inBuildingMode() {
@@ -349,10 +191,6 @@ public class DefaultMethods {
 		}, 1);
 	}
 
-	public static void leftClick(int x, int y) {
-		leftClick(new Point(x, y));
-	}
-
 	// Fast accurate Drop Method for trash randoms events (some ids missing)
 	public void dropAllExcept(ArrayList<Integer> t) {
 		for (RSItem d : Inventory.getAll()) {
@@ -381,7 +219,8 @@ public class DefaultMethods {
 			if (Interfaces.get(137) != null) {
 				for (int i = Interfaces.get(137).getChildren().length - 1; i > 0; i--) {
 					try {
-						if (Interfaces.get(137).getChildren()[i].getText() != "") {
+						if (!Interfaces.get(137).getChildren()[i].getText()
+								.equals("")) {
 							return Interfaces.get(137).getChildren()[i]
 									.getText();
 						}
