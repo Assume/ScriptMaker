@@ -19,9 +19,7 @@ public class CombatMethods {
 
 	static boolean isSpecialOn() {
 		Mouse.setSpeed(0);
-		if (Game.getSetting(301) == 1) {
-			return true;
-		}
+		if (Game.getSetting(301) == 1) return true;
 		return false;
 	}
 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.types.RSObject;
-import org.tribot.api2007.util.PathNavigator;
+import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
@@ -23,7 +23,7 @@ public class WalkToObjectAction extends Action implements Serializable {
 		RSObject[] ob = Objects.findNearest(50, name);
 		if (ob.length == 0)
 			return false;
-		new PathNavigator().traverse(ob[0].getPosition());
+		new DPathNavigator().traverse(ob[0].getPosition());
 		return true;
 	}
 

@@ -20,7 +20,6 @@ import org.tribot.script.interfaces.RandomEvents;
 
 import scripts.ScriptMaker.GUI.MainGUI;
 import scripts.ScriptMaker.api.methods.DefaultMethods;
-import scripts.ScriptMaker.api.methods.WorldHopping;
 import scripts.ScriptMaker.api.methods.paint.PaintHandler;
 import scripts.ScriptMaker.api.types.enums.SkillData;
 import scripts.ScriptMaker.api.types.main.PaintItem;
@@ -31,7 +30,6 @@ public class Main extends Script implements Painting, Pausing, Ending,
 
 	@Override
 	public void run() {
-		vars.world = new WorldHopping(this);
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 

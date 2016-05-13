@@ -2,7 +2,7 @@ package scripts.ScriptMaker.api.types.intent.object.actions.id;
 
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.types.RSObject;
-import org.tribot.api2007.util.PathNavigator;
+import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.ScriptMaker.api.types.main.Action;
 
@@ -24,7 +24,7 @@ public class WalkToObjectIDAction extends Action
 		RSObject[] ob = Objects.findNearest(50, id);
 		if (ob.length == 0)
 			return false;
-		new PathNavigator().traverse(ob[0].getPosition());
+		new DPathNavigator().traverse(ob[0].getPosition());
 		return true;
 	}
 

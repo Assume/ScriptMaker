@@ -1,7 +1,6 @@
 package scripts.ScriptMaker.api.types.intent.worldhopping;
 
-import org.tribot.api2007.WorldHopper;
-
+import scripts.ScriptMaker.api.methods.IngameWorldSwitcher;
 import scripts.ScriptMaker.api.types.main.Action;
 
 public class HopToRandomWorldAction extends Action {
@@ -10,7 +9,7 @@ public class HopToRandomWorldAction extends Action {
 
 	@Override
 	public boolean run() {
-		return WorldHopper.changeWorld(WorldHopper.getRandomWorld(true));
+		return IngameWorldSwitcher.switchToRandomWorld();
 	}
 
 	@Override
